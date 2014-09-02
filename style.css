@@ -13,12 +13,32 @@ background-color:#282828;
 background-size:16px 16px;
 }
 
-p.success {
-color: green;
+h1, h2, h3 {
+	color: rgb(255, 255, 200);
 }
 
-p.fail {
-color: red;
+div.testcaption {
+	margin: 0px 30px 0px 30px;
+	color: rgb(255, 255, 200);
+}
+
+div.testresult {
+border: 1px solid white;
+margin: 0px 30px 0px 30px;
+padding: 2px;
+background: #000;
+}
+
+div.testresult p.success {
+color: green; !important
+font-weight: bold;
+margin: 10px;
+}
+
+div.testresult p.fail {
+color: red; important!
+font-weight: bold;
+margin: 10px;
 }
 
 div.content {
