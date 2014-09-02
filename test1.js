@@ -1,3 +1,5 @@
-var message = 'Goodbye world';
+var foo = 'Hello world';
 
-assert("Expected 'Hello world'!", message === 'Hello world')
+// Test assertions - Do not change anything below this row!
+assert("Expected 'number'!", typeof foo === 'number')
+assert("Expected 'string'!", typeof bar === 'string')
