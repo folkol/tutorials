@@ -234,7 +234,7 @@ config = {
 	reorder: true,
 
 	// by default, modify document.title when suite is done
-	altertitle: true,
+	altertitle: false,
 
 	// by default, scroll to top of the page when suite is done
 	scrolltop: true,
