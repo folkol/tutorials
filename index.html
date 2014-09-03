@@ -7,7 +7,9 @@
     <link rel="stylesheet" href="css/sons-of-obsidian.css">
     <link rel="stylesheet" href="css/style.css" type="text/css">
     <script src="google-code-prettify/prettify.js"></script>
-    <script src="js/asserts.js"></script>
+    <script src="js/qunit-1.15.0.js"></script>
+    <script src="exercises/index.js"></script>
+    <script src="tests/index.js"></script>
   </head>
   <body onload="prettyPrint()">
     <div class='column'>
@@ -28,13 +30,6 @@
         <div class='testcaption'>Test results:</div>
         <div class='testresult' id="qunit"></div>
         <div id="qunit-fixture"></div>
-        <script src="js/qunit-1.15.0.js"></script>
-        <script>
-          QUnit.config.urlConfig = [];
-          QUnit.config.scrolltop = false;
-        </script>
-        <script src="exercises/index.js"></script>
-        <script src="tests/index.js"></script>
       </div>
     </div>
   </body>
