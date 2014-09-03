@@ -52,20 +52,24 @@ div.testcaption {
 div.testresult {
 	border: 1px solid white;
 	margin: 0px 30px 0px 30px;
-	padding: 2px;
+	padding: 0 20px 7px 20px;
 	background: #000;
 }
 
-div.testresult p.success {
+div.testresult li.pass {
 	color: green; !important
 	font-weight: bold;
 	margin: 10px;
 }
 
-div.testresult p.fail {
-	color: red; important!
+div.testresult li.fail {
+	color: red;
 	font-weight: bold;
 	margin: 10px;
+}
+
+div.testresult ol.qunit-collapsed {
+	display: none;
 }
 
 div.column {
