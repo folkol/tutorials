@@ -7,7 +7,9 @@
     <link rel="stylesheet" href="css/sons-of-obsidian.css">
     <link rel="stylesheet" href="css/style.css" type="text/css">
     <script src="google-code-prettify/prettify.js"></script>
-    <script src="js/asserts.js"></script>
+    <script src="js/qunit-1.15.0.js"></script>
+    <script src="exercises/sida1.js"></script>
+    <script src="tests/sida1.js"></script>
   </head>
   <body onload="prettyPrint()">
     <div class='column'>
@@ -15,7 +17,7 @@
         <div class="button left"><a href="index.html">&lt;&lt;PREV</a></div>
         <div class="button right"><a href="sida2.html">NEXT >></a></div>
         <h2>Variabler och typer</h2>
-        <p>En variabel i JavaScript deklareras med ett <a href='http://www.ecma-international.org/ecma-262/5.1/#sec-12.2'>variable-statement</a>, vilket består av ordet 'var' följt av en inom nuvarande scope unikt namn. Vad ett scope är går vi igenom senare.</p>
+        <p>En variabel i JavaScript deklareras med ett <a href='http://www.ecma-international.org/ecma-262/5.1/#sec-12.2'>Variable Statement</a>, vilket består av ordet 'var' följt av en inom nuvarande scope unikt namn. Vad ett scope är går vi igenom senare.</p>
         <div class='testcaption'>Ett statement som deklarerar en variabel vid namn 'foo':</div>
         <pre class="prettyprint linenums">var foo;</pre>
         <p>En variabel i JavaScript är inte typad, men det värde som variablen refererar till har en av följande typer:</p>
@@ -31,9 +33,8 @@
         <h3>Tester</h3>
         <p>Tilldela variablerna värden av förväntad typ, samt skapa de variabler som saknas.</p>
         <div class='testcaption'>Test results:</div>
-        <div class='testresult'>
-          <script src="tests/sida1.js"></script>
-        </div>
+        <div class='testresult' id="qunit"></div>
+        <div id="qunit-fixture"></div>
       </div>
     </div>
   </body>
