@@ -1,3 +1,3 @@
-QUnit.test( "Assert correct types", function( assert ) {
-  assert.ok( false );
+QUnit.test( "Assert correct property chain", function( assert ) {
+    assert.equal( typeof bar, 'object', 'There should be an Object called bar' );
 });
