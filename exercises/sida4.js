@@ -1,0 +1,1 @@
+var foo = new Function('return 2;');

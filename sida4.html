@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>JavaScript Crash Course</title>
+    <link rel="stylesheet" href="google-code-prettify/prettify.css">
+    <link rel="stylesheet" href="css/sons-of-obsidian.css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+    <script src="google-code-prettify/prettify.js"></script>
+    <script src="js/qunit-1.15.0.js"></script>
+    <script src="exercises/sida4.js"></script>
+    <script src="tests/sida4.js"></script>
+  </head>
+  <body onload="prettyPrint()">
+    <div class='column'>
+      <div class="content">
+        <div class="button left"><a href="sida3.html">&lt;&lt;PREV</a></div>
+        <div class="button right"><a href="sida5.html">NEXT >></a></div>
+        <h1>Functions</h1>
+        <p>Funktioner i JavaScript är Objects, men de har speciella properties - bland annat "call", vilket gör att man kan anropa koden som funktionen reprenterar.</p>
+        <p>Det finns ett flertal sätt att skapa nya funktionsobjekt i JavaScript, men först ska vi titta på det krångligaste av dem! (Just för att förtydliga att det faktiskt är Objects vi talar om, precis som alla andar Object).</p>
+        <p>Vi skapar en funktion genom att skicka in en textsträng med funktionskroppens innehåll till "new Function()"</p>
+        <div class='testcaption'>Skapa en funktion, vars funktionskropp är ett <a href="http://www.ecma-international.org/ecma-262/5.1/#sec-12.9">Return Statement</a>:</div>
+        <pre class="prettyprint linenums">var myFunction = new Function('return 2;');</pre>
+        <p>Alla funktioner har ett antal properties, bland dem en property som heter "call", vilken är en funktion i sin tur, och som exekverar kodkroppen när man anropar den.</p>
+        <div class='testcaption'>Man anropar en funktion genom att anropa "call" på den:</div>
+        <pre class="prettyprint linenums">var myFunction = new Function('return 2;');
+var foo = myFunction.call(); // foo === 2</pre>
+        <p>// Exekverar kodkroppen, och utvärderas till värdet "2". Vilket kan användas t.ex. i assigments.</p>
+        <div class='testcaption'>Test results:</div>
+        <div class='testresult' id="qunit"></div>
+        <div id="qunit-fixture"></div>
+      </div>
+    </div>
+  </body>
+</html>
