@@ -37,11 +37,14 @@ foo.qux = {};</pre>
         <p>Object.create tar ett argument, som vi i exemplet ovan sätter till null. Vi kommer att gå igenom vad det är för lustig parameter i en senare övning.</p>
         <p>Man måste inte deklarera properties i förväg, de kan skapas på godtyckligt Object genom att bara tilldela ett värde till en property med ett nytt namn. Detta gäller även diverse Objects som JavaScript-runtimen har gjort tillgängliga för oss att kommunicera med.</p>
         <p>Det finns två sätt att läsa / skriva properties, antingen genom den syntax vi såg ovan, eller genom <a href="http://www.ecma-international.org/ecma-262/5.1/#sec-11.2.1">square bracket notation</a>. Lägg märke till att namnet inom brackets är en string.</p>
+        <p>Om man vet namnet på den property som man vill skriva eller läsa så är det ingen skillnad på dessa två syntaxer, men om man har propertynamnet i en variabel så måste man använda sig av sen senare varianten. Lägg märke till att variabelnamnet inte ska vara inom citattecken, för då menar man ju inte längre variabeln utan "Textsträngen med innehållet 'propName'".</p>
         <div class='testcaption'>Properties, både med dot notation och square bracket notation:</div>
         <pre class="prettyprint linenums">var foo = new Object();
 foo.bar = 2;
-foo['baz'] = 'Hello';</pre>
-        <p>Om man vet namnet på den property som man vill skriva eller läsa så är det ingen skillnad på dessa två syntaxer, men om man har propertynamnet i en variabel så måste man använda sig av sen senare varianten.</p>
+foo['baz'] = 'Hello';
+
+var propName = 'baz';
+foo[propName] = 'Hello, again!';</pre>
         <div class='testcaption'>Test results:</div>
         <div class='testresult' id="qunit"></div>
         <div id="qunit-fixture"></div>
