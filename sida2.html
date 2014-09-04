@@ -31,10 +31,10 @@ foo.baz = "Hello";
 foo.qux = new Object();</pre>
         <div class='testcaption'>Att skapa objekt med properties:</div>
         <pre class="prettyprint linenums">var foo = { bar: "Hello" }; // foo.bar = "Hello";</pre>
-        <p>Syntaxen med måsvingarna kallas "Object literal syntax", och är helt enkelt objektet beskrivet i <a href="http://json.org/">JSON-format</a>, med undantaget att namnet på de properties man skapar inte behöver vara inom citattecke.</p>
-        <p>Kort sagt så är Object literal syntax en start måsvinge, sedan ett antal kommaseparerade properties på formen namne:value.</p>
-        <p>Object.create tar en parameter, som vi i exemplet ovan sätter till null. Vi kommer att gå igenom vad det är för lustig parameter i en snare övning.</p>
-        <p>Man måste inte deklarera properties i förväg, de kan skapas på godtyckligt Object genom att bara tilldela ett värde till en property med ett nytt namn. Detta gället även diverse Objects som JavaScript-runtimen har gjort tillgängliga för oss att kommunicera med.</p>
+        <p>Syntaxen med måsvingarna kallas "Object literal syntax", och är helt enkelt objektet beskrivet i <a href="http://json.org/">JSON-format</a>, med undantaget att namnet på de properties man skapar inte behöver vara inom citattecken.</p>
+        <p>Kort sagt så är Object literal syntax en startmåsvinge, sedan ett antal kommaseparerade properties på formen namn:value, och sedan en avslutande måsvinge.</p>
+        <p>Object.create tar ett argument, som vi i exemplet ovan sätter till null. Vi kommer att gå igenom vad det är för lustig parameter i en senare övning.</p>
+        <p>Man måste inte deklarera properties i förväg, de kan skapas på godtyckligt Object genom att bara tilldela ett värde till en property med ett nytt namn. Detta gäller även diverse Objects som JavaScript-runtimen har gjort tillgängliga för oss att kommunicera med.</p>
         <p>Det finns två sätt att läsa / skriva properties, antingen genom den syntax vi såg ovan, eller genom <a href="http://www.ecma-international.org/ecma-262/5.1/#sec-11.2.1">square bracket notation</a>. Lägg märke till att namnet inom brackets är en string.</p>
         <div class='testcaption'>Properties, både med dot notation och square bracket notation:</div>
         <pre class="prettyprint linenums">var foo = new Object();

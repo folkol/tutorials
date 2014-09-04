@@ -2319,7 +2319,7 @@ QUnit.done(function( details ) {
 
 	// scroll back to top to show results
 	if ( config.scrolltop && window.scrollTo ) {
-		window.scrollTo( 0, 0 );
+            //		window.scrollTo( 0, 0 );
 	}
 });
 
