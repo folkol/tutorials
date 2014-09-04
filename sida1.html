@@ -29,7 +29,7 @@
           <li>String</li>
           <li>Object</li>
         </ul>
-        <p>Man kan få en textsträng som representerar en variabels typ genom att använda operatorn "typeof". Se <a href="http://www.ecma-international.org/ecma-262/5.1/#sec-11.4.3">specen</a> för mer detaljer.</p>
+        <p>Operatorn "typeof" ger en textsträng som beskriver typen för den variabel man anv-nder den på. Se <a href="http://www.ecma-international.org/ecma-262/5.1/#sec-11.4.3">specen</a> för mer detaljer.</p>
         <p>Vi ska gå igenom typerna lite hastigt och kommer i senare slides gå in lite mer på djupet av typen Object</p>
         <h3>Boolean</h3>
         <p>Kan anta värdena true och false. Här passar vi även på att visa kommentars-syntaxen.</p>
@@ -47,40 +47,28 @@ var fooType = typeof foo; // 'boolean'</pre>
         <div class='testcaption'>Variabler är undefined tills man tilldelat dem ett värde:</div>
         <pre class="prettyprint linenums">var foo; // undefined</pre>
         <h3>Number</h3>
-        <p>Ett 64 bits tal, enligt <a href="https://en.wikipedia.org/wiki/IEEE_floating_point">IEEE 754</a>. D.v.s. ett gäng rationella tal, samt NaN, -Inf och +Inf.</p>
-        <p>Numbers är vad det låter som, ett aritmetiskt värde. Man kan konvertera en textsträng till ett Number genom toNumber (Eller toInteger, om man bara vill ha heltal).</p>
+        <p>Ett 64 bits tal, enligt <a href="https://en.wikipedia.org/wiki/IEEE_floating_point">IEEE 754</a>. D.v.s. ett gäng flyttal, samt NaN, -Inf och +Inf.</p>
+        <p>Man kan konvertera en textsträng till ett Number genom parseFloat (Eller parseInt, om man bara vill ha heltal).</p>
         <div class='testcaption'>Number values:</div>
         <pre class="prettyprint linenums">var foo = 2;
 var bar = 3.14;
 var baz = parseInt('1337');</pre>
         <h3>String</h3>
-        <p>En serie av UTF-16 code points. Används oftast för text-data.</p>
+        <p>En textsträng skapas i JavaScript genom antingen enkla eller dubbla citattecken.</p>
+        <p>En serie av UTF-16 code points när den innehåller text, men kan även innehålla godtycklig binär data.</p>
         <p>Man kan läsa ut strängens längd m.h.a. propertien ".length". Vi återkommer till vad properties är under Object.</p>
-        <p>Man skapar textsträngar genom antingen enkla eller dubbla citattecken. Båda fungerar lika bra, och bägge typer är ungefär lika vanliga. Jag använder enkla om inte texten jag ska lagra innehåller enkla citattecken i sig.</p>
-        <p>Man kan konkatenera strängar med String.concat eller +.
+        <p>Man kan konkatenera strängar med +.</p>
         <div class='testcaption'>Skapa textsträngar:</div>
         <pre class="prettyprint linenums">var foo = 'Hello';
 var bar = "Hello there";
-var baz = "Hello".concat(" there");
-var qux = "Hello" + " there";</pre>
+var baz = "Hello" + " there";</pre>
         <h3>Object</h3>
-        <p>Ett JavaScript Object är en samling properties. En property är ett namn associerat med ett värde, värdet kan vara något av de primitiva ovan eller i sin tur ett Object.</p>
-        <p>Det finns lite övriga sorters properties som inte är relevanta just nu, men är man intresserad så kan man slänga ett öga på <a href="http://www.ecma-international.org/ecma-262/5.1/#sec-8.6">specen</a>.</p>
-        <p>Det finns ett antal olika sätt att skapa JavaScript Objects, alla med sina för- och nackdelar.</p>
-        <div class='testcaption'>Skapa några Object:</div>
+        <p>Ett JavaScript Object är en samling properties. En property är ett namn associerat med ett värde. Värdet kan vara av vilken typ som helst, inklusive i sin tur ett Object.</p>
+        <p>Det finns flera olika sätt att skapa Objects, här visas några av dem (Alla Object i exemplet är tomma objekt, utan några programdefinierade properties).</p>
+        <div class='testcaption'>Skapa Objects:</div>
         <pre class="prettyprint linenums">var foo = new Object();
 var bar = Object.create(null);
 var baz = {};</pre>
-        <div class='testcaption'>Att ge objekten properties:</div>
-        <pre class="prettyprint linenums">var foo = new Object();
-foo.bar = 2;
-foo.baz = "Hello";
-foo.qux = new Object();</pre>
-        <div class='testcaption'>Att skapa object med properties:</div>
-        <pre class="prettyprint linenums">var foo = { bar: "Hello" }; // foo.bar = "Hello";</pre>
-        <p>Syntaxen med måsvingarna kallas "Object literal syntax", och är helt enkelt objektet beskriver i <a href="http://json.org/">JSON-format</a>, med undantaget att namnet på de properties man skapar inte behöver vara inom citattecken - då det inte skulle kunna vara något annat än propertnamn man menar i den kontexten.</p>
-        <p>Kort sagt så är Object literal syntax en start måsvinge, sedan ett antal kommaseparerade properties på formen namne:value.</p>
-        <p>Object.create tar en parameter, som vi i exemplet ovan sätter till null. Vi kommer att gå igenom vad det är för lustig parameter i nästa övning.</p>
         <h2>Tester</h2>
         <p>Tilldela variablerna värden av förväntad typ, samt skapa de variabler som saknas.</p>
         <div class='testcaption'>Test results:</div>
