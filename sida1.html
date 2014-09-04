@@ -29,7 +29,7 @@
           <li>String</li>
           <li>Object</li>
         </ul>
-        <p>Operatorn "typeof" ger en textsträng som beskriver typen för den variabel man anv-nder den på. Se <a href="http://www.ecma-international.org/ecma-262/5.1/#sec-11.4.3">specen</a> för mer detaljer.</p>
+        <p>Operatorn "typeof" ger en textsträng som beskriver typen för den variabel man använder den på. Se <a href="http://www.ecma-international.org/ecma-262/5.1/#sec-11.4.3">specen</a> för mer detaljer.</p>
         <p>Vi ska gå igenom typerna lite hastigt och kommer i senare slides gå in lite mer på djupet av typen Object</p>
         <h3>Boolean</h3>
         <p>Kan anta värdena true och false. Här passar vi även på att visa kommentars-syntaxen.</p>
@@ -43,7 +43,7 @@ var fooType = typeof foo; // 'boolean'</pre>
         <pre class="prettyprint linenums">var foo = null;</pre>
         <h3>Undefined</h3>
         <p>Kan endast anta värdet undefined. Alla variabler har värdet undefined innan de tilldelas något annat värde. Det finns fler situationer där man träffar på undefined, men vi kommer till det senare.</p>
-        <p>Man tilldelar generellt inte värdet undefined till en variabel.</p>
+        <p>Man tilldelar generellt inte värdet undefined till en variabel explicit.</p>
         <div class='testcaption'>Variabler är undefined tills man tilldelat dem ett värde:</div>
         <pre class="prettyprint linenums">var foo; // undefined</pre>
         <h3>Number</h3>
@@ -54,8 +54,8 @@ var fooType = typeof foo; // 'boolean'</pre>
 var bar = 3.14;
 var baz = parseInt('1337');</pre>
         <h3>String</h3>
-        <p>En textsträng skapas i JavaScript genom antingen enkla eller dubbla citattecken.</p>
-        <p>En serie av UTF-16 code points när den innehåller text, men kan även innehålla godtycklig binär data.</p>
+        <p>En textsträng skapas genom antingen enkla eller dubbla citattecken, valfritt.</p>
+        <p>(En serie av UTF-16 code points när den innehåller text, men kan även innehålla godtycklig binär data.)</p>
         <p>Man kan läsa ut strängens längd m.h.a. propertien ".length". Vi återkommer till vad properties är under Object.</p>
         <p>Man kan konkatenera strängar med +.</p>
         <div class='testcaption'>Skapa textsträngar:</div>
