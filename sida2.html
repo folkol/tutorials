@@ -21,14 +21,15 @@
         <p>Det finns lite övriga sorters properties som inte är relevanta just nu, men är man intresserad så kan man slänga ett öga på <a href="http://www.ecma-international.org/ecma-262/5.1/#sec-8.6">specen</a>.</p>
         <p>Det finns som sagt ett antal olika sätt att skapa JavaScript Objects, alla med sina för- och nackdelar.</p>
         <div class='testcaption'>Skapa några Object:</div>
-        <pre class="prettyprint linenums">var foo = new Object();
+        <pre class="prettyprint linenums">
+var baz = {};
 var bar = Object.create(null);
-var baz = {};</pre>
-        <div class='testcaption'>Att ge objekten properties:</div>
+var foo = new Object();</pre>
+        <div class='testcaption'>Att tilldela objekten properties:</div>
         <pre class="prettyprint linenums">var foo = new Object();
 foo.bar = 2;
 foo.baz = "Hello";
-foo.qux = new Object();</pre>
+foo.qux = {};</pre>
         <div class='testcaption'>Att skapa objekt med properties:</div>
         <pre class="prettyprint linenums">var foo = { bar: "Hello" }; // foo.bar = "Hello";</pre>
         <p>Syntaxen med måsvingarna kallas "Object literal syntax", och är helt enkelt objektet beskrivet i <a href="http://json.org/">JSON-format</a>, med undantaget att namnet på de properties man skapar inte behöver vara inom citattecken.</p>
