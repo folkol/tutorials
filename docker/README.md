@@ -49,6 +49,41 @@ or...
  - Oracle VM VirtualBox
 
 
+Normal shell:
+ - docker-machine create --driver virtualbox default
+ - eval $(docker-machine env default)
+ - docker-machine start / stop
+ - docker-machine ls
+ - docker-machine --help
+
+ - docker run -d -P --name web nginx # -d for daemon/keepalive, -P for publish ports
+ - docker ps # List containers
+ - docker port web # View exposed ports
+ - docker-machine ip # ip of Docker host
+ - docker stop web
+ - docker rm web
+
+ - When you start a container, docker automatically shares your /Users/username dir.
+
+
+boot2docker vs. docker-machine:
+
+boot2docker docker-machine      docker-machine description
+init        create              Creates a new docker host.
+up          start               Starts a stopped machine.
+ssh         ssh                 Runs a command or interactive ssh session on the machine.
+save        -                   Not applicable.
+down        stop                Stops a running machine.
+poweroff    stop                Stops a running machine.
+reset       restart             Restarts a running machine.
+config      inspect             Prints machine configuration details.
+status      ls                  Lists all machines and their status.
+info        inspect             Displays a machine’s details.
+ip          ip                  Displays the machine’s ip address.
+shellinit   env                 Displays shell commands needed to configure your shell to interact with a machine
+delete      rm                  Removes a machine.
+download    -                   Not applicable.
+upgrade     upgrade             Upgrades a machine’s Docker client to the latest stable release.
 
 
 References:
