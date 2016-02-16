@@ -64,6 +64,49 @@ Normal shell:
  - docker rm web
 
  - When you start a container, docker automatically shares your /Users/username dir.
+ - docker run -d -P -v $HOME/site:/usr/share/nginx/html --name mysite nginx
+
+In short:
+docker-machine to interact with the virtual linux docker host
+docker to inteact with the docker daemon
+the exposed ports are exposed on the DOCKER HOST!
+
+
+
+List containers:
+ - docker ps -a
+
+
+Standalone MongoDB with docker:
+ - docker run --name some-mongo -d mongo
+( - docker attach some-mongo # If you want to login to the machine, and the container was started as a shell )
+ - docker exec -it some-mongo bash # run bash in container, with streams connected to this terminal
+ - docker stop some-mongo
+ - docker rm some-mongo
+
+Mongo example:
+ - docker run -P --name mongo_1 -d mongo
+ - docker run -it --link mongo_1:mongo --rm mongo sh -c 'exec mongo "$MONGO_PORT_27017_TCP_ADDR:$MONGO_PORT_27017_TCP_PORT/test"'
+
+ - docker run --name some-app --link some-mongo:mongo -d application-that-uses-mongo
+
+
+
+Log in to docker host:
+ - docker-machine ssh
+
+
+Demo with temporary MongoDB:
+ - docker run -d -P mongo
+ - docker ps # e0f04a0bac97        mongo               "/entrypoint.sh mongo"   14 minutes ago      Up 14 minutes       0.0.0.0:32775->27017/tcp   mongo_1
+ - mongo $(docker-machine ip):32775
+ - use smartcms
+ - db.cloneDatabse("192.168.1.212"); // Might require net: bindIp: 0.0.0.0
+ - db.clicks.find()
+
+
+
+
 
 
 boot2docker vs. docker-machine:
@@ -92,3 +135,6 @@ References:
 
 Reading list:
  - Docker compose (multi container apps)
+ - https://docs.oracle.com/cd/E52668_01/E54669/html/section_rsr_p2z_fp.html
+ - https://docs.docker.com/engine/examples/mongodb/
+ - http://blog.trifork.com/2013/12/24/docker-from-a-distance-the-remote-api/
