@@ -1,0 +1,311 @@
+* Mattias Karlsson: Welcome to jFokus
+1. Lite historia
+2. Highlights and failures
+3. Video competition winners
+4. Presentation av onsdagens party
+
+* Brian Goetz: Keynote
+1. "Move deliberately, and do not break things"
+2. Programming is a means to an end
+3. Programming time + Pizza -> Programming time + Value
+4. Progress vs. Preservation
+5. Programming is an economic activity
+6. Not "is this process good?", rather "is this process a good match for us?"
+7. = Some philosophy parallels =
+8. 'There is no good, only good for' -Yoda
+9. "It depends"
+10. Relative stack level scales inversely with stack growth. "Backend" vs. "Frontend"
+11. = What people think I do =
+12. Adding features = Adding weight
+13. Cross cutting features -- serialization
+14. Big picture: Everybody's code
+15. Developers tend to overvalue their own code
+17. "Embrace and Extend"
+    - Priority to old behavior
+18. It takes as much time as it takes
+    - "Take the time it takes, or don't do it at all"
+19. Features should fit the developers' mental model
+20. "Understand the underlying issue, and come up with an elegant solution" -Steve Jobs, Insanely Great
+21. "Reality hardens like concrete, every step will close doors of opportunity"
+22. New features should fit the symmetry of the framework to which they are added
+23. Beware of fooling consistency
+    - 'A foolish consistency is the hobgoblin of little minds' -Ralph Waldo Emerson
+24. Hardware has changed
+    - Value types
+    - Generic primitives
+
+* Shay Friedman: Chrome Dev Tools
+1. Inspector
+2. Find in inspector accepts CSS Selectors
+3. Style view
+   1. has got a filter box
+   2. can pin state
+   3. 
+4. Shift + click on color box cycles all with this color
+5. Color picker
+6. ESC to toggle console
+7. console.log('Text', obj) instead of console.log('Text' + obj)
+8. CMD+P to open file in sources tab
+9. CMD+Shift+P to go to function in sources tab
+10. console
+    - .log('%cText', 'css');
+    - .count('Text');
+    - .groupCollapsed('Group title'); .log(); .log(); .groupEnd('Group title');
+    - .time('Name'); .timeEnd('Name');
+    - .table(arrayOfObjects);
+11. Settings -> Experiments (Might require flag)
+12. Themes
+13. Toggle device mode
+14. "Configure network"
+    - Throttling
+    - User Agent
+15. Timeline -> Screenshots
+16. Network -> Rightclick on requrest -> Save as HAR file
+
+* Petter Måhlén: Modelling microservices @ Spotify
+1. 3 dimensions of scaling
+   - Splitting
+   - Sharding
+   - Cloning
+2. 100 teams
+3. Squads, organic organization - tradeoffs
+4. "System metadata: System-Z"
+5. Third generation metadata: "Emil" -> "ServiceDB" -> "System-Z"
+6. Main features:
+   1. General component information
+   2. Dependency tracking
+   3. Managing deployments
+   4. Ownership and alerts
+7. Manage components
+
+            +-----------+
+            |           |
+            |  System   |
+            |           |                 +-----------+                    +----------------+
+            +-----------+--- contains ---(|           |)---  registers ---(|                |
+                                          | Component |                    | Discovery Name |
+            +-----------+)--   owns   ---(|           |)--- depends on ---(|                |
+            |           |                 +-----------+                    +----------------+
+            |   Squad   |
+            |           |
+            +-----------+
+
+8. Dirty metadata
+   - Organization changes -> Ownership confusion
+   - Infrastructure evolution -> runtime confusion
+   - Owners don't benefit from high quality metadata...
+9. "10 things you do not know"-compilations on the walls (e.g. in the restroom)
+10. Microservices: Small and easy in isolation, but big picture is hard
+    - Metadata helps
+    - Metadata dirty, unavoidable?
+    - Combining tools, better collaboration
+
+* Simon Ritter: Lambdas and streams - beyond the basics
+1. Better type inference
+2. Default methods
+3. Static methods in interfaces
+4. Stream
+   1. A source
+   2. 0+ intermediate operations (Stream -> Stream)
+   3. Terminal operation (Stream -> {Result|Side effect})
+      1. Lazy evaluation (Shortcut operations)
+      2. Can execute in parallel
+      3. Intermediate operations are merged
+5. Stream sources
+   - Collection.stream
+   - Arrays.stream
+   - IntStream.range
+   - Files.walk
+6. Performance impact for Loggers
+   - Logger.info(Supplier)
+7. Embrace functional way of thinking
+   - The art of reduction
+8. Stream: Filter -> Map -> Reduce
+   - Filter: Skip some elements
+   - Map: Transform elements
+   - Reduce: Accumulate the elements to a result
+     - Intermediate result + Element -> Intermediate result
+9. JDK9:
+   - Optional as stream
+   - Matcher/Scanner stream support
+   - Network/Security streams
+   - Files.lines() as parallel stream
+   - Take while / drop while
+10. THINK FUNCTIONAL!
+
+* Two random guys: JHipster
+1. Yeoman generator
+2. Spring Boot + Angular (+ 10 other best practices / standard libs)
+3. Scaffolding
+(( Halvdåliga speakers, men ganska roligt! Som dialog. ))
+
+* Hans Nottehed: Intgerating 100 things
+1. Vending machines, signs, traffic sensors
+2. Cooperation (construction, service personell, service programmers)
+3. "Not implemented here syndrom"
+4. I want to connect! Why?
+5. We know why, now what?
+   - You typically do not need 4G
+   - Choose tool for application
+6. Do not trust the network!
+   - Device need reconnect handling
+7. SLA (Service Layer Agreement) for network bandwidth
+8. M to M SIM - Risk of huge invoice
+9. Both device and server must be able to handle offline sessions
+10. Think Mars Rover
+11. Autonomous, "Please reboot" is not good enough
+12. Even terrestrial devices should handle autonomous mode.
+13. Use watch dogs
+    - Automatic reboot on missing heartbeat
+14. Remote software update
+    - But don't share file server with admin dep.
+15. Remote monitoring
+16. Cost of finding a problem scale with project progress. Idea vs Shipped.
+17. What devices are connecting to your server?
+18. Data validation
+    - Tampered?
+19. Encryption!
+20. Risks:
+    - Collect more than enough
+    - Leaking sensitive information
+    - Overengineering
+    - KEEP IT SIMPLE!
+21. Protocols
+    - Use standard
+    - Byte/size optimization might be unnecessary
+    - PCT, MQTT, XMPP, http(s), ftp
+22. User integration
+    - Users don't do what you expect them to do
+    - Users don't understand what you do
+    - INVOLVE THEM!
+23. Give the admin GUI some love
+24. "Writing your own web portal"
+    - Expensive
+    - Takes time
+    - Maintenance cost
+    - Multiple designs
+    - REUSE OFF-THE-SHELFT-PRODUCTS!
+    - OPEN STANDARDS!
+25. Everybody needs an app - no use a standard widget instead
+26. Open data vs. closed data
+    - Sharing seems scary
+    - API keys, controlled sharing
+27. EMC protection, watchdog
+28. LET'S MAKE GADGETS BEAUTIFUL AND FUN!
+(( Tråkig management-gubbe ))
+
+* Bas W. Knopper: Making Darwin Proud - evolutionary algorithms for problem solving
+1. NASA created an antenna with evolutionary algorithm when engineers couldn't make the constrains
+   - 'Evolutionary Antenna Synthesis'
+2. Recap:
+   - Natural selection
+   - 'Recombination'
+   - Traits from both parents
+   - Mutation
+3. Algorithm design
+   - Initial candidate solution
+     - Random permutation?
+   - Fitness function
+     - 'How good is this solution'
+   - Mutation
+     - 'Small chance of mutation'
+   - Recombination
+     - Strategy for recombination of parents
+4. Termination
+   - Time
+   - Progress delta
+   - Generations
+   - Threshold
+   - Combination of these
+5. Select survivors
+   - Best parent
+   - Random parent (genetiv diversity)
+   - Best parents out of random subset
+   - Combination of these
+6. Pseudo code
+   1. Initialize population
+   2. while termination not satisfied
+      1. Pick parents from survivors
+      2. Recombination
+         1. For example 'Cut and cross-fill'
+            - Half from one parent
+            - Same index from other parent
+            - Fill non-chosen genes
+            - WILL KEEP ORDER
+      3. Mutate (sometimes)
+      4. Evaluate fitness
+         - Select survivors
+7. Tuning
+   - Mutation probability
+   - Population size
+   - Termination condition
+   - Initialization
+   - Survivor rate
+8. Frameworks
+   - Watchmaker
+   - JGAP
+9. Should I use evolutionary algorithm?
+   - If bruteforce isn't feasible
+   - Optimization problem
+   - Can I prepresent the population and the genes?
+   - Can I model fitness?
+
+* Brian Goetz: From concurrent to parallel
+1. Moores law
+2. Concurrency vs. Parallelism
+   - Traditional definition of program vs. machine property doesn't really hold
+   - Modern definition has got to do with correctness vs. optimization
+     - Concurrency: Correctly and efficiently controlling access to shared resources
+     - Parallelism: Use more resources to produce an answer faster
+3. Analyze -> implement -> MEASURE -> evaluate -> repeate
+4. Both problem and implementation must be parallelizable
+   - g: f(f(f(f(0))))
+   - h: f(x) + f(x-1) + f(x-2) + f(x-n)
+5. Handle shared state:
+   1. Don't share it
+   2. Don't mutate it
+   3. Coordinate access
+6. Fork-Join Framework
+7. Partition -> Solve subproblems -> Merge
+8. Divide and conquer
+9. Amdahl's law
+10. Is it worth it? Maybe.
+    1. Splitting / decomposition
+    2. Task dispatch
+    3. Result recombination
+    4. Locality
+    5. EACH OF THESE EAT UP POTENTIAL SPEEDUP
+11. Streams open up for parallelism
+12. 'NQ model'
+    1. N - number of items
+    2. Q - work per item
+    3. NQ > 10000, rule of thumb
+13. Merge overhead:
+    1. Sum two numbers is cheap
+    2. Merge sets is expensive
+    3. Fork-Join can be dominated by splitting/recombination
+14. Streams are cool!
+    - Parallelism is cool!
+      - Do I actually have a performance problem?
+        - Do I have solid performance measurements?
+
+* Tim Berglund: Cassandra and Spark
+1. Datastacks
+2. Cassandra
+   1. When you have 'big data'
+   2. Data changes a lot
+   3. Large stale data -> Hadoop, HTFS etc.
+   4. Transactional
+3. Architecture
+   1. Partition key (hashed)
+   2. PRIM_KEY: Partition key + clustering key
+4. Do not query data, use Spark for data collection jobs
+5. Spark
+   1. Batch jobs
+   2. 'Next gen MapReduce'
+   3. Distributed
+   4. Feels like programming
+   5. REPL
+
+
+

@@ -1,0 +1,36 @@
+* Welcome to jFokus
+1. Lite historia
+2. Highlights and failures
+3. Video competition winners
+4. Presentation av onsdagens party
+
+* Keynote - Brian Goetz
+1. "Move deliberately, and do not break things"
+2. Programming is a means to an end
+3. Programming time + Pizza -> Programming time + Value
+4. Progress vs. Preservation
+5. Programming is an economic activity
+6. Not "is this process good?", rather "is this process a good match for us?"
+7. = Some philosophy parallels =
+8. 'There is no good, only good for' -Yoda
+9. "It depends"
+10. Relative stack level scales inversely with stack growth. "Backend" vs. "Frontend"
+11. = What people think I do =
+12. Adding features = Adding weight
+13. Cross cutting features -- serialization
+14. Big picture: Everybody's code
+15. Developers tend to overvalue their own code
+17. "Embrace and Extend"
+    - Priority to old behavior
+18. It takes as much time as it takes
+    - "Take the time it takes, or don't do it at all"
+19. Features should fit the developers' mental model
+20. "Understand the underlying issue, and come up with an elegant solution" -Steve Jobs, Insanely Great
+21. "Reality hardens like concrete, every step will close doors of opportunity"
+22. New features should fit the symmetry of the framework to which they are added
+23. Beware of fooling consistency
+    - 'A foolish consistency is the hobgoblin of little minds' -Ralph Waldo Emerson
+24. Hardware has changed
+    - Value types
+    - Generic primitives
+

@@ -1,0 +1,31 @@
+#    -*- mode: org -*-
+
+
+Archived entries from file /Users/folkol/code/tutorials/unix-pipeline/jfokus-notes
+
+
+* Simon Ritter: Lambdas and streams - beyond the basics
+  :PROPERTIES:
+  :ARCHIVE_TIME: 2016-02-12 Fri 11:24
+  :ARCHIVE_FILE: ~/code/tutorials/unix-pipeline/jfokus-notes
+  :ARCHIVE_CATEGORY: jfokus-notes
+  :END:
+1. Better type inference
+2. Default methods
+3. Static methods in interfaces
+4. Stream
+   1. A source
+   2. 0+ intermediate operations (Stream -> Stream)
+   3. Terminal operation (Stream -> {Result|Side effect})
+      1. Lazy evaluation (Shortcut operations)
+      2. Can execute in parallel
+      3. Intermediate operations are merged
+5. Stream sources
+   - Collection.stream
+   - Arrays.stream
+   - IntStream.range
+   - Files.walk
+6. Performance impact for Loggers
+   - Logger.info(Supplier)
+7. 
+
