@@ -1,5 +1,5 @@
-Previously:
 
+Previously:
 brew cask install virtualbox
 brew install docker
 (brew install go)
@@ -138,3 +138,34 @@ Reading list:
  - https://docs.oracle.com/cd/E52668_01/E54669/html/section_rsr_p2z_fp.html
  - https://docs.docker.com/engine/examples/mongodb/
  - http://blog.trifork.com/2013/12/24/docker-from-a-distance-the-remote-api/
+ - https://www.compose.io/articles/the-mongodb-oplog-and-node-js/
+ - https://docs.mongodb.org/v3.0/core/wiredtiger/
+ - http://source.wiredtiger.com/2.5.0/md_changelog.html
+ - 
+
+
+
+Q/A:
+ - When are items in the oplog removed?
+   - 
+
+
+
+Glossary:
+
+capped collection
+A fixed-sized collection that automatically overwrites its oldest entries when it reaches its maximum size. The MongoDB oplog that is used in replication is a capped collection. See Capped Collections.
+
+concurrency control
+Concurrency control ensures that database operations can be executed concurrently without compromising correctness. Pessimistic concurrency control, such as used in systems with locks, will block any potentially conflicting operations even if they may not turn out to actually conflict. Optimistic concurrency control, the approach used by WiredTiger, will delay checking until after a conflict may have occurred, aborting and retrying one of the operations involved in any write conflict that arises.
+
+WiredTiger Storage Engine (mongo 3) has got optimistic locking
+"Some global operations, typically short lived operations involving multiple databases, still require a global “instance-wide” lock. Some other operations, such as dropping a collection, still require an exclusive database lock."
+
+Stale replica
+A replica set member becomes “stale” when its replication process falls so far behind that the primary overwrites oplog entries the member has not yet replicated. The member cannot catch up and becomes “stale.” When this occurs, you must completely resynchronize the member by removing its data and performing an initial sync.
+ - If this happens, remove its data and perform an "initial sync"
+
+
+
+"When the storage engine detects conflicts between two operations, one will incur a write conflict causing MongoDB to transparently retry that operation." <--- WAT?

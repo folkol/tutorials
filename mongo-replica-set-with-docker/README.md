@@ -1,3 +1,7 @@
+Caveats:
+ - Does not work native on Mac
+ - 
+
 $ brew install docker
 $ cat Dockerfile
 FROM fedora
