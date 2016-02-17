@@ -91,7 +91,6 @@ Mongo example:
  - docker run --name some-app --link some-mongo:mongo -d application-that-uses-mongo
 
 
-
 Log in to docker host:
  - docker-machine ssh
 
@@ -169,3 +168,7 @@ A replica set member becomes “stale” when its replication process falls so f
 
 
 "When the storage engine detects conflicts between two operations, one will incur a write conflict causing MongoDB to transparently retry that operation." <--- WAT?
+
+
+
+Finns "Update if current"...
