@@ -1,3 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        html {
+            background: repeating-linear-gradient(35deg, white, whitesmoke 5em);
+            min-height: 100%;
+        }
+        body {
+            max-width: 40em;
+            background-color: white;
+            padding: 1em;
+            /* box-shadow: 5px 5px 10px grey; */
+            border: 2px solid silver;
+        }
+        p.warning::before {
+            content: '⚠ WARNING!';
+            display: block;
+            font-weight: bolder;
+        }
+        p.warning {
+            background-color: lightyellow;
+            box-shadow: 3px 3px 3px grey;
+            border-left: 10px yellow solid;
+            padding: 1em;
+        }
+    </style>
+</head>
+<body>
 <h1>Web page tutorial</h1>
 
 <p>In this tutorial, we are going to create a web page – this web page!</p>
@@ -24,12 +53,7 @@
 
 <p>In this section, we will introduce HTML, elements, attributes and the DOM.</p>
 
-<h3></h3>
-
-
-
-
-
+<h3>Getting started</h3>
 
 - Plain text -> markup some sections (headings, links?)
 - Copy the heading and the first section from this tutorial [img]
@@ -46,17 +70,5 @@
 
 <h1>CSS</h1>
 
-
-Info boxes:
-
-Note
-Definition
-Trivia
-
-
-DOM: An in-memory representation of the page. A 'tree' of 'nodes'.
-Omnigraffle diagrams for everything!
-
-References:
-https://www.w3.org/TR/html5/introduction.html
-https://developer.mozilla.org/en/docs/Web/HTML/Element
+</body>
+</html>

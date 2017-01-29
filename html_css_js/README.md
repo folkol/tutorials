@@ -36,3 +36,18 @@ http://enjoycss.com/
 
 DOM: An in-memory representation of the page. A 'tree' of 'nodes'.
 Omnigraffle diagrams for everything!
+
+
+Info boxes:
+
+Note
+Definition
+Trivia
+
+
+DOM: An in-memory representation of the page. A 'tree' of 'nodes'.
+Omnigraffle diagrams for everything!
+
+References:
+https://www.w3.org/TR/html5/introduction.html
+https://developer.mozilla.org/en/docs/Web/HTML/Element
