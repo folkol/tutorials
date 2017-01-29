@@ -3,30 +3,108 @@
 <head>
     <style>
         html {
-            background: repeating-linear-gradient(35deg, white, whitesmoke 5em);
+            background: repeating-linear-gradient(45deg, white, whitesmoke 10em);
             min-height: 100%;
         }
+
         body {
-            max-width: 40em;
+            max-width: 50em;
             background-color: white;
             padding: 1em;
-            /* box-shadow: 5px 5px 10px grey; */
-            border: 2px solid silver;
+            border: 1px solid silver;
+            line-height: 1.5em;
         }
-        p.warning::before {
-            content: '⚠ WARNING!';
+
+        nav {
+            float: right;
+            padding-right: 1em;
+            border: 1px silver solid;
+        }
+
+        p.note::before {
+            content: '⚠ NOTE!';
             display: block;
             font-weight: bolder;
         }
-        p.warning {
+
+        p.note {
             background-color: lightyellow;
-            box-shadow: 3px 3px 3px grey;
+            box-shadow: 4px 4px 8px grey;
             border-left: 10px yellow solid;
             padding: 1em;
+        }
+
+        p.definition::before {
+            content: 'DEFINITION!';
+            display: block;
+            font-weight: bolder;
+        }
+
+        p.definition {
+            background-color: lightgray;
+            box-shadow: 4px 4px 8px grey;
+            border-left: 10px gray solid;
+            padding: 1em;
+        }
+
+        #eyes {
+            position: fixed;
+            right: 20px;
+            bottom: -20px;
+            width: 204px;
+            height: 100px;
+            overflow: hidden;
+        }
+
+        #eyes .eye {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            float: right;
+            overflow: hidden;
+            border: 1px #b9b9b9 solid;
+        }
+
+        #eyes .eye .iris {
+            border-radius: 50%;
+            background-color: red;
+            background: radial-gradient(circle, black 30%, deepskyblue 35%, deepskyblue 59%, royalblue 67%);
+            width: 60%;
+            height: 60%;
+            margin: 6%;
         }
     </style>
 </head>
 <body>
+<nav>
+    <ul>
+        <li>
+            <a href="#html">HTML – Hypertext Markup Language</a>
+            <ul>
+                <li>
+                    <a href="#html-getting-started">Getting started</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="#css">CSS – Cascading Style Sheets</a>
+            <ul>
+                <li>
+                    <a href="#css-getting-started">Getting started</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="#html">JS – JavaScript</a>
+            <ul>
+                <li>
+                    <a href="#js-getting-started">Getting started</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</nav>
+
 <h1>Web page tutorial</h1>
 
 <p>In this tutorial, we are going to create a web page – this web page!</p>
@@ -45,30 +123,91 @@
     </li>
 </ul>
 
-<p class="warning">Make sure that you are using a plain text editor (Notepad, Sublime Text), and not a 'rich text' word
+<p class="note">Make sure that you are using a plain text editor (Notepad, Sublime Text), and not a 'rich text' word
     processor that embeds additional information in the file, when working through this tutorial.
 </p>
 
-<h2>HTML – Hypertext Markup Language</h2>
+<h2 id="html">HTML – Hypertext Markup Language</h2>
 
 <p>In this section, we will introduce HTML, elements, attributes and the DOM.</p>
 
-<h3>Getting started</h3>
+<p class="definition">HTML is a markup language that adds meaning and structure to a text by the means of tags. A HTML
+    tag defines what a part of the document IS.</p>
 
-- Plain text -> markup some sections (headings, links?)
-- Copy the heading and the first section from this tutorial [img]
-- Paste it in a file called index.html, open in a Browser
-- Mark up the heading to be a heading.
-- Mark up a portion in the text as a link.
-- Fill in DOCTYPE, html/head/body
-- Implied tags/elements?
-- Note about optional tags, but how they are still actually elements.
-- Elements vs tags vs DOM nodes?
-- User agent parsing of HTML to DOM tree?
-- Types of elements?
+<h3 id="html-getting-started">Getting started</h3>
+
+<ol>
+    <li>Create a folder for your web page.</li>
+    <li>Create an empty text file, with the file extension ".html".</li>
+    <li>Open the file with a web Browser, it should look like a blank page.</li>
+    <li>Copy all text from this page, and paste it into your html file. Refresh the Browser. It should look like a blob
+        of text.
+    </li>
+</ol>
+
+<img src="1.png">
+<h3 id="html-markup">Markup</h3>
+
+<p>The reason why your web page looks like poop is that it has got no encoded structure. We can begin adding some
+    structure by tagging, or marking, the headline as such.</p>
 
 
-<h1>CSS</h1>
+<p>When a "User agent" (e.g. a Browser) is parsing html code, it </p>
 
+
+<p>- Plain text -> markup some sections (headings, links?)
+    - Copy the heading and the first section from this tutorial [img]
+    - Paste it in a file called index.html, open in a Browser
+    - Mark up the heading to be a heading.
+    - Mark up a portion in the text as a link.
+    - Fill in DOCTYPE, html/head/body
+    - Implied tags/elements?
+    - Note about optional tags, but how they are still actually elements.
+    - Elements vs tags vs DOM nodes?
+    - User agent parsing of HTML to DOM tree?
+    - Types of elements?</p>
+
+<h2 id="css">CSS – Cascading Style Sheets</h2>
+
+<p>In this section, we will introduce CSS, selectors, declaration blocks and properties.</p>
+
+<h3 id="css-getting-started">Getting started</h3>
+
+<h2 id="js">JS – JavaScript</h2>
+
+<p>In this section, we will introduce JS, Script-tags, functions and the event loop.</p>
+
+<h3 id="js-getting-started">Getting started</h3>
+
+<div id="eyes">
+    <div class="eye">
+        <div class="iris"></div>
+    </div>
+    <div class="eye">
+        <div class="iris"></div>
+    </div>
+</div>
+</div>
 </body>
+<script>
+    const myEyes = document.querySelectorAll('.eye');
+    function lookAt(x, y) {
+        myEyes.forEach(eye => {
+            const rect = eye.getBoundingClientRect();
+            const [eyeX, eyeY] = [rect.left + rect.width / 2, rect.top + rect.height / 2];
+            var rads = Math.atan((eyeY - y) / (eyeX - x));
+            if (eyeX - x < 0) { // Quadrant compensation
+                rads += Math.PI;
+            }
+            rads -= Math.PI / 4; // Rotational-origin discrepancy
+            const degrees = rads * 180 / Math.PI;
+            eye.style.transform = `rotate(${degrees}deg)`;
+        });
+    }
+    window.addEventListener('mousemove', event => lookAt(event.clientX, event.clientY));
+    window.addEventListener('touchmove', event => {
+        event.preventDefault();
+        lookAt(event.touches[0].pageX, event.touches[0].pageY);
+    });
+</script>
 </html>
