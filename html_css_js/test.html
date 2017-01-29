@@ -1,40 +1,57 @@
+<html>
+<head></head>
+<h1>Web page tutorial</h1>
+
 HTML – Hypertext Markup Language
 Getting started
 CSS – Cascading Style Sheets
 Getting started
 JS – JavaScript
 Getting started
-Web page tutorial
-
 In this tutorial, we are going to create a web page – this web page!
 
-The tutorial consists of three parts, one for each of the basic web page building blocks – HTML, CSS and JS.
+The tutorial consists of three parts, one for each of the basic web page building blocks: HTML, CSS and JS.
 
 HTML (Hypertext Markup Language): A language for structuring the contents of a web page. Declares what various parts of the web page are.
 CSS (Cascading Style Sheets): A set of style rules that define how the various elements of the web page should look.
-JS (JavaScript): A programming language. JavaScript can be used to dynamically update the contents of a web page, or send instructions to the Browser.
+JS (JavaScript): A programming language. JavaScript can be used to dynamically update the page, e.g. manipulate the DOM or otherwise instruct the Browser to do something.
 Make sure that you are using a plain text editor (Notepad, Sublime Text), and not a 'rich text' word processor that embeds additional information in the file, when working through this tutorial.
 
 HTML – Hypertext Markup Language
 
 In this section, we will introduce HTML, elements, attributes and the DOM.
 
-HTML is a markup language that adds meaning and structure to a text by the means of tags. A HTML tag defines what a part of the document IS.
+HTML is a markup language that adds meaning and structure to a text by the means of tags. HTML tags defines what parts of the document ARE.
 
 Getting started
 
 Create a folder for your web page.
-Create an empty text file, with the file extension ".html".
+Create an empty text file with the file extension '.html' (e.g. 'index.html').
 Open the file with a web Browser, it should look like a blank page.
-Copy all text from this page, and paste it into your html file. Refresh the Browser. It should look like a blob of text.
-
+Copy all text from this page and paste it into your html file. Refresh the Browser – it should display a blob of text.
+Unmarked text
+Fig 1. Unmarked text
 Markup
 
-The reason why your web page looks like poop is that it has got no encoded structure. We can begin adding some structure by tagging, or marking, the headline as such.
+The reason why your web page looks like poop is that it has got no encoded structure. We can begin adding some structure by tagging – or marking up – the headline as such.
 
-When a "User agent" (e.g. a Browser) is parsing html code, it
+Marked up heading
+Fig 2. Marked up heading
+Enclosing a section of the text in tags like that will declare that part of the page to be a heading.
 
-- Plain text -> markup some sections (headings, links?) - Copy the heading and the first section from this tutorial [img] - Paste it in a file called index.html, open in a Browser - Mark up the heading to be a heading. - Mark up a portion in the text as a link. - Fill in DOCTYPE, html/head/body - Implied tags/elements? - Note about optional tags, but how they are still actually elements. - Elements vs tags vs DOM nodes? - User agent parsing of HTML to DOM tree? - Types of elements?
+There are six levels of headings, h1 means "the most important heading", h2 means "the second most important heading" etc.
+
+Elements
+
+A section of the document tagged up like this is called an "element". There are a few different kinds of elements, for example "normal elements", "raw text elements" and "void elements".
+
+When a "User agent" (e.g. a Browser) is parsing (i.e. reading through and interpreting) HTML code, it will build up a tree structure of Node elements in memory. This tree is called 'the DOM' (Document Object Model).
+
+Inspect your the heading with your Browser's Developer Tools. You will notice that it sits in a hierarchy of nodes, 'html' > 'body' > 'h1'.
+
+Implicit elements
+Fig 3. Implicit elements
+- Plain text -> markup some sections (headings, links?) - Copy the heading and the first section from this tutorial [img] - Paste it in a file called index.html, open in a Browser - Mark up the heading to be a heading. - Mark up a portion in the text as a link. - Fill in DOCTYPE, html/head/body - Implied tags/elements? - Note about optional tags, but how they are still actually elements. - Elements vs tags vs DOM nodes? - Spacing - User agent parsing of HTML to DOM tree? - Types of elements?
 
 CSS – Cascading Style Sheets
 
@@ -47,4 +64,5 @@ JS – JavaScript
 In this section, we will introduce JS, Script-tags, functions and the event loop.
 
 Getting started
-
+</body>
+</html>
