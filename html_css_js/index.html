@@ -1,59 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <style>
-        html {
-            background: repeating-linear-gradient(45deg, white, whitesmoke 10em);
-            min-height: 100%;
-        }
-
-        body {
-            max-width: 50em;
-            background-color: white;
-            padding: 1em;
-            border: 1px solid silver;
-            line-height: 1.5em;
-        }
-
-        nav {
-            margin: 2em;
-        }
-
-        h2 {
-            margin-top: 3em;
-        }
-
-        img {
-            border: 5px solid white;
-            box-shadow: 4px 4px 8px grey;
-        }
-
-        p.note::before {
-            content: '⚠ NOTE!';
-            display: block;
-            font-weight: bolder;
-        }
-
-        p.note {
-            box-shadow: 4px 4px 8px grey;
-            background-color: lightyellow;
-            border-left: 10px yellow solid;
-            padding: 1em;
-        }
-
-        p.definition::before {
-            content: 'DEFINITION!';
-            display: block;
-            font-weight: bolder;
-        }
-
-        p.definition {
-            box-shadow: 4px 4px 8px grey;
-            background-color: lightgray;
-            border-left: 10px gray solid;
-            padding: 1em;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
 
@@ -61,51 +9,34 @@
 
 <nav>
     <ul>
-        <li>
-            <a href="#html">HTML – Hypertext Markup Language</a>
-            <ul>
-                <li>
-                    <a href="#html-getting-started">Getting started</a>
-                </li>
-            </ul>
-        </li>
-        <li>
-            <a href="#css">CSS – Cascading Style Sheets</a>
-            <ul>
-                <li>
-                    <a href="#css-getting-started">Getting started</a>
-                </li>
-            </ul>
-        </li>
-        <li>
-            <a href="#html">JS – JavaScript</a>
-            <ul>
-                <li>
-                    <a href="#js-getting-started">Getting started</a>
-                </li>
-            </ul>
-        </li>
+        <li><a href="#html">HTML – Hypertext Markup Language</a></li>
+        <li><a href="#css">CSS – Cascading Style Sheets</a></li>
+        <li><a href="#js">JS – JavaScript</a></li>
+        <li><a href="#html">JS – JavaScript</a></li>
     </ul>
 </nav>
-
 
 <p>In this tutorial, we are going to create a web page – this web page!</p>
 
 <p>The tutorial consists of three parts, one for each of the basic web page building blocks: HTML, CSS and JS.</p>
 
 <ul>
-    <li>HTML (Hypertext Markup Language): A language for structuring the contents of a web page. Declares what various
+    <li>HTML (Hypertext Markup Language): A language for structuring the contents of a web page. Declares what
+        various
         parts of the web page are.
     </li>
-    <li>CSS (Cascading Style Sheets): A set of style rules that define how the various elements of the web page should
+    <li>CSS (Cascading Style Sheets): A set of style rules that define how the various elements of the web page
+        should
         look.
     </li>
-    <li>JS (JavaScript): A programming language. JavaScript can be used to dynamically update the page, e.g. manipulate
+    <li>JS (JavaScript): A programming language. JavaScript can be used to dynamically update the page, e.g.
+        manipulate
         the DOM or otherwise instruct the Browser to do something.
     </li>
 </ul>
 
-<p class="shadow note">Make sure that you are using a plain text editor (Notepad, Sublime Text), and not a 'rich text'
+<p class="shadow note">Make sure that you are using a plain text editor (Notepad, Sublime Text), and not a 'rich
+    text'
     word
     processor that embeds additional information in the file, when working through this tutorial.
 </p>
@@ -114,7 +45,8 @@
 
 <p>In this section, we will introduce HTML, elements, attributes and the DOM.</p>
 
-<p class="shadow definition">HTML is a markup language that adds meaning and structure to a text by the means of tags.
+<p class="shadow definition">HTML is a markup language that adds meaning and structure to a text by the means of
+    tags.
     HTML tags defines what parts of the document ARE.</p>
 
 <h3 id="html-getting-started">Getting started</h3>
@@ -123,13 +55,14 @@
     <li>Create a folder for your web page.</li>
     <li>Create an empty text file with the file extension '.html' (e.g. 'index.html').</li>
     <li>Open the file with a web Browser, it should look like a blank page.</li>
-    <li>Copy all text from this page and paste it into your html file. Refresh the Browser – it should display a blob
+    <li>Copy all text from this page and paste it into your html file. Refresh the Browser – it should display a
+        blob
         of text.
     </li>
 </ol>
 
 <figure>
-    <img class="shadow" src="1.png" title="Unmarked text">
+    <img src="1.png" title="Unmarked text">
     <figcaption>Fig 1. Unmarked text</figcaption>
 </figure>
 
@@ -139,38 +72,41 @@
     structure by tagging – or marking up – the headline as such.</p>
 
 <figure>
-    <img class="shadow" src="2.png" title="Marked up heading">
+    <img src="2.png" title="Marked up heading">
     <figcaption>Fig 2. Marked up heading</figcaption>
 </figure>
 
 <p>Enclosing a section of the text in tags like that will declare that part of the page to be a heading.</p>
 
-<p>There are six levels of headings, h1 means "the most important heading", h2 means "the second most important heading"
+<p>There are six levels of headings, h1 means "the most important heading", h2 means "the second most important
+    heading"
     etc.</p>
 
 <h4>Elements</h4>
 
-<p>A section of the document tagged up like this is called an "element". There are a few different kinds of elements,
-    for example "normal elements", "raw text elements" and "void elements".</p>
+<p>A section of the document tagged up like this is called an "element". There are a few different kinds of
+    elements, for example "normal elements", "raw text elements" and "void elements".</p>
 
-<p>When a "User agent" (e.g. a Browser) is parsing (i.e. reading through and interpreting) HTML code, it will build up
-    a tree structure of Node elements in memory. This tree is called 'the DOM' (Document Object Model).</p>
+<p>When a "User agent" (e.g. a Browser) is parsing (i.e. reading through and interpreting) HTML code, it will build
+    up a <a href="https://en.wikipedia.org/wiki/Tree_(data_structure)">tree structure</a> corresponding to these
+    elements in memory. This tree is called 'the DOM' (Document Object Model), and the nodes in this tree are called
+    "DOM Nodes".</p>
 
 <p>Inspect your the heading with your Browser's Developer Tools. You will notice that it is not alone, but sits in a
     hierarchy of parent nodes.</p>
 
 <figure>
-    <img class="shadow" src="3.png" title="Implicit elements">
+    <img src="3.png" title="Implicit elements">
     <figcaption>Fig 3. Implicit elements</figcaption>
 </figure>
 
-<p>The reason for this is that HTML has got a notion of optional tags. Some elements are mandatory, and will be created
-    according to some scheme whether you actually add their tags to your HTML code or not. My suggestion is that you add
-    the tags for the root element (html), the document metadata element (head) and the document content element (body)
-    to your HTML code.</p>
+<p>The reason for this is that HTML has got a notion of optional tags. Some elements are mandatory and will be
+    created according to some scheme whether you actually add their tags to your HTML code or not. My suggestion is that
+    you add the tags for the root element (html), the document metadata element (head) and the document content element
+    (body) to your HTML code.</p>
 
 <figure>
-    <img class="shadow" src="4.png" title="Explicit tags">
+    <img src="4.png" title="Explicit tags">
     <figcaption>Fig 4. Explicit tags</figcaption>
 </figure>
 
@@ -179,23 +115,42 @@
 <p>Mark the rest of the heading elements with suitable h-tags (h2, h3, h4 etc.).</p>
 
 <figure>
-    <img class="shadow" src="5.png" title="More headings">
+    <img src="5.png" title="More headings">
     <figcaption>Fig 5. More headings</figcaption>
 </figure>
 
+<h4>Links – or anchor – elements</h4>
 
-<p>- Plain text -> markup some sections (headings, links?)
-    - Copy the heading and the first section from this tutorial [img]
-    - Paste it in a file called index.html, open in a Browser
-    - Mark up the heading to be a heading.
-    - Mark up a portion in the text as a link.
-    - Fill in DOCTYPE, html/head/body
-    - Implied tags/elements?
-    - Note about optional tags, but how they are still actually elements.
-    - Elements vs tags vs DOM nodes?
-    - Spacing
-    - User agent parsing of HTML to DOM tree?
-    - Types of elements?</p>
+<p>Hyperlinks are THE defining trait of the WWW. A section of a web page is marked as a hyperlink by the "a" tag.</p>
+
+<p>The href attribute is a URL (or a URL fragment): http://somedomain:port/some/path#somefragment</p>
+
+<ul>
+    <li>If the address part is skipped, the URL is considered relative to the current page.</li>
+    <li>The fragment name is the "id" attribute of an element on the given page.</li>
+</ul>
+
+<h4>Doctype</h4>
+
+<p>There are several different HTML standards out in the wild. A special tag is used to declare which one a certain
+    document should be interpreted as. It should be the first tag of the HTML page.</p>
+
+<p>The latest version of HTML is called "HTML 5", and it's DOCTYPE tag looks like this:</p>
+
+<p>&lt;!DOCTYPE html&gt;</p>
+
+<h4>HTML Entities</h4>
+
+<p>HTML entities can be used to "escape" from special interpretation – for example when you want to actually print out
+less than (&lt;), greater than (&gt;) or – for that matter – the ampersand. &amp;.</p>
+
+<h4>Summary</h4>
+
+<ul>
+<li>HTML pages are text files annotated, or marked up with, tags.</li>
+<li>HTML pages are parsed by user agents, for example web browsers, into a DOM tree.</li>
+<li>The primary purpose of HTML is to describe the structure and the semantics of the various parts of the page.</li>
+</ul>
 
 <h2 id="css">CSS – Cascading Style Sheets</h2>
 
@@ -213,13 +168,5 @@
 <p>- Folding sections?</p>
 
 
-
 </body>
-<script>
-    const nav = document.querySelector('nav');
-    const ul = document.createElement('ul');
-    const h1 = document.querySelector('h1');
-    const h2 = h1.querySelectorAll('h2');
-    h2.forEach()
-</script>
 </html>

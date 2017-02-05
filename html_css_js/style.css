@@ -1,0 +1,51 @@
+html {
+    background: repeating-linear-gradient(45deg, white, whitesmoke 10em);
+    min-height: 100%;
+}
+
+body {
+    max-width: 50em;
+    background-color: white;
+    padding: 1em;
+    border: 1px solid silver;
+    line-height: 1.5em;
+}
+
+nav {
+    margin: 2em;
+}
+
+h2 {
+    margin-top: 3em;
+}
+
+img {
+    border: 5px solid white;
+    box-shadow: 4px 4px 8px grey;
+}
+
+p.note::before {
+    content: '⚠ NOTE!';
+    display: block;
+    font-weight: bolder;
+}
+
+p.note {
+    box-shadow: 4px 4px 8px grey;
+    background-color: lightyellow;
+    border-left: 10px yellow solid;
+    padding: 1em;
+}
+
+p.definition::before {
+    content: 'DEFINITION!';
+    display: block;
+    font-weight: bolder;
+}
+
+p.definition {
+    box-shadow: 4px 4px 8px grey;
+    background-color: lightgray;
+    border-left: 10px gray solid;
+    padding: 1em;
+}
