@@ -24,7 +24,7 @@ img {
     box-shadow: 4px 4px 8px grey;
 }
 
-p.note::before {
+p.note:before {
     content: '⚠ NOTE!';
     display: block;
     font-weight: bolder;
@@ -37,7 +37,7 @@ p.note {
     padding: 1em;
 }
 
-p.definition::before {
+p.definition:before {
     content: 'DEFINITION!';
     display: block;
     font-weight: bolder;
@@ -49,10 +49,3 @@ p.definition {
     border-left: 10px gray solid;
     padding: 1em;
 }
-
-css_selector {
-    property1: value1;
-    property2: value2;
-    property3: value3;
-}
-
