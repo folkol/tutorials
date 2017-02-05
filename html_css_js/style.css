@@ -20,7 +20,7 @@ h2 {
 }
 
 img {
-    border: 5px solid white;
+    border: 10px solid white;
     box-shadow: 4px 4px 8px grey;
 }
 
@@ -49,3 +49,10 @@ p.definition {
     border-left: 10px gray solid;
     padding: 1em;
 }
+
+css_selector {
+    property1: value1;
+    property2: value2;
+    property3: value3;
+}
+
