@@ -21,13 +21,13 @@ Create a folder for your web page.
 Create an empty text file with the file extension '.html' (e.g. 'index.html').
 Open the file with a web Browser, it should look like a blank page.
 Copy all text from this page and paste it into your html file. Refresh the Browser – it should display a blob of text.
-Unmarked text
+
 Fig 1. Unmarked text
 Markup
 
 The reason why your web page looks like poop is that it has got no encoded structure. We can begin adding some structure by tagging – or marking up – the headline as such.
 
-Marked up heading
+
 Fig 2. Marked up heading
 Enclosing a section of the text in tags like that will declare that part of the page to be a heading.
 
@@ -39,40 +39,83 @@ A section of the document tagged up like this is called an "element". There are 
 
 When a "User agent" (e.g. a Browser) is parsing (i.e. reading through and interpreting) HTML code, it will build up a tree structure corresponding to these elements in memory. This tree is called 'the DOM' (Document Object Model), and the nodes in this tree are called "DOM Nodes".
 
+The DOM is the Browsers in-memory representation of the web page.
+
 Inspect your the heading with your Browser's Developer Tools. You will notice that it is not alone, but sits in a hierarchy of parent nodes.
 
-Implicit elements
+
 Fig 3. Implicit elements
 The reason for this is that HTML has got a notion of optional tags. Some elements are mandatory and will be created according to some scheme whether you actually add their tags to your HTML code or not. My suggestion is that you add the tags for the root element (html), the document metadata element (head) and the document content element (body) to your HTML code.
 
-Explicit tags
+
 Fig 4. Explicit tags
 More headings!
 
 Mark the rest of the heading elements with suitable h-tags (h2, h3, h4 etc.).
 
-More headings
+
 Fig 5. More headings
-Links – or anchor – elements
+Links, or anchor, elements
 
 Hyperlinks are THE defining trait of the WWW. A section of a web page is marked as a hyperlink by the "a" tag.
 
-The href attribute is a URL (or a URL fragment): http://somedomain:port/some/path#somefragment
+A "a"-tag looks like this:
+
+
+Fig 5. Anchor tag
+The href-part is called "an attribute" of the element. The href attribute of the "a"-tag is a URL (or a URL fragment): http://somedomain:port/some/path#somefragment
 
 If the address part is skipped, the URL is considered relative to the current page.
 The fragment name is the "id" attribute of an element on the given page.
+Go ahead and add a-tags for the links on the page. Remember that fragments target elements with a corresponding id.
+
+Fig 5. Element id attribute
 Doctype
 
 There are several different HTML standards out in the wild. A special tag is used to declare which one a certain document should be interpreted as. It should be the first tag of the HTML page.
 
 The latest version of HTML is called "HTML 5", and it's DOCTYPE tag looks like this:
 
-<!DOCTYPE html>
 
+Fig 5. Doctype tag
+Lists
+
+There are two kinds of lists in HTML. Ordered - or numbered – lists, and unordered – or bulleted – lists.
+
+An ordered list is declared with the "ol"-tag, and its list items are declared with the "li"-tag.
+
+
+Fig 9. Ordered list
+An unordered list is declared with the "ul"-tag, and its list items are also declared with the "li"-tag.
+
+
+Fig 10. Unordered list
+Images
+
+Images can be embedded in the text by the "img"-tag. The "src" attribute is a URL to the image. This can be absolute (i.e. contain domain and path) or relative (i.e. only contain a path relative to the current html document.
+
+
+Fig 11. Image tag
+Go ahead and add the images to your web page.
 HTML Entities
 
 HTML entities can be used to "escape" from special interpretation – for example when you want to actually print out less than (<), greater than (>) or – for that matter – the ampersand. &.
 
+A HTML Entity is encoded like this: "&name_or_code;"
+
+
+Fig 12. HTML Entity
+Figure tags
+
+To group an image and its caption, you can use the 'figure'-tag, like this:
+
+
+Fig 11. Image tag
+
+Fig 12. HTML Entity
+Group all images with their captions.
+
+Fig 13. Image captions
 Summary
 
 HTML pages are text files annotated, or marked up with, tags.
@@ -80,16 +123,62 @@ HTML pages are parsed by user agents, for example web browsers, into a DOM tree.
 The primary purpose of HTML is to describe the structure and the semantics of the various parts of the page.
 CSS – Cascading Style Sheets
 
+HTML defines what various parts of the web page are, CSS defines how they should look.
+
 In this section, we will introduce CSS, selectors, declaration blocks and properties.
 
+The Browser has got a few default style rules for various elements, that's why headings look different than body text and so on (The Browser Developer Tools can list what style rules that are applied do a certain element – both default rules as well as rules applied by web page CSS).
+
+
+Fig 14. User agent, or default, stylesheets.
 Getting started
+
+CSS can be written in its own file, and linked to the web page with a LINK tag – or it can be written in the HTML source itself – either as an attribute of the element tag or in its own STYLE tag.
+
+Keeping the CSS code in its own file is best practice – so that is what we will do.
+
+Create a new, empty, text file called "style.css" (the name is not significant, but it is a common name for the main style sheet).
+Link this style sheet to the web page by adding a 'LINK' tag as a child to the to the 'HEAD' element.
+
+Fig 15. LINK Tag
+CSS rules
+
+CSS code consists of a set of styles rules. Each rule consists of a selector and a block of style properties.
+
+
+Fig 16. CSS Rule
+There are a lot of selectors that can be used. We will go through some of the basic ones, but in the general case, the selector declares what elements that will be targeted by the corresponding block of style properties.
+
+Tag name selector
+
+Class selector
+
+Complex selectors
+
+hover?
+
+Max width
+
+General spacing
+
+Note paragraphs
+
+Image styling
 
 JS – JavaScript
 
 In this section, we will introduce JS, Script-tags, functions and the event loop.
 
+Objects. Functions. eventListeners. global object, document object.
+
 Getting started
+
+- Ta till sig: Websidan är "levande". Det händer saker i den, och den kan uppdateras dynamiskt utan att ladda om den.
 
 - Automatic ToC?
 
 - Folding sections?
+
+- Fetch something from the internet?
+
+- Famous quotes?
