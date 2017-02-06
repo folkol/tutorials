@@ -9,6 +9,7 @@ body {
     padding: 1em;
     border: 1px solid silver;
     line-height: 1.5em;
+    margin: 2em;
 }
 
 nav {
@@ -48,4 +49,11 @@ p.definition {
     background-color: lightgray;
     border-left: 10px gray solid;
     padding: 1em;
+}
+
+#quotes {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    margin: 1em;
 }
