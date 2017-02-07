@@ -2,6 +2,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="style.css">
+    <meta charset='utf-8'>
 </head>
 <body>
 
@@ -9,9 +10,9 @@
 
 <nav>
     <ul>
-        <li><a href="#html">HTML – Hypertext Markup Language</a></li>
-        <li><a href="#css">CSS – Cascading Style Sheets</a></li>
-        <li><a href="#js">JS – JavaScript</a></li>
+        <!--<li><a href="#html">HTML – Hypertext Markup Language</a></li>-->
+        <!--<li><a href="#css">CSS – Cascading Style Sheets</a></li>-->
+        <!--<li><a href="#js">JS – JavaScript</a></li>-->
     </ul>
 </nav>
 
@@ -106,6 +107,35 @@
     <figcaption>Fig 4. Explicit tags</figcaption>
 </figure>
 
+<h4>Doctype</h4>
+
+<p>There are several different HTML standards out in the wild. A special tag is used to declare which one a certain
+    document should be interpreted as. It should be the first tag of the HTML page.</p>
+
+<p>The latest version of HTML is called "HTML 6", and it's DOCTYPE tag looks like this:</p>
+
+<figure>
+    <img src="8.png">
+    <figcaption>Fig 8. Doctype tag</figcaption>
+</figure>
+
+<h4>Character encoding</h4>
+
+<p>Files, both "binary" and "text", are nothing more than a series of dumb bytes, it is how they are interpreted
+    that decides what they represent.</p>
+
+<p>Text files (e.g. html pages) encode text according to some character encoding. One commonly used character
+    encoding is <a href="https://en.wikipedia.org/wiki/UTF-8">'UTF-8'</a>, which is what we will use for this document.</p>
+
+<p class="note">'character encoding' is just a fancy way for how to represent a series of characters as bytes.</p>
+
+<p>One way to tell the User Agent what encoding is used a particular web page is with a META tag:</p>
+
+<figure>
+    <img src="x.png">
+    <figcaption>Fig x. Encoding</figcaption>
+</figure>
+
 <h4>More headings!</h4>
 
 <p>Mark the rest of the heading elements with suitable h-tags (h2, h3, h4 etc.).</p>
@@ -143,18 +173,6 @@
 <figure>
     <img src="7.png">
     <figcaption>Fig 7. Element id attribute</figcaption>
-</figure>
-
-<h4>Doctype</h4>
-
-<p>There are several different HTML standards out in the wild. A special tag is used to declare which one a certain
-    document should be interpreted as. It should be the first tag of the HTML page.</p>
-
-<p>The latest version of HTML is called "HTML 5", and it's DOCTYPE tag looks like this:</p>
-
-<figure>
-    <img src="8.png">
-    <figcaption>Fig 8. Doctype tag</figcaption>
 </figure>
 
 <h4>Lists</h4>
@@ -300,6 +318,17 @@ that happens on the page.</p>
     going on, even on a seemingly static page. Events are triggered when the user scrolls the page, then the mouse
     moves across the page and whatnot. These things trigger "events", and the programmer can register
     "Event listeners" that will be triggered by these events.</p>
+
+<pre>
+    const navList = document.querySelector('nav ul');
+    document.querySelectorAll('h2').forEach(header => {
+        const li = document.createElement('li');
+        const id = header.id;
+        const text = header.innerHTML;
+        li.innerHTML = `&lt;a href="#${id}"&gt;${text}&lt;/a&gt;`;
+        navList.appendChild(li);
+    });
+</pre>
 
 </body>
 </html>
