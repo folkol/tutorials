@@ -10,9 +10,6 @@
 
 <nav>
     <ul>
-        <!--<li><a href="#html">HTML – Hypertext Markup Language</a></li>-->
-        <!--<li><a href="#css">CSS – Cascading Style Sheets</a></li>-->
-        <!--<li><a href="#js">JS – JavaScript</a></li>-->
     </ul>
 </nav>
 
@@ -330,5 +327,14 @@ that happens on the page.</p>
     });
 </pre>
 
+<pre>
+    // On click, add style. Maybe toggle .note?
+
+    document.querySelectorAll('p').forEach(p => {
+        p.addEventListener('click', () => p.classList.toggle("note"));
+    });
+</pre>
+
 </body>
+<script src="script.js"></script>
 </html>

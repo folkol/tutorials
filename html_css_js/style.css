@@ -32,6 +32,7 @@ p.note {
     background-color: lightyellow;
     border-left: 10px yellow solid;
     padding: 1em;
+    transition: all 0.1s;
 }
 
 p.definition:before {
