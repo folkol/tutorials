@@ -1,0 +1,11 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+format LoLlErS = 
+@>>>>>>>>>>>>>>>>>>>>>> @|||||||||||||||||||||||||| @<<<<<<<<<<<<<<<<<<<<<<< @####.#### LOL
+$one, $two, $three, $four, $five
+.
+
+write LoLlErS
+

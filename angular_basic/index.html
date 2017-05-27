@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>title</title>
+    <script src="angular.min.js"></script>
+    <script src="recipe.js"></script>
+  </head>
+  <body ng-app="myApp">
+    <div ng-controller="UserCtrl">
+      <p class="username">Welcome, {{ user.details.username }}</p>
+      <p class="id">User ID: {{ user.details.id }}</p>
+      {{ lol }}
+    </div>
+  </body>
+</html>
