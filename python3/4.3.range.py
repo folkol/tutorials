@@ -6,6 +6,9 @@ for i in range(len(words)):
 for i, word in enumerate(words):
     print(i, word)
 
+for i, word in enumerate(words, start=666):
+    print(i, word)
+
 for i in range(0):
     if i is 11:
         print(i)
