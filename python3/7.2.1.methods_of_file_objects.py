@@ -1,17 +1,17 @@
 with open('corpus.txt') as f:
-    print(f.read())
+    print(f.read())  # Read all
 
 with open('corpus.txt') as f:
-    print(f.read(10))
+    print(f.read(10))  # Read 10, or until EOF
 
 with open('corpus.txt') as f:
-    print(f.read(-123))
+    print(f.read(-123))  # Read until EOF
 
 with open('corpus.txt') as f:
-    print(f.read())
-    print(f.read())
-    print(f.read())
-    print(f.read())
+    print(f.read())  # Read all
+    print(f.read())  # Nothing
+    print(f.read())  # Nothing
+    print(f.read())  # Nothing
 
 with open('corpus.txt') as f:
     print(f.readline())
@@ -36,21 +36,22 @@ with open('garbage.txt', 'w') as f:
     f.write(str(value))
 
 with open('garbage.txt', 'w') as f:
+    print('f.tell(): ', f.tell())  # 0
     print(f.write('Hello, world!\n'))
-    print(f.tell())
+    print('f.tell(): ', f.tell())  # 14
 
 with open('garbage.txt', 'r+') as f:
     f.write('Hello, world!\n')
     f.seek(3)
-    print(f.read())
+    print(f.read())  # lo, world!
 
-with open('garbage.txt', 'rb+') as f:
+with open('garbage.txt', 'wb+') as f:
     f.write(b'DEADBEEF')
-    f.seek(5)
+    f.seek(5)  # or f.seek(5, 0), from beginning of file
     print(f.read(1))
-    f.seek(-3, 2)
+    f.seek(-3, 2)  # -3 from From end of file
     print(f.read(1))
-    f.seek(-1, 1)
+    f.seek(-1, 1)  # From current position
     print(f.read(1))
 
 f = open('corpus.txt')

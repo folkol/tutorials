@@ -3,6 +3,9 @@ xs = []
 print(xs.append('Hello'))  # Add element to the end of the list
 print(xs.extend(['World', '!']))  # Add all elements from the given list
 print(xs.insert(0, 666))  # Insert at index. Mind the mixed types
+print(xs.insert(1324141234, 666))  # Insert at last index.
+print(xs.insert(-1, 666))  # Insert at second last index.
+print(xs.insert(-23452345, 666))  # Insert at first index.
 print(xs.remove(666))  # Remove the first occurrence of this item
 try:
     xs.remove('Not in list')  # Error!
@@ -25,7 +28,8 @@ print(xs)
 print(type(len))
 print(xs.sort(key=len))  # Type warning?
 print(xs)
-xs.reverse()
+xs.reverse()  # In-place reverse
+reversed(xs)  # Reverse iterator
 print(xs)
 print(xs is xs.copy())  # xs.copy() is equivalent to xs[:]
 print(xs == xs.copy())

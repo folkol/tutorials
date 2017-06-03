@@ -3,7 +3,7 @@ import fibo
 print(dir(fibo))
 print(help(dir))
 
-print(dir())
+print(dir())  # Names in current scope
 
 print(dir(__builtins__))
 

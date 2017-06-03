@@ -14,4 +14,4 @@ print(a | b)  # union: in a or in b ({'l', 'r', 'z', 'm', 'b', 'a', 'd', 'c'})
 print(a & b)  # intersection: in a and in b ({'a', 'c'})
 print(a ^ b)  # symmetric difference: a | b - a & b ({'l', 'r', 'z', 'm', 'b', 'd'})
 
-print({c * 2 for c in 'abracadabra' if c not in 'abc'})  # Set comprehension
+print({c * 2 for c in 'abracadabra´' if c not in 'abc'})  # Set comprehension

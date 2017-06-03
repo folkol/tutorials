@@ -6,7 +6,9 @@ print(fib)
 
 fib(666)
 
-
+print('import fibo')
 import fibo
+print('import importlib')
 import importlib
+print('reload')
 importlib.reload(fibo)  # Reload module

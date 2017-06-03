@@ -1,27 +1,24 @@
-f = open('corpus.txt')
-print(f.readlines())
-f.close()
+with open('corpus.txt') as f:
+    print(f.readlines())
 
-f = open('corpus.txt', 'r')
-print(f.readlines())
-f.close()
+with open('corpus.txt', 'r') as f:
+    print(f.readlines())
 
 f = open('garbage.txt', 'w')
 print('lol', file=f)
 f.close()
-f = open('garbage.txt', 'w')
-print('lol', file=f)
-f.close()
-f = open('garbage.txt', 'r')
-print(f.read())
-f.close()
 
-f = open('garbage.txt', 'w')
-print('lol', file=f)
-f.close()
-f = open('garbage.txt', 'a')
-print('lol', file=f)
-f.close()
-f = open('garbage.txt', 'r')
-print(f.read())
-f.close()
+with open('garbage.txt', 'w') as f:
+    print('lol', file=f)
+
+with open('garbage.txt', 'r') as f:
+    print(f.read())
+
+with open('garbage.txt', 'w') as f:
+    print('lol', file=f)
+
+with open('garbage.txt', 'a') as f:
+    print('lol', file=f)
+
+with open('garbage.txt', 'r') as f:
+    print(f.read())

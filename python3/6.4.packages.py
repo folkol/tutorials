@@ -12,7 +12,7 @@ print(set(locals().keys()) - set(old_locals))
 
 import foo
 print('Foo path:', foo.__path__)
-foo.__path__.append('/Users/folkol/code/python3-tutorial/foo/bar')
+foo.__path__.append('/Users/folkol/code/tutorials/python3/foo/bar')
 print('Back in packages.py')
 from foo.baz import qux
 

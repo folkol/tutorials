@@ -5,6 +5,9 @@ for k, v in knights.items():
 for i, v in enumerate(['tic', 'tac', 'toe']):
     print(i, v)
 
+for i, v in enumerate(['tic', 'tac', 'toe'], start=100):
+    print(i, v)
+
 print(zip([1, 2, 3], ['a', 'b', 'c']))  # 'zipobject'...
 print(list(zip([1, 2, 3], ['a', 'b', 'c'])))  # [(1, 'a'), (2, 'b'), (3, 'c')]
 
