@@ -1,6 +1,6 @@
 print('1. Entering module')
 
-if True:  # chance...
+if True:  # Maybe?
     class ClassName:
         print('2. Defining class')
 
@@ -32,10 +32,21 @@ print(l2.i)  # 777
 
 
 class MyClass:
-    def __init__(self, foo, bar):
+    print('Defining class')
+
+    def __new__(cls, *args, **kwargs):
+        print('Creating instance')
+        return super().__new__(cls)  # Creates actual instance
+
+    def __init__(self, foo, bar):  # Initializes instance, if we managed to create it
         print(foo, bar)
+        self.bar = bar
         pass
+
+    print('Defined class')
 
 
 x = MyClass('foo', 'bar')  # foo bar
 y = MyClass(foo='foo', bar='bar')  # foo bar
+print('y.bar: ', y.bar)
+z = MyClass()  # __init__() missing 2 required positional arguments: 'foo' and 'bar'
