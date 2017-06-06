@@ -31,22 +31,12 @@ Functions needed for Kmean:
 
 """
 from collections import defaultdict
-from pprint import pprint
+from functools import partial
+from math import fsum, sqrt
 from random import sample, randint
 from typing import Iterable, Tuple, List, Sequence, Dict
+
 import matplotlib.pyplot as plt
-
-points = [
-    (10, 41, 23),
-    (22, 30, 29),
-    (11, 42, 5),
-    (20, 32, 4),
-    (12, 40, 12),
-    (21, 36, 23)
-]
-
-# from statistics import mean  # Accurate arithmetic mean
-from math import fsum, sqrt
 
 
 def mean(data: Iterable[float]) -> float:
@@ -55,8 +45,6 @@ def mean(data: Iterable[float]) -> float:
     data = list(data)
     return fsum(data) / len(data)
 
-
-# from math import hypot  # Distance in 2D
 
 Point = Tuple[int, ...]
 Centroid = Point
@@ -67,37 +55,13 @@ def distance(p: Point, q: Point, fsum=fsum, sqrt=sqrt, zip=zip):  # Avoid global
     return sqrt(fsum((x - y) ** 2 for x, y in zip(p, q)))
 
 
-from functools import partial
-
-
 def assign_data(centroids: Sequence[Centroid], points: Iterable[Point]) -> Dict[Centroid, List[Point]]:
     """Group the data points to their closest Centroid"""
     groups = defaultdict(list)
     for point in points:
-        # closest_centroid = min(centroids, key=lambda centroid: distance(centroid, point))
         closest_centroid = min(centroids, key=partial(distance, point))
         groups[closest_centroid].append(point)
     return dict(groups)
-
-
-centroids = [(10, 41, 23), (12, 40, 12)]
-"""
-defaultdict(<class 'list'>,
-            {(10, 41, 23): [(10, 41, 23),
-                            (22, 30, 29),
-                            (21, 36, 23)],
-             (12, 40, 12): [(11, 42, 5),
-                            (20, 32, 4),
-                            (12, 40, 12)]})
-"""
-groups = [
-    [(10, 41, 23), (22, 30, 29), (21, 36, 23)],
-    [(11, 42, 5), (20, 32, 4), (12, 40, 12)]
-]
-
-
-# [17.666666666666668, 35.666666666666664, 25.0]
-# pprint(list(map(mean, zip(*group))))
 
 
 def compute_centroids(groups: Iterable[Sequence[Point]]) -> List[Centroid]:
@@ -110,8 +74,16 @@ def compute_centroids(groups: Iterable[Sequence[Point]]) -> List[Centroid]:
     return [tuple(map(mean, transpose(group))) for group in groups]
 
 
-def correlation(xs, ys):
+def similarity(xs, ys):
     return sum(x == y for x, y in zip(xs, ys)) / len(xs)
+
+
+def update_plot(labeled):
+    for i, (centroid, points) in enumerate(labeled.items()):
+        xs = [point[0] for point in points]
+        ys = [point[1] for point in points]
+        plt.scatter(xs, ys, c='bgrcmyk'[i])
+    plt.pause(0.001)
 
 
 def k_means(data: Iterable[Point], k: int = 2, iterations: int = 50) -> List[Centroid]:
@@ -120,30 +92,24 @@ def k_means(data: Iterable[Point], k: int = 2, iterations: int = 50) -> List[Cen
     old_labels = []
     for n in range(iterations):
         labeled = assign_data(centroids, data)
-        if correlation(labeled, old_labels) > 0.99:
+        if similarity(labeled, old_labels) > 0.99:
             break
-        if not n % 10:
-            for i, (centroid, points) in enumerate(labeled.items()):
-                plt.scatter([x for x, y, *_ in points], [y for x, y, *_ in points], marker='o', s=10, c='bgrcmyk'[i])
-            plt.pause(0.1)
-        old_labels = labeled
         centroids = compute_centroids(labeled.values())
+        update_plot(labeled)
+        old_labels = labeled
     return centroids
 
 
 if __name__ == '__main__':
-    # points = [
-    #     (10, 41, 23),
-    #     (22, 30, 29),
-    #     (11, 42, 5),
-    #     (20, 32, 4),
-    #     (12, 40, 12),
-    #     (21, 36, 23)
-    # ]
-    points = [(randint(0, 200), randint(0, 200)) for i in range(5000)]
-    centroids = k_means(points, k=7)
+    plt.title('K-Means clustering (first two coordinates)')
 
-    print('Convered!')
-    plt.scatter([x for x, y, *_ in centroids], [y for x, y, *_ in centroids], c='k', marker='+', s=100)
+    data = [(randint(0, 200), randint(0, 200)) for i in range(1000)]
+    centroids = k_means(data, k=6)
+
+    print('Converged!')
+
+    xs = [centroid[0] for centroid in centroids]
+    ys = [centroid[1] for centroid in centroids]
+    plt.scatter(xs, ys, c='k', marker='X', s=100)
     plt.pause(0.1)
     plt.show()
