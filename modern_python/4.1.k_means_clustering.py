@@ -122,9 +122,10 @@ def k_means(data: Iterable[Point], k: int = 2, iterations: int = 50) -> List[Cen
         labeled = assign_data(centroids, data)
         if correlation(labeled, old_labels) > 0.99:
             break
-        for i, (centroid, points) in enumerate(labeled.items()):
-            plt.scatter([x for x, y, *_ in points], [y for x, y, *_ in points], c='bgrcmyk'[i])
-        plt.pause(0.1)
+        if not n % 10:
+            for i, (centroid, points) in enumerate(labeled.items()):
+                plt.scatter([x for x, y, *_ in points], [y for x, y, *_ in points], marker='o', s=10, c='bgrcmyk'[i])
+            plt.pause(0.1)
         old_labels = labeled
         centroids = compute_centroids(labeled.values())
     return centroids
@@ -139,7 +140,7 @@ if __name__ == '__main__':
     #     (12, 40, 12),
     #     (21, 36, 23)
     # ]
-    points = [(randint(0, 200), randint(0, 200)) for i in range(500)]
+    points = [(randint(0, 200), randint(0, 200)) for i in range(5000)]
     centroids = k_means(points, k=7)
 
     print('Convered!')
