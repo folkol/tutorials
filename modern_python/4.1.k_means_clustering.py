@@ -102,20 +102,30 @@ groups = [
 
 def compute_centroids(groups: Iterable[Sequence[Point]]) -> List[Centroid]:
     """Compute the centroids for each group"""
+
     def transpose(data):
         """Swap the rows and columns in a 2D array of data"""
         return zip(*data)
+
     return [tuple(map(mean, transpose(group))) for group in groups]
+
+
+def correlation(xs, ys):
+    return sum(x == y for x, y in zip(xs, ys)) / len(xs)
 
 
 def k_means(data: Iterable[Point], k: int = 2, iterations: int = 50) -> List[Centroid]:
     data = list(data)
-    centroids = sample(data, k=k)  # Sample -> WITHOUT replacement
-    for i in range(iterations):  # We might write some code for detecting oscillations or convergence
+    centroids = sample(data, k=k)  # Sample, WITHOUT replacement
+    old_labels = []
+    for n in range(iterations):
         labeled = assign_data(centroids, data)
+        if correlation(labeled, old_labels) > 0.99:
+            break
         for i, (centroid, points) in enumerate(labeled.items()):
-            plt.scatter([x for x, y in points], [y for x, y in points], c='br'[i])
-            plt.pause(0.05)
+            plt.scatter([x for x, y, *_ in points], [y for x, y, *_ in points], c='bgrcmyk'[i])
+        plt.pause(0.1)
+        old_labels = labeled
         centroids = compute_centroids(labeled.values())
     return centroids
 
@@ -130,8 +140,9 @@ if __name__ == '__main__':
     #     (21, 36, 23)
     # ]
     points = [(randint(0, 200), randint(0, 200)) for i in range(500)]
-    k_means(points)
+    centroids = k_means(points, k=7)
 
     print('Convered!')
-
+    plt.scatter([x for x, y, *_ in centroids], [y for x, y, *_ in centroids], c='k', marker='+', s=100)
+    plt.pause(0.1)
     plt.show()
