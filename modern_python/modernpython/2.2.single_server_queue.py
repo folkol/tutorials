@@ -4,7 +4,7 @@ from random import expovariate, gauss
 from statistics import mean, median, stdev
 
 average_arrival_interval = 5.6
-average_service_time = 5.0
+average_service_time = 4.6
 stdev_service_time = 0.5
 
 num_waiting = 0
