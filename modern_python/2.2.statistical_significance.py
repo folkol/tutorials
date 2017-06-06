@@ -21,8 +21,8 @@ np = len(placebo)
 shuffle(combination)
 
 
-# If we we reshuffle/permute/relable the participants
-# is the new mean diff the same or more extreme than the obeserved?
+# If we we reshuffle/permute/relabel the participants
+# is the new mean diff the same or more extreme than the observed?
 
 def trial():
     shuffle(combination)
@@ -34,5 +34,3 @@ def trial():
 n = 100_000
 p = sum(trial() for i in range(n)) / n
 print(p)  # 0.061, can not reject -- need bigger sample
-
-
