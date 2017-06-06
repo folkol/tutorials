@@ -32,8 +32,9 @@ Functions needed for Kmean:
 """
 from collections import defaultdict
 from pprint import pprint
-from random import sample
+from random import sample, randint
 from typing import Iterable, Tuple, List, Sequence, Dict
+import matplotlib.pyplot as plt
 
 points = [
     (10, 41, 23),
@@ -112,19 +113,25 @@ def k_means(data: Iterable[Point], k: int = 2, iterations: int = 50) -> List[Cen
     centroids = sample(data, k=k)  # Sample -> WITHOUT replacement
     for i in range(iterations):  # We might write some code for detecting oscillations or convergence
         labeled = assign_data(centroids, data)
+        for i, (centroid, points) in enumerate(labeled.items()):
+            plt.scatter([x for x, y in points], [y for x, y in points], c='br'[i])
+            plt.pause(0.05)
         centroids = compute_centroids(labeled.values())
     return centroids
 
 
 if __name__ == '__main__':
-    points = [
-        (10, 41, 23),
-        (22, 30, 29),
-        (11, 42, 5),
-        (20, 32, 4),
-        (12, 40, 12),
-        (21, 36, 23)
-    ]
+    # points = [
+    #     (10, 41, 23),
+    #     (22, 30, 29),
+    #     (11, 42, 5),
+    #     (20, 32, 4),
+    #     (12, 40, 12),
+    #     (21, 36, 23)
+    # ]
+    points = [(randint(0, 200), randint(0, 200)) for i in range(500)]
+    k_means(points)
 
-    pprint(assign_data(k_means(points), points))
-    pprint(assign_data(k_means(points, k=3), points))
+    print('Convered!')
+
+    plt.show()
