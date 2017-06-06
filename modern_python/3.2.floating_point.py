@@ -1,29 +1,3 @@
-"""Cluster Analysis, preparations
-
-Big Idea:
-    K-means is an unsupervised learning tool for identifying clusters within datasets.
-
-Algorithm in English:
-    Pick arbitrary points as guesses for the center of each group.
-    Assign all the data points to the closest matching group.
-    Within each group, average the points to get a new guess for the center of the group.
-    Repeat multiple times: assign the data and averag the points
-
-Goal:
-    Express the idea more clearly and beautifully in Python than in English.
-
-
-Topics to prepare for Resampling:
-    - Type hinting
-    - fsum, true division
-    - defaultdict grouping
-    - key functions
-    - zip(*)
-    - flattening with nested for-loop
-    - list(iterator)
-
-"""
-
 1.1 + 2.2  # 3.3000000000000000003
 1.1 + 2.2 == 3.3  # False
 
@@ -105,6 +79,8 @@ pprint(d)
 # SELECT name FROM names ORDER BY len(name)
 
 pprint(sorted(names, key=len))
+
+# Many functions take a key function ( x->y )
 
 
 print(list(zip('abcdef', 'ghijlkm.....')))
