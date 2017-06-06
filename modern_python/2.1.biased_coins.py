@@ -1,4 +1,6 @@
 # 5 or more heads from 7 spins of a biased coin
+# \-> lambda, choices, list.count
+
 from random import choice, choices
 
 weights = [6, 4]

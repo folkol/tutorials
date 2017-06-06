@@ -1,3 +1,6 @@
+# Probability that the mean of 5 samples falls in the middle quartile
+# \-> chained comparison, choices from a range
+
 from random import sample
 from statistics import median
 

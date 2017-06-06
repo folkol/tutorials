@@ -1,3 +1,6 @@
+# Deal 20 playing cards without replacement
+# \-> Counter, elements, sample, list.count
+
 from collections import Counter
 from random import sample
 
