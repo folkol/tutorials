@@ -80,23 +80,27 @@ def similarity(xs, ys):
 
 def update_plot(labeled):
     for i, (centroid, points) in enumerate(labeled.items()):
-        xs = [point[0] for point in points]
-        ys = [point[1] for point in points]
+        xs = [sum(point) for point in points]
+        ys = [sum(point) for point in points]
         plt.scatter(xs, ys, c='bgrcmyk'[i])
     plt.pause(0.001)
 
 
-def k_means(data: Iterable[Point], k: int = 2, iterations: int = 50) -> List[Centroid]:
+def k_means(data: Iterable[Point], k: int = 2, iterations: int = 50, plot: bool = False) -> List[Centroid]:
     data = list(data)
     centroids = sample(data, k=k)  # Sample, WITHOUT replacement
     old_labels = []
     for n in range(iterations):
         labeled = assign_data(centroids, data)
         if similarity(labeled, old_labels) > 0.99:
+            print('Converged!')
             break
         centroids = compute_centroids(labeled.values())
-        update_plot(labeled)
+        if plot:
+            update_plot(labeled)
         old_labels = labeled
+    else:
+        print('Gave up...')
     return centroids
 
 
@@ -104,9 +108,7 @@ if __name__ == '__main__':
     plt.title('K-Means clustering (first two coordinates)')
 
     data = [(randint(0, 200), randint(0, 200)) for i in range(1000)]
-    centroids = k_means(data, k=6)
-
-    print('Converged!')
+    centroids = k_means(data, k=6, plot=True)
 
     xs = [centroid[0] for centroid in centroids]
     ys = [centroid[1] for centroid in centroids]
