@@ -33,7 +33,7 @@ Functions needed for Kmean:
 from collections import defaultdict
 from functools import partial
 from math import fsum, sqrt
-from random import sample, randint
+from random import sample, randint, gauss
 from typing import Iterable, Tuple, List, Sequence, Dict
 
 import matplotlib.pyplot as plt
@@ -80,15 +80,15 @@ def similarity(xs, ys):
 
 def update_plot(labeled):
     for i, (centroid, points) in enumerate(labeled.items()):
-        xs = [sum(point) for point in points]
-        ys = [sum(point) for point in points]
+        xs = [x for x, y, *_ in points]
+        ys = [y for x, y, *_ in points]
         plt.scatter(xs, ys, c='bgrcmyk'[i])
-    plt.pause(0.001)
+    plt.pause(1)
 
 
 def k_means(data: Iterable[Point], k: int = 2, iterations: int = 50, plot: bool = False) -> List[Centroid]:
     data = list(data)
-    centroids = sample(data, k=k)  # Sample, WITHOUT replacement
+    centroids = sample(data, k=k)  # Sample = WITHOUT replacement
     old_labels = []
     for n in range(iterations):
         labeled = assign_data(centroids, data)
@@ -107,8 +107,17 @@ def k_means(data: Iterable[Point], k: int = 2, iterations: int = 50, plot: bool 
 if __name__ == '__main__':
     plt.title('K-Means clustering (first two coordinates)')
 
-    data = [(randint(0, 200), randint(0, 200)) for i in range(1000)]
-    centroids = k_means(data, k=6, plot=True)
+    data = []
+    k = 5
+    std = 50
+    n = 1000
+    for _ in range(5):
+        x = randint(0, 1000)
+        y = randint(0, 1000)
+        print(f'x, y = {x}, {y}')
+        data.extend([(gauss(x, std * k), gauss(y, std * k)) for i in range(n)])
+
+    centroids = k_means(data, k=3, plot=True)
 
     xs = [centroid[0] for centroid in centroids]
     ys = [centroid[1] for centroid in centroids]
