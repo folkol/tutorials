@@ -83,7 +83,7 @@ def update_plot(labeled):
         xs = [x for x, y, *_ in points]
         ys = [y for x, y, *_ in points]
         plt.scatter(xs, ys, c='bgrcmyk'[i])
-    plt.pause(1)
+    plt.pause(0.1)
 
 
 def k_means(data: Iterable[Point], k: int = 2, iterations: int = 50, plot: bool = False) -> List[Centroid]:
@@ -108,16 +108,16 @@ if __name__ == '__main__':
     plt.title('K-Means clustering (first two coordinates)')
 
     data = []
-    k = 5
-    std = 50
-    n = 1000
-    for _ in range(5):
+    k = 6
+    std = 10
+    n = 100
+    for _ in range(k):
         x = randint(0, 1000)
         y = randint(0, 1000)
         print(f'x, y = {x}, {y}')
         data.extend([(gauss(x, std * k), gauss(y, std * k)) for i in range(n)])
 
-    centroids = k_means(data, k=3, plot=True)
+    centroids = k_means(data, k=k, plot=True)
 
     xs = [centroid[0] for centroid in centroids]
     ys = [centroid[1] for centroid in centroids]
