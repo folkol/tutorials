@@ -44,6 +44,13 @@ IMAGE GOES HERE
 
 1.3) Re-render the p-tag with React
 
+
+
+
+## Notes
+
+- If children of React.createElement is null, undefined or false, it will not be rendered.
+
 ## References
 
  - [http://buildwithreact.com/tutorial/jsx]()
