@@ -2,3 +2,4 @@ venv
 .idea
 *class
 .mypy_cache
+.apl.history
