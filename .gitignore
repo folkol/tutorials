@@ -3,3 +3,4 @@ venv
 *class
 .mypy_cache
 .apl.history
+tutorial.bak
