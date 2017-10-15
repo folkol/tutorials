@@ -2,3 +2,5 @@ logging:
   level: INFO
   loggers:
     com.folkol.dropwizard: DEBUG
+template: Hello, %s!
+defaultName: Stranger
