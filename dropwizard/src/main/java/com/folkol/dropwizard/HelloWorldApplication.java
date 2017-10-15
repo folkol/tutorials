@@ -1,5 +1,6 @@
 package com.folkol.dropwizard;
 
+import com.folkol.dropwizard.health.TemplateHealthCheck;
 import com.folkol.dropwizard.resources.HelloWorldResource;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
@@ -28,7 +29,10 @@ public class HelloWorldApplication extends Application<HelloWorldConfiguration> 
             configuration.getTemplate(),
             configuration.getDefaultName()
         );
-        environment.jersey().register(resource);
-    }
 
+        final TemplateHealthCheck healthCheck = new TemplateHealthCheck(configuration.getTemplate());
+
+        environment.jersey().register(resource);
+        environment.healthChecks().register("template", healthCheck);
+    }
 }
