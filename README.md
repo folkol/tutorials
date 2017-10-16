@@ -584,3 +584,85 @@ public class ExampleAuthenticator implements Authenticator<BasicCredentials, Use
 }
 ```
 
+
+## Service Discovery
+
+https://github.com/dropwizard/dropwizard-discovery
+
+```
+# Discovery-related settings.
+discovery:
+    serviceName: hello-world
+```
+
+```
+public class HelloWorldConfiguration extends Configuration {
+
+    @Valid
+    @NotNull
+    private DiscoveryFactory discovery = new DiscoveryFactory();
+
+    @JsonProperty("discovery")
+    public DiscoveryFactory getDiscoveryFactory() {
+        return discovery;
+    }
+
+    @JsonProperty("discovery")
+    public void setDiscoveryFactory(DiscoveryFactory discoveryFactory) {
+        this.discovery = discoveryFactory;
+    }
+}
+```
+
+If you only want to register
+
+```
+public class HelloWorldApplication extends Application<HelloWorldConfiguration> {
+
+    private final DiscoveryBundle<HelloWorldConfiguration> discoveryBundle = new DiscoveryBundle<HelloWorldConfiguration>() {
+        @Override
+        public DiscoveryFactory getDiscoveryFactory(HelloWorldConfiguration configuration) {
+            return configuration.getDiscoveryFactory();
+        }
+
+    };
+
+    @Override
+    public void initialize(Bootstrap<HelloWorldConfiguration> bootstrap) {
+        bootstrap.addBundle(discoveryBundle);
+    }
+}
+```
+
+If you also want to consume...
+
+```
+public class HelloWorldApplication extends Application<HelloWorldConfiguration> {
+
+    private final DiscoveryBundle<HelloWorldConfiguration> discoveryBundle = new DiscoveryBundle<HelloWorldConfiguration>() {
+        @Override
+        public DiscoveryFactory getDiscoveryFactory(HelloWorldConfiguration configuration) {
+            return configuration.getDiscoveryFactory();
+        }
+    };
+
+    @Override
+    public void initialize(Bootstrap<HelloWorldConfiguration> bootstrap) {
+        bootstrap.addBundle(discoveryBundle);
+    }
+
+    @Override
+    public void run(HelloWorldConfiguration configuration, Environment environment) throws Exception {
+        final DiscoveryClient client = discoveryBundle.newDiscoveryClient("other-service");
+        environment.lifecycle().manage(new DiscoveryClientManager(client));
+    }
+}
+```
+
+```
+<dependency>
+  <groupId>io.dropwizard.modules</groupId>
+  <artifactId>dropwizard-discovery</artifactId>
+  <version>1.0.2-1</version>
+</dependency>
+```
