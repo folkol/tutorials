@@ -1,13 +1,14 @@
-package main
+// Package reddit implements a basic client for the Reddit API.
+package reddit
 
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
     "errors"
 )
 
+// Item describes a Reddit item.
 type Item struct {
 	Title string
 	URL   string
@@ -27,7 +28,7 @@ func (i Item) String() string {
     return fmt.Sprintf("%s %s%s", i.Title, i.URL, com)
 }
 
-type Response struct {
+type response struct {
 	Data struct {
 		Children []struct {
 			Data Item
@@ -36,6 +37,7 @@ type Response struct {
 }
 
 var client = &http.Client{}
+// Get fetches the most recent Items posted to the specified subreddit.
 func Get(reddit string) ([]Item, error) {
 	url := fmt.Sprintf("http://reddit.com/r/%s.json", reddit)
 	req, err := http.NewRequest("GET", url, nil)
@@ -58,15 +60,5 @@ func Get(reddit string) ([]Item, error) {
         items[i] = child.Data
     }
     return items, nil
-}
-
-func main() {
-    items, err := Get("golang")
-    if err != nil {
-        log.Fatal(err)
-    }
-    for _, item := range items {
-        fmt.Println(item)
-    }
 }
 
