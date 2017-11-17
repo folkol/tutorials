@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+    "errors"
 )
 
 type Item struct {
@@ -20,23 +21,38 @@ type Response struct {
 	}
 }
 
-func main() {
-	client := &http.Client{}
-	req, err := http.NewRequest("GET", "http://reddit.com/r/golang.json", nil)
+var client = &http.Client{}
+func Get(reddit string) ([]Item, error) {
+	url := fmt.Sprintf("http://reddit.com/r/%s.json", reddit)
+	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		log.Fatal(err)
+        return nil, err
 	}
 	req.Header.Add("User-Agent", "folkol.com google tutorial bot")
 	resp, err := client.Do(req)
+    defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
-		log.Fatal(resp.Status)
+        return nil, errors.New(resp.Status)
 	}
 	r := new(Response)
 	err = json.NewDecoder(resp.Body).Decode(r)
 	if err != nil {
-		log.Fatal(err)
+        return nil, err
 	}
-	for _, child := range r.Data.Children {
-		fmt.Println(child.Data.Title)
-	}
+    items := make([]Item, len(r.Data.Children))
+	for i, child := range r.Data.Children {
+        items[i] = child.Data
+    }
+    return items, nil
 }
+
+func main() {
+    items, err := Get("golang")
+    if err != nil {
+        log.Fatal(err)
+    }
+    for _, item := range items {
+        fmt.Println(item.Title)
+    }
+}
+
