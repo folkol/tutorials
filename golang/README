@@ -23,9 +23,11 @@ Greetings, fellow Gopher!
 
 ## Reddit crawler
 
+- All Go code live in packages.
+- Go programs entrypoint is function main inside package main.
+
 $ go install github.com/folkol/reddit
 $ reddit
-
 
 
 ## References
