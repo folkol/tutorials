@@ -13,6 +13,10 @@ type Item struct {
 	URL   string
 }
 
+func (i Item) String() string {
+    return fmt.Sprintf("%s (%s)", i.Title, i.URL)
+}
+
 type Response struct {
 	Data struct {
 		Children []struct {
@@ -52,7 +56,7 @@ func main() {
         log.Fatal(err)
     }
     for _, item := range items {
-        fmt.Println(item.Title)
+        fmt.Println(item)
     }
 }
 
