@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
-    "github.com/folkol/reddit"
+    "reddit"
 )
 
 func main() {
