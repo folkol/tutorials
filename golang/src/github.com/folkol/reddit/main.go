@@ -1,11 +1,24 @@
 package main
 
 import (
-	"io"
+	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
-	"os"
 )
+
+type Item struct {
+	Title string
+	URL   string
+}
+
+type Response struct {
+	Data struct {
+		Children []struct {
+			Data Item
+		}
+	}
+}
 
 func main() {
 	client := &http.Client{}
@@ -18,8 +31,12 @@ func main() {
 	if resp.StatusCode != http.StatusOK {
 		log.Fatal(resp.Status)
 	}
-	_, err = io.Copy(os.Stdout, resp.Body)
+	r := new(Response)
+	err = json.NewDecoder(resp.Body).Decode(r)
 	if err != nil {
 		log.Fatal(err)
+	}
+	for _, child := range r.Data.Children {
+		fmt.Println(child.Data.Title)
 	}
 }
