@@ -36,6 +36,12 @@ Go get expects a hostname under 'src'.
 - github.com/folkol/tutorials/golang/src/reddit fails due to 'reddit' not being a hostname.
 - github.com/folkol/tutorials/golang/src/github.com/reddit fails due to 'reddit' not being a repo...
 
+## go tour
+
+$ go get golang.org/x/tour/gotour
+$ go tool tour
+
 ## References
 
 - https://www.youtube.com/watch?v=2KmHtgtEZ1s
+- tour.golang.org
