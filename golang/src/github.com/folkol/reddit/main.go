@@ -11,10 +11,20 @@ import (
 type Item struct {
 	Title string
 	URL   string
+    Comments int `json:"num_comments"`
 }
 
 func (i Item) String() string {
-    return fmt.Sprintf("%s (%s)", i.Title, i.URL)
+    var com string
+    switch(i.Comments) {
+    case 0:
+        com = ""
+    case 1:
+        com = " (1 comment)"
+    default:
+        com = fmt.Sprintf(" (%d comments)", i.Comments)
+    }
+    return fmt.Sprintf("%s %s%s", i.Title, i.URL, com)
 }
 
 type Response struct {
