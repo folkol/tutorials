@@ -1,1 +1,27 @@
+# Fooling around with Go(lang)
+
 $ brew install go
+$ go test archive/zip
+$ go build
+$ go fmt
+
+$ go get code.google.com/p/go.net/websocket
+
+## Workspace
+
+Folder with bin, pkg and src directories.
+
+$ mkdir ...
+$ export GOPATH=...
+$ export PATH=$PATH:$GOPATH/bin
+$ mkdir -p $GOPATH/src/github.com/folkol/hello
+$ mv hello.go $GOPATH/src/github.com/folkol/hello/
+$ go install github.com/folkol/hello/
+$ hello
+Greetings, fellow Gopher!
+
+
+
+## References
+
+- https://www.youtube.com/watch?v=2KmHtgtEZ1s
