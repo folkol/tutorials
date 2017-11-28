@@ -666,3 +666,5 @@ public class HelloWorldApplication extends Application<HelloWorldConfiguration> 
   <version>1.0.2-1</version>
 </dependency>
 ```
+
+Amazon SDK: mvn -B archetype:generate -DarchetypeGroupId=org.apache.maven.archetypes -DgroupId=com.folkol.tutorials -DartifactId=awssdk
