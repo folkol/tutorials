@@ -1,6 +1,6 @@
 package com.folkol.tutorials;
 
-public class App
+public class AwsPlayground
 {
     public static void main(String[] args)
     {
