@@ -4,3 +4,4 @@ venv
 .mypy_cache
 .apl.history
 tutorial.bak
+.DS_Store
