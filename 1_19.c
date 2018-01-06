@@ -23,7 +23,7 @@ void copy(char to[], char from[]) {
 }
 
 void reverse(char s[], int len) {
-    len -= 2;
+    len -= 1;
     for (int i = 0; i <= len / 2; ++i) {
 //        printf("%d %d\n", i, len - 1 - i);
         int tmp = s[i];
@@ -38,6 +38,9 @@ int main(void) {
     char line[MAXLINE + 1];
 
     while (len = mygetline(line, MAXLINE + 1), len > 0) {
+        if (line[len - 1] == '\n') {
+            --len;
+        }
         reverse(line, len);
         printf("%s", line);
     }
