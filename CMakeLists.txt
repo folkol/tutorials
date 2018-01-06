@@ -3,4 +3,6 @@ project(knr C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(knr 1_1.c)
+add_executable(1.1 1_1.c)
+add_executable(1.2 1_2.c)
+add_executable(1.3 1_3.c)
