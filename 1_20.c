@@ -3,7 +3,7 @@
 #define TAB_STOP 4
 
 int main(void) {
-    int c, l = TAB_STOP;
+    int c, l = 0;
     while (c = getchar(), c != EOF) {
         ++l;
         if (c == '\n') {
