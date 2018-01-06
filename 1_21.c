@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#define TAB_STOP 4
+#define TAB_STOP 8
 
 int main(void) {
     int c, l = 0;
