@@ -14,7 +14,6 @@ int main(void) {
             ++hist[c - 'a'];
         }
     }
-    printf("%d\n", nc);
     for (int i = 0; i < 'z' - 'a'; ++i) {
         hist[i] = hist[i] * 100 / nc;
     }
@@ -23,7 +22,6 @@ int main(void) {
         if (hist[i] > max)
             max = hist[i];
     }
-    printf("max: %d\n", max);
     for (int i = max; i >= 0; --i) {
         printf("%3d|", i);
         for (int j = 0; j < 'z' - 'a'; ++j) {
