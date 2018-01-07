@@ -5,3 +5,5 @@ venv
 .apl.history
 tutorial.bak
 .DS_Store
+cmake-build-debug
+a.out
