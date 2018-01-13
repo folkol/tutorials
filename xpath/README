@@ -1,1 +1,138 @@
+# XPath tutorial
+
+```
+$ xpath example.xml bookstore
+Found 1 nodes:
+-- NODE --
+<bookstore>
+
+<book>
+  <title lang="en">Harry Potter</title>
+  <price>29.99</price>
+</book>
+
+<book>
+  <title lang="en">Learning XML</title>
+  <price>39.95</price>
+</book>
+
+</bookstore>
+```
+
+```
+$ xpath example.xml /bookstore/book
+Found 2 nodes:
+-- NODE --
+<book>
+  <title lang="en">Harry Potter</title>
+  <price>29.99</price>
+</book>-- NODE --
+<book>
+  <title lang="en">Learning XML</title>
+  <price>39.95</price>
+</book>
+```
+
+```
+$ xpath example.xml //book
+Found 2 nodes:
+-- NODE --
+<book>
+  <title lang="en">Harry Potter</title>
+  <price>29.99</price>
+</book>-- NODE --
+<book>
+  <title lang="en">Learning XML</title>
+  <price>39.95</price>
+</book>
+```
+
+*Predicates*
+
+```
+$ xpath example.xml //title[@lang = 'en']
+Found 2 nodes:
+-- NODE --
+<title lang="en">Harry Potter</title>-- NODE --
+<title lang="en">Learning XML</title>
+```
+
+*wildcard*
+
+```
+$ xpath example.xml //*[@lang = 'en']
+Found 2 nodes:
+-- NODE --
+<title lang="en">Harry Potter</title>-- NODE --
+<title lang="en">Learning XML</title>
+```
+
+*alternation*
+
+```
+$ xpath example.xml '//book/title | //book/price'
+Found 4 nodes:
+-- NODE --
+<title lang="en">Harry Potter</title>-- NODE --
+<price>29.99</price>-- NODE --
+<title lang="en">Learning XML</title>-- NODE --
+<price>39.95</price>
+```
+
+*axes* (An axis defines a node-set relative to the current node)
+
+- ancestor
+- ancestor-or-self
+- attribute
+- child
+- descendant
+- descendant-or-self
+- following
+- following-sibling
+- namespace
+- parent
+- preceding
+- preceding-sibling
+- self
+
+`axisname::nodetest[predicate]`
+
+```
+$ xpath example.xml '//book/child::title'
+Found 2 nodes:
+-- NODE --
+<title lang="en">Harry Potter</title>-- NODE --
+<title lang="en">Learning XML</title>
+```
+
+```
+$ xpath example.xml '//title/attribute::lang'
+Found 2 nodes:
+-- NODE --
+ lang="en"-- NODE --
+ lang="en"
+```
+
+## Operators
+
+An XPath expression returns either a node-set, a string, a Boolean, or a number.
+
+- '|'	
+- '+'	
+- '-'	
+- '*'	
+- 'div'
+- '='	
+- '!=	
+- '<'	
+- '<='
+- '>'	
+- '>='
+- 'or'
+- 'and'
+- 'mod'
+
+
+## References
+
 https://www.w3schools.com/xml/xpath_syntax.asp
