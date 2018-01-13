@@ -132,6 +132,42 @@ An XPath expression returns either a node-set, a string, a Boolean, or a number.
 - 'and'
 - 'mod'
 
+## book.xml
+
+```
+$ xpath /bookstore/book/title <books.xml
+Found 4 nodes:
+-- NODE --
+<title lang="en">Everyday Italian</title>-- NODE --
+<title lang="en">Harry Potter</title>-- NODE --
+<title lang="en">XQuery Kick Start</title>-- NODE --
+<title lang="en">Learning XML</title>
+```
+
+```
+$ xpath '/bookstore/book[1]/title' <books.xml
+Found 1 nodes:
+-- NODE --
+<title lang="en">Everyday Italian</title>
+```
+
+```
+$ xpath '/bookstore/book/price[text()]' <books.xml
+Found 4 nodes:
+-- NODE --
+<price>30.00</price>-- NODE --
+<price>29.99</price>-- NODE --
+<price>49.99</price>-- NODE --
+<price>39.95</price>
+```
+
+```
+$ xpath '/bookstore/book[price>35]/price' <books.xml
+Found 2 nodes:
+-- NODE --
+<price>49.99</price>-- NODE --
+<price>39.95</price>
+```
 
 ## References
 
