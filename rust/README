@@ -1,0 +1,40 @@
+# The Rust Programming Language
+
+Starting to look at Rust, by working through the book 'The Rust Programming Language'
+
+### Installation
+
+This installs the compiler (`rustc`) and the package manager (`cargo`).
+
+```
+$ curl https://sh.rustup.rs -sSf | sh
+```
+
+### Hello, world!
+
+```
+fn main() {
+	println!("Hello, world!");
+}
+```
+
+```
+$ rustc main.rs
+$ ./main
+Hello, World!
+```
+
+## Commands
+
+Various commands to be used with rust
+
+```
+$ rustup update
+$ rustup self uninstall
+$ rustc --version
+$ rustup doc
+```
+
+## References
+
+https://doc.rust-lang.org/book/second-edition/
