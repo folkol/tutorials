@@ -1,3 +1,27 @@
-https://serversforhackers.com/c/an-ansible2-tutorial
+# Ansible
 
+Ansible is a configuration management and provisioning tool, similar to Chef, Puppet or Salt.
+
+- It's just SSH
+- Easy to convert Bash scripts into Ansible Tasks
+- Ansible automates getting context before running Task
+- Ansible Tasks are idempotent
+- Ansible use 'Facts', which are system and environment information that it
+  gathers ("Context") before running Tasks
+- Ansible uses these facts to check state and see if it needs to change
+  anything in order to get the desired outcome. This makes it safe to run
+  Ansible Tasks against a server over and over again.
+- Agentless
+- Can be run on any machine that has got Ansible installed, but is usually run
+  from a central server
+
+# Install
+
+```
+$ brew install ansible
+```
+
+## References
+
+https://serversforhackers.com/c/an-ansible2-tutorial
 
