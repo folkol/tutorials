@@ -24,8 +24,29 @@ Ansible is a configuration management and provisioning tool, similar to Chef, Pu
 ### Install
 
 ```
-$ brew install ansible
+$ sudo pip install virtualenv
+$ virtualenv venv
+$ . venv/bin/activate
+$ pip install ansible
 ```
+
+### Managing Servers: inventory
+
+An inventory file defines which servers that we will be managing. It can be
+named anything, but 'hosts' is a common name.
+
+Withing the `hosts` file, we define some severs to manage. This is an example
+with two machines groupd under the label `web`. The label is arbitrary.
+
+```
+[web]
+192.168.1.2
+192.168.1.2
+```
+
+The inventory can also be dynamic (a python script), and create ranges of
+hosts etc. Ansible can be run on the local machine or against hosts from an
+inventory file. Both are valid, but the main way is against remote hosts.
 
 ## References
 
