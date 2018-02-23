@@ -1,5 +1,9 @@
 # Ansible
 
+"Ansible is an automation engine that allows you to either statically or
+dynamically specify which machines to target, and automatically run commands
+across those machines."
+
 Ansible is a configuration management and provisioning tool, similar to Chef, Puppet or Salt.
 
 - It's just SSH
@@ -15,7 +19,9 @@ Ansible is a configuration management and provisioning tool, similar to Chef, Pu
 - Can be run on any machine that has got Ansible installed, but is usually run
   from a central server
 
-# Install
+## Steps
+
+### Install
 
 ```
 $ brew install ansible
@@ -25,3 +31,20 @@ $ brew install ansible
 
 https://serversforhackers.com/c/an-ansible2-tutorial
 
+## Notes
+
+Need Python + SSH
+Can we prompt for confirmation for certain tags, say production?
+Playbook are composable, a playbook can include other playbooks.
+ansible-{galaxy install, playbook, foobar}
+Ansible abstractions / concepts?
+
+## Glossary
+
+Task (Some command that alter the machine.)
+Context (Set of Facts gathered before running a Task)
+Fact (System and environment information)
+Playbook
+Module
+Inventory Files (static or dynamic)
+Provision
