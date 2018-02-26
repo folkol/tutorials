@@ -22,7 +22,7 @@
 
       - name: Create Web Root
         file:
-            path: '{{ docroot }}'
+            path: '{{ docroot }}'  # Jinja2 template
             mode: 775
             state: directory
             owner: www-data
