@@ -71,6 +71,14 @@ $ ansible all -i hosts -m command -a 'hostname' -u vagrant
 $ ansible-playbook --private-key=~/.vagrant.d/insecure_private_key -u vagrant -i .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory playbook.yml
 ```
 
+#### SSH Options
+
+It is possible to specify SSH Options at the command line:
+
+```
+ansible -i ./hosts --ask-pass --ssh-extra-args='-o "PubkeyAuthentication=no"' all -m ping
+```
+
 ### Running commands
 
 ```
@@ -100,6 +108,29 @@ $ ansible -i hosts remote -m ping
 }
 ```
 
+### Modules
+
+Modules are the way Ansible carries out its tasks. A module can use the
+current context ("Facts") to determine whether it has to execute a task or
+not.
+
+Notice the result when running the Task a second time.
+
+```
+$ ansible -i ./hosts remote -b --become-user=root -m apt -a 'name=nginx state=installed update_cache=true'
+192.168.126.151 | SUCCESS => {
+    "cache_update_time": 1519648263,
+    ...
+}
+
+$ ansible -i ./hosts remote -b --become-user=root -m apt -a 'name=nginx state=installed update_cache=true'
+192.168.126.151 | SUCCESS => {
+    "cache_update_time": 1519648312,
+    "cache_updated": true,
+    "changed": false
+}
+```
+
 ## References
 
 https://serversforhackers.com/c/an-ansible2-tutorial
@@ -117,7 +148,9 @@ Ansible abstractions / concepts?
 Task (Some command that alter the machine.)
 Context (Set of Facts gathered before running a Task)
 Fact (System and environment information)
-Playbook
-Module
+Playbook (List of Tasks to run as well as other configuration)
+Module (Tasks live inside modules. The module can use available context
+("Facts") to determine whether to run a certain Task or not.)
 Inventory Files (static or dynamic)
-Provision
+Provision (Setup a machine, install commands and make configuration options)
+
