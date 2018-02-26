@@ -162,7 +162,123 @@ Handlers are tasks that will only run if notified by another task, and also
 only run once after the ordinary tasks are completed. (Like restart service
 etc.)
 
+### Roles
 
+A playbook can include additinal tasks, configuration etc, from `role files`
+in a known directory structure.
+
+```
+roles
+  rolename
+   - files
+   - handlers
+   - meta
+   - templates
+   - tasks
+   - vars
+```
+
+Example:
+
+```
+site.yml
+webservers.yml
+fooservers.yml
+roles/
+   common/
+     tasks/
+     handlers/
+     files/
+     templates/
+     vars/
+     defaults/
+     meta/
+   webservers/
+     tasks/
+     defaults/
+     meta/
+```
+
+In this example, site.yml can include stuff from `roles/common` by declaring
+that it belongs to a role named `common`.
+
+Ansible will search for files called `main.yaml` in each location, and include
+them into any playbook that declares that role.
+
+#### ansible-galaxy
+
+Ansible galaxy can be used to install roles from Ansible's public repository,
+or save roles to that repository. It can also be used to bootstrap a new role
+on the local machine.
+
+```
+mkdir roles
+cd roles
+$ ansible-galaxy init nginx
+- nginx was created successfully
+(venv) master$ t
+.
+└── nginx
+    ├── README.md
+    ├── defaults
+    │   └── main.yml
+    ├── files
+    ├── handlers
+    │   └── main.yml
+    ├── meta
+    │   └── main.yml
+    ├── tasks
+    │   └── main.yml
+    ├── templates
+    ├── tests
+    │   ├── inventory
+    │   └── test.yml
+    └── vars
+        └── main.yml
+
+9 directories, 8 files
+```
+
+Files: Files that should be copied into the hosts. (e.g.
+https://github.com/h5bp/server-configs-nginx/tree/master/h5bp)
+Handler: Move the handlers from the nginx.yaml to this file.
+Meta: Role metadata, including dependencies.
+
+Example:
+
+```
+---
+dependencies:
+  - { role: ssl }
+```
+
+Template:
+
+Files that will be run through Jinja2. Similar to `Files`, this directory will
+not include a `main.yaml`. Files should end in `.j2`.
+
+Vars:
+
+Variables that can be used elsewhere inside this role. They can be encrypted
+with `ansible-vault`, if they are secrets.
+
+### Facts and Vault
+
+Skipped this, but read up on these later.
+
+### Recap
+
+Installed Ansible
+Configured Ansible Inventory
+Ran idempotent Ad-Hoc Commands on multiple serveres simultaneously.
+Created basic Playbook to run multiple Tasks, using Handlers.
+Abstracted the Tasks into a Role to Keep everything Nginx-related organized
+    - generated the role with ansible-galaxy
+    - saw how to set dependencies
+    - saw how to register Task dependencies
+    - saw how to use more templates, files and variables in out Tasks
+Saw how to incorporate Ansible Facts
+Saw how to use Ansible Vault to add secure variables
 
 ## References
 
@@ -186,4 +302,4 @@ Module (Tasks live inside modules. The module can use available context
 ("Facts") to determine whether to run a certain Task or not.)
 Inventory Files (static or dynamic)
 Provision (Setup a machine, install commands and make configuration options)
-
+Role (Load additinal tasks, configuration etc from role files)
