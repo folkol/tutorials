@@ -131,6 +131,31 @@ $ ansible -i ./hosts remote -b --become-user=root -m apt -a 'name=nginx state=in
 }
 ```
 
+### Playbooks
+
+We can configure the above command in a `playbook file` instead.
+
+```
+$ cat nginx.yml
+---
+- hosts: remote
+  become: yes
+  become_user: root
+  tasks:
+      - name: Install Nginx
+        apt:
+            name: nginx
+            state: installed
+            update_cache: true
+```
+
+```
+$ ansible-playbook -i hosts nginx.yml
+...
+PLAY RECAP ****************************************************************************************************************************
+192.168.126.151            : ok=2    changed=0    unreachable=0    failed=0
+```
+
 ## References
 
 https://serversforhackers.com/c/an-ansible2-tutorial
