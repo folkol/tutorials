@@ -48,6 +48,22 @@ The inventory can also be dynamic (a python script), and create ranges of
 hosts etc. Ansible can be run on the local machine or against hosts from an
 inventory file. Both are valid, but the main way is against remote hosts.
 
+#### SSH Keys
+
+Ansible can use both ssh keys and passwords. It seems like ssh keys should be
+the default setting.
+
+```
+$ vagrant ssh-config
+...
+$ ssh-add ssh-add /Users/folkol/code/tutorials/ansible/.vagrant/machines/default/virtualbox/private_key
+$ ansible all -i hosts -m command -a 'hostname' -u vagrant
+```
+
+```
+$ ansible-playbook --private-key=~/.vagrant.d/insecure_private_key -u vagrant -i .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory playbook.yml
+```
+
 ## References
 
 https://serversforhackers.com/c/an-ansible2-tutorial
