@@ -9,7 +9,7 @@
         apt_repository:
             repo: ppa:nginx/stable
             state: present
-        register: ppastable
+        register: ppastable  # Register the result in a variable
 
       - name: Install Nginx
         apt:
