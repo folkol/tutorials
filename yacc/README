@@ -1,0 +1,10 @@
+# YACC labs
+
+Implementing the calc from https://www.youtube.com/watch?v=yTXCPGAD3SQ.
+
+## Build
+
+```
+$ # yacc calc.y
+$ bison calc.y
+```
