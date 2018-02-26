@@ -1,2 +1,6 @@
-[dev]
-192.168.126.151
+[remote]
+192.168.126.151 ansible_user=vagrant
+
+[local]
+127.0.0.1
+

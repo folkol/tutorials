@@ -35,8 +35,8 @@ $ pip install ansible
 An inventory file defines which servers that we will be managing. It can be
 named anything, but 'hosts' is a common name.
 
-Withing the `hosts` file, we define some severs to manage. This is an example
-with two machines groupd under the label `web`. The label is arbitrary.
+Within the `hosts` file, we define some severs to manage. This is an example
+with two machines grouped under the label `web`. The label is arbitrary.
 
 ```
 [web]
@@ -47,6 +47,13 @@ with two machines groupd under the label `web`. The label is arbitrary.
 The inventory can also be dynamic (a python script), and create ranges of
 hosts etc. Ansible can be run on the local machine or against hosts from an
 inventory file. Both are valid, but the main way is against remote hosts.
+
+It is possible to specify a user for a specific host like this:
+
+```
+[vagrant]
+192.168.126.151 ansible_user=vagrant
+```
 
 #### SSH Keys
 
@@ -62,6 +69,35 @@ $ ansible all -i hosts -m command -a 'hostname' -u vagrant
 
 ```
 $ ansible-playbook --private-key=~/.vagrant.d/insecure_private_key -u vagrant -i .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory playbook.yml
+```
+
+### Running commands
+
+```
+$ cat hosts
+[remote]
+192.168.126.151 ansible_user=vagrant
+
+[local]
+127.0.0.1
+```
+
+Run simple command against a host:
+
+```
+$ ansible -i hosts --connection=local local -m ping
+127.0.0.1 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+```
+
+```
+$ ansible -i hosts remote -m ping
+192.168.126.151 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
 ```
 
 ## References
