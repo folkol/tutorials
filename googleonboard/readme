@@ -1,0 +1,601 @@
+Rent-a-VM to Process Earthquake Data (This lab is part of the processing scientific lab series)
+===============================================================================================
+
+In this lab, you:
+
+Create a Compute Engine instance with the necessary access and security.
+SSH into the instance.
+Install the software package Git (for source code version control).
+Ingest data into the Compute Engine instance.
+Transform data on the Compute Engine instance.
+Store the transformed data on Cloud Storage.
+Publish Cloud Storage data to the web.
+
+
+https://google.qwiklabs.com/quests/28.
+
+
+# Create and setup machine
+compute engine -> create vm instance -> compute engine default service account: Allow full access to all Cloud APIs -> create
+instance-1 -> SSH (popup)
+$ cat /proc/cpuinfo
+sudo apt-get update
+sudo apt-get -y -qq install git
+git --version
+
+
+# Ingest data
+git clone https://github.com/GoogleCloudPlatform/training-data-analyst
+cd training-data-analyst/CPB100/lab2b
+
+$ cat ingest.sh
+#!/bin/bash
+rm -f earthquakes.csv
+wget http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.csv -O earthquakes.csv
+
+bash ingest.sh
+head earthquakes.csv
+
+
+# Transform the data (https://github.com/GoogleCloudPlatform/datalab-samples/blob/master/basemap/earthquakes.ipynb)
+
+bash install_missing.sh
+
+python transform.py
+
+$ ls -l
+total 640
+-rw-r--r-- 1 google248142_student google248142_student    637 Feb 28 20:55 commands.sh
+-rw-r--r-- 1 google248142_student google248142_student 315543 Feb 28 20:52 earthquakes.csv
+-rw-r--r-- 1 google248142_student google248142_student    751 Feb 28 20:55 earthquakes.htm
+-rw-r--r-- 1 google248142_student google248142_student 308249 Feb 28 21:01 earthquakes.png
+-rwxr-xr-x 1 google248142_student google248142_student    759 Feb 28 20:55 ingest.sh
+-rwxr-xr-x 1 google248142_student google248142_student    680 Feb 28 20:55 install_missing.sh
+drwxr-xr-x 2 google248142_student google248142_student   4096 Feb 28 20:55 scheduled
+-rwxr-xr-x 1 google248142_student google248142_student   3074 Feb 28 20:55 transform.py
+
+
+
+# Create a bucket
+
+GCP -> Storage -> Bucket -> Create Bucket -> unique name (qwiklabs-gcp-b7368e9faf4f200c)
+
+
+# Store Data
+
+// gsutil cp earthquakes.* gs://<YOUR-BUCKET>/earthquakes/
+gsutil cp earthquakes.* gs://qwiklabs-gcp-b7368e9faf4f200c/earthquakes/
+
+// Refresh bucket in GUI
+
+# Publish Cloud Storage files to web
+
+Select all -> Share Publicly
+
+Public link fo earthquake.htm (https://storage.googleapis.com/qwiklabs-gcp-b7368e9faf4f200c/earthquakes/earthquakes.htm)
+
+
+Close the SSH window.
+
+
+## References
+
+https://earthquake.usgs.gov/data/data.php#sta
+
+
+
+
+Weather Data in BigQuery
+========================
+
+Duration is 1 min
+
+In this lab you will analyze historical weather observations using BigQuery and use weather data in conjunction with other datasets.
+
+What you learn
+
+In this lab, you:
+
+Carry out interactive queries on the BigQuery console
+Mash up multiple datasets
+
+
+
+
+
+Introduction
+
+Duration is 1 min
+
+This lab uses two public datasets in BigQuery -- weather data from NOAA and citizen complaints data from New York City.
+
+You will encounter, for the first time, several aspects of Google Cloud Platform that are of great benefit to scientists:
+
+Serverless. No need to download data to your machine in order to work with it - the dataset will remain on the cloud.
+Ease of use. Run ad-hoc SQL queries on your dataset without having to prepare the data, like indexes, beforehand. This is invaluable for data exploration.
+Scale. Carry out data exploration on extremely large datasets interactively. You don't need to sample the data in order to work with it in a timely manner.
+Shareability. You will be able to run queries on data from different datasets without any issues. BigQuery is a convenient way to share datasets. Of course, you can also keep your data private, or share them only with specific persons -- not all data need to be public.
+The end-result is that you will find what types of municipal complaints are correlated with weather. For example, you will find (not surprisingly) that complaints about residential furnaces are most common when it is cold outside:
+
+
+
+
+
+# Explore weather data
+
+>>> If project is not selected, select it!
+
+Navigate to Products & services > BigQuery in the Google Cloud console.
+
+>>> Possibly qwiklabs-sakdjhfalsdf -> Switch to project -> Display Project
+
+
+bigquery-public-data:noaa_gsod
+
+
+Table Details: gsod2014  [Schema, Details, Preview] -> Preview
+
+Compose Query -> Click the Show Options button. Un-check Use Legacy SQL box. We will be using Standard SQL.
+
+SELECT
+  -- Create a timestamp from the date components.
+  stn,
+  TIMESTAMP(CONCAT(year,"-",mo,"-",da)) AS timestamp,
+  -- Replace numerical null values with actual null
+  AVG(IF (temp=9999.9,
+      null,
+      temp)) AS temperature,
+  AVG(IF (wdsp="999.9",
+      null,
+      CAST(wdsp AS Float64))) AS wind_speed,
+  AVG(IF (prcp=99.99,
+      0,
+      prcp)) AS precipitation
+FROM
+  `bigquery-public-data.noaa_gsod.gsod20*`
+WHERE
+  CAST(YEAR AS INT64) > 2010
+  AND CAST(MO AS INT64) = 6
+  AND CAST(DA AS INT64) = 12
+  AND (stn="725030" OR  -- La Guardia
+    stn="744860")    -- JFK
+GROUP BY
+  stn,
+  timestamp
+ORDER BY
+  timestamp DESC,
+  stn ASC
+
+
+
+Run Query (Query complete (3.6s elapsed, 2.58 GB processed))
+
+Row	stn	timestamp	temperature	wind_speed	precipitation
+1	725030	2017-06-12 00:00:00.000 UTC	86.7	8.5	0.0
+2	744860	2017-06-12 00:00:00.000 UTC	79.6	9.4	0.0
+
+
+
+# Explore New York citizen complaints data
+
+Switch to project -> bigquery-public-data
+
+bigquery-public-data -> New York -> nypd_mv_collisions
+
+Preview
+
+Row	borough	contributing_factor_vehicle_1	contributing_factor_vehicle_2	contributing_factor_vehicle_3	contributing_factor_vehicle_4	contributing_factor_vehicle_5	cross_street_name	timestamp	latitude	longitude	location	number_of_cyclist_injured	number_of_cyclist_killed	number_of_motorist_injured	number_of_motorist_killed	number_of_pedestrians_injured	number_of_pedestrians_killed	number_of_persons_injured	number_of_persons_killed	off_street_name	on_street_name	unique_key	vehicle_type_code1	vehicle_type_code2	vehicle_type_code_3	vehicle_type_code_4	vehicle_type_code_5	zip_code
+1	QUEENS	Outside Car Distraction	Unspecified				GREENWAY SOUTH	2018-01-17 10:35:00.000 UTC	40.7104	-73.83974	(40.7104, -73.83974)	0	0	0	0	0	0	0	0		UNION TURNPIKE	3830694	SPORT UTILITY / STATION WAGON	AM				11375
+2	MANHATTAN	Fatigued/Drowsy	Other Vehicular
+
+Compose Query:
+
+SELECT
+  EXTRACT(YEAR
+  FROM
+    created_date) AS year,
+  complaint_type,
+  COUNT(1) AS num_complaints
+FROM
+  `bigquery-public-data.new_york.311_service_requests`
+GROUP BY
+  year,
+  complaint_type
+ORDER BY
+  num_complaints DESC
+
+
+
+Run Query:   Query complete (6.4s elapsed, 418 MB processed)
+
+Row	year	complaint_type	num_complaints
+1	2017	Noise - Residential	230152
+2	2016	HEAT/HOT WATER	227959
+3	2015	HEAT/HOT WATER	225706
+4	2016	Noise - Residential	221906
+
+
+
+# Save new table of weather data
+
+My Project -> Create new Dataset (name: demos)
+
+Compose Query:
+
+Clickon the Show Options button. Click the Select Table button and type in the name "nyc_weather" in the Table ID field. Click OK.
+
+
+
+SELECT
+  -- Create a timestamp from the date components.
+  timestamp(concat(year,"-",mo,"-",da)) as timestamp,
+  -- Replace numerical null values with actual nulls
+  AVG(IF (temp=9999.9, null, temp)) AS temperature,
+  AVG(IF (visib=999.9, null, visib)) AS visibility,
+  AVG(IF (wdsp="999.9", null, CAST(wdsp AS Float64))) AS wind_speed,
+  AVG(IF (gust=999.9, null, gust)) AS wind_gust,
+  AVG(IF (prcp=99.99, null, prcp)) AS precipitation,
+  AVG(IF (sndp=999.9, null, sndp)) AS snow_depth
+FROM
+  `bigquery-public-data.noaa_gsod.gsod20*`
+WHERE
+  CAST(YEAR AS INT64) > 2008
+  AND (stn="725030" OR  -- La Guardia
+       stn="744860")    -- JFK
+GROUP BY timestamp
+
+Run Query: Query complete (3.7s elapsed, 4.01 GB processed)
+
+Click x next to destination table.
+
+Close query.
+
+
+
+# Find the correlation between weather and complaints
+
+Compose Query:
+
+Compare the number of complaints and temperature using the CORR function.
+
+Click Compose Query and run the following query (remember to un-checked the Legacy SQL option):
+
+
+
+
+SELECT
+  descriptor,
+  sum(complaint_count) as total_complaint_count,
+  count(temperature) as data_count,
+  ROUND(corr(temperature, avg_count),3) AS corr_count,
+  ROUND(corr(temperature, avg_pct_count),3) AS corr_pct
+From (
+SELECT
+  avg(pct_count) as avg_pct_count,
+  avg(day_count) as avg_count,
+  sum(day_count) as complaint_count,
+  descriptor,
+  temperature
+FROM (
+  SELECT
+    DATE(timestamp) AS date,
+    temperature
+  FROM
+    demos.nyc_weather) a
+  JOIN (
+  SELECT x.date, descriptor, day_count, day_count / all_calls_count as pct_count
+  FROM
+    (SELECT
+      DATE(created_date) AS date,
+      concat(complaint_type, ": ", descriptor) as descriptor,
+      COUNT(*) AS day_count
+    FROM
+      `bigquery-public-data.new_york.311_service_requests`
+    GROUP BY
+      date,
+      descriptor)x
+    JOIN (
+      SELECT
+        DATE(created_date) AS date,
+        COUNT(*) AS all_calls_count
+      FROM `bigquery-public-data.new_york.311_service_requests`
+      GROUP BY date
+    )y
+  ON x.date=y.date
+)b
+ON
+  a.date = b.date
+GROUP BY
+  descriptor,
+  temperature
+)
+GROUP BY descriptor
+HAVING
+  total_complaint_count > 5000 AND
+  ABS(corr_pct) > 0.5 AND
+  data_count > 5
+ORDER BY
+  ABS(corr_pct) DESC
+
+
+Run Query: Query complete (11.9s elapsed, 731 MB processed)
+
+Row	descriptor	total_complaint_count	data_count	corr_count	corr_pct
+1	HEAT/HOT WATER: APARTMENT ONLY	294893	919	-0.783	-0.861
+2	HEAT/HOT WATER: ENTIRE BUILDING	554680	919	-0.811	-0.861
+3	HEATING: HEAT	871935	998	-0.799	-0.853
+4	Maintenance or Facility: Structure - Outdoors	35731	1342	0.768	0.8
+
+
+The results indicate that Heating complaints are negatively correlated with temperature (i.e., more heating calls on cold days) and calls about dead trees are positively correlated with temperature (i.e., more calls on hot days).
+
+
+
+
+Now compare the number of complaints and wind speed with the CORR function. Click Compose Query run the following query (remember to un-checked the Legacy SQL option):
+
+
+Compose Query (no legacy SQL):
+
+SELECT
+  descriptor,
+  sum(complaint_count) as total_complaint_count,
+  count(wind_speed) as data_count,
+  ROUND(corr(wind_speed, avg_count),3) AS corr_count,
+  ROUND(corr(wind_speed, avg_pct_count),3) AS corr_pct
+From (
+SELECT
+  avg(pct_count) as avg_pct_count,
+  avg(day_count) as avg_count,
+  sum(day_count) as complaint_count,
+  descriptor,
+  wind_speed
+FROM (
+  SELECT
+    DATE(timestamp) AS date,
+    wind_speed
+  FROM
+    demos.nyc_weather)a
+  JOIN (
+  SELECT x.date, descriptor, day_count, day_count / all_calls_count as pct_count
+  FROM
+    (SELECT
+      DATE(created_date) AS date,
+      concat(complaint_type, ": ", descriptor) as descriptor,
+      COUNT(*) AS day_count
+    FROM
+      `bigquery-public-data.new_york.311_service_requests`
+    GROUP BY
+      date,
+      descriptor)x
+    JOIN (
+      SELECT
+        DATE(created_date) AS date,
+        COUNT(*) AS all_calls_count
+      FROM `bigquery-public-data.new_york.311_service_requests`
+      GROUP BY date
+    )y
+  ON x.date=y.date
+)b
+ON
+  a.date = b.date
+GROUP BY
+  descriptor,
+  wind_speed
+)
+GROUP BY descriptor
+HAVING
+  total_complaint_count > 5000 AND
+  ABS(corr_pct) > 0.5 AND
+  data_count > 10
+ORDER BY
+  ABS(corr_pct) DESC
+
+
+
+Run Query: Query complete (9.9s elapsed, 731 MB processed)
+
+
+Row	descriptor	total_complaint_count	data_count	corr_count	corr_pct
+1	Noise - Street/Sidewalk: Loud Talking	109951	452	-0.668	-0.699
+2	Noise - Vehicle: Car/Truck Music	78780	449	-0.644	-0.64
+3	Rodent: Rat Sighting	107316	454	-0.433	-0.631
+4	Noise - Vehicle: Engine Idling	37969	450	-0.429	-0.619
+5	HEAT/HOT WATER: ENTIRE BUILDING	554680	385	0.609	0.61
+6	Rodent: Condition Attracting Rodents	53884	453	-0.47	-0.593
+
+
+
+
+Notice that the Corr columns are both negative. Do you have a hypothesis for why noise complaints reduce on windy days?
+
+
+
+
+
+Distributed Image Processing in Cloud Dataproc
+==============================================
+
+In this hands-on lab, you will learn how to use Apache Spark on Cloud Dataproc to distribute a computationally intensive image processing task onto a cluster of machines. This lab is part of a series of labs on processing scientific data.
+
+WHAT YOU'LL LEARN
+
+How to create a managed Cloud Dataproc cluster (with Apache Spark pre-installed).
+How to build and run jobs that use external packages that aren't already installed on your cluster
+How to shut down your cluster
+
+
+
+# Create a development machine in Compute Engine
+
+In the Google Cloud Console, go to Compute Engine > VM Instances > Create.
+
+Configure the instance this way:
+
+Name:"devhost",
+
+Machine Type: n1-standard-2 instance (2 vCPUs)
+
+Identity and API Access: "Allow full access to all Cloud APIs".
+
+
+Create
+
+SSH
+
+
+
+# Install software
+
+
+## Setup Scala and sbt
+
+sudo apt-get install -y dirmngr
+sudo apt-get update
+sudo apt-get install -y apt-transport-https
+echo "deb https://dl.bintray.com/sbt/debian /" | sudo tee -a /etc/apt/sources.list.d/sbt.list
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 642AC823
+sudo apt-get update
+sudo apt-get install -y bc scala sbt
+
+
+## Set up the Feature Detector Files
+
+sudo apt-get update
+git clone https://github.com/GoogleCloudPlatform/cloud-dataproc
+cd cloud-dataproc/codelabs/opencv-haarcascade
+
+## Launch build
+
+sbt assembly
+
+
+# Create a GCS bucket and collect images
+
+Now we'll create the GCS bucket and add images to it.
+
+
+MYBUCKET="images-${RANDOM}"
+echo MYBUCKET=${MYBUCKET}
+
+
+Use the gsutil program, which comes with gcloud in the Cloud SDK, to create the bucket to hold your sample images:
+
+
+
+gsutil mb gs://${MYBUCKET}
+
+
+curl http://www.publicdomainpictures.net/pictures/20000/velka/family-of-three-871290963799xUk.jpg | gsutil cp - gs://${MYBUCKET}/imgs/family-of-three.jpg
+curl http://www.publicdomainpictures.net/pictures/10000/velka/african-woman-331287912508yqXc.jpg | gsutil cp - gs://${MYBUCKET}/imgs/african-woman.jpg
+curl http://www.publicdomainpictures.net/pictures/10000/velka/296-1246658839vCW7.jpg | gsutil cp - gs://${MYBUCKET}/imgs/classroom.jpg
+
+
+
+$ gsutil ls -R gs://${MYBUCKET}
+gs://images-16790/imgs/:
+gs://images-16790/imgs/african-woman.jpg
+gs://images-16790/imgs/classroom.jpg
+gs://images-16790/imgs/family-of-three.jpg
+
+
+# Create a Cloud Dataproc cluster
+
+
+Name your cluster, replacing "MYCLUSTER" with the name. Then set a shell variable to your cluster's name. We'll be using the shell variable in commands to refer to your cluster.
+
+MYCLUSTER="${USER/_/-}-codelab"
+echo MYCLUSTER=${MYCLUSTER}
+
+
+Set a default GCE zone to use (preferably the one you used for your development machine) and create a new cluster:
+
+
+gcloud config set compute/zone us-central1-a
+gcloud dataproc clusters create ${MYCLUSTER} --worker-machine-type=n1-standard-2 --master-machine-type=n1-standard-2
+
+
+The default cluster settings, which include two worker nodes, should be sufficient for this lab. We specify n1-standard-2 as both the worker and master machine type to reduce the overall number of cores used by our cluster.
+
+See the Cloud SDK gcloud dataproc clusterscreate command for information on using command line flags to customize cluster settings.
+
+
+
+
+# Submit your job to Cloud Dataproc
+
+In this lab the program you're running is used as a face detector, so the inputted haar classifier must describe a face. A haar classifier is an XML file that is used to describe features that the program will detect. Download the haar classifier file and include its GCS path in the first argument when you submit your job to your Cloud Dataproc cluster.
+
+
+curl https://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_frontalface_default.xml | gsutil cp - gs://${MYBUCKET}/haarcascade_frontalface_default.xml
+
+cd ~/cloud-dataproc/codelabs/opencv-haarcascade
+
+gcloud dataproc jobs submit spark \
+--cluster ${MYCLUSTER} \
+--jar target/scala-2.10/feature_detector-assembly-1.0.jar -- \
+gs://${MYBUCKET}/haarcascade_frontalface_default.xml \
+gs://${MYBUCKET}/imgs/ \
+gs://${MYBUCKET}/out/
+
+
+Step 3
+
+Monitor the job, in the Console go to Products & services > Dataproc > Jobs.
+
+
+
+Line wrapping
+  Equivalent command line
+18/02/28 21:53:20 INFO org.spark_project.jetty.util.log: Logging initialized @3099ms
+18/02/28 21:53:20 INFO org.spark_project.jetty.server.Server: jetty-9.3.z-SNAPSHOT
+18/02/28 21:53:20 INFO org.spark_project.jetty.server.Server: Started @3209ms
+18/02/28 21:53:20 INFO org.spark_project.jetty.server.AbstractConnector: Started ServerConnector@1b743d24{HTTP/1.1,[http/1.1]}{0.0.0.0:4040}
+18/02/28 21:53:21 INFO com.google.cloud.hadoop.fs.gcs.GoogleHadoopFileSystemBase: GHFS version: 1.6.3-hadoop2
+18/02/28 21:53:22 INFO org.apache.hadoop.yarn.client.RMProxy: Connecting to ResourceManager at google248257-student-codelab-m/10.128.0.3:8032
+18/02/28 21:53:26 INFO org.apache.hadoop.yarn.client.api.impl.YarnClientImpl: Submitted application application_1519854691707_0001
+18/02/28 21:53:36 WARN com.google.cloud.hadoop.gcsio.GoogleCloudStorageReadChannel: Channel for 'gs://images-16790/haarcascade_frontalface_default.xml' is not open.
+18/02/28 21:53:36 WARN com.google.cloud.hadoop.gcsio.GoogleCloudStorage: Repairing batch of 1 missing directories.
+18/02/28 21:53:37 WARN com.google.cloud.hadoop.gcsio.GoogleCloudStorage: Successfully repaired 1/1 implicit directories.
+Number of files found: 3
+[Stage 0:>                                                          (0 + 0) / 2]
+[Stage 0:>                                                          (0 + 1) / 2]
+[Stage 0:>                                                          (0 + 2) / 2]
+[Stage 0:=============================>                             (1 + 1) / 2]
+
+
+
+The output files can be found at gs://images-16790/out/
+Total time: 16176 milliseconds.
+
+
+
+18/02/28 21:53:51 INFO org.spark_project.jetty.server.AbstractConnector: Stopped Spark@1b743d24{HTTP/1.1,[http/1.1]}{0.0.0.0:4040}
+Job output is complete
+
+
+
+
+
+Step 4
+
+When the job is complete, go to Products & services > Storage and find the bucket you created (it will have your username followed by "images" followed by a random number) and click on it. Then click on an image in the Out directory. The image will download to your computer.
+
+How accurate is the face detection? The Vision API is a better way to do this, since this sort of hand-coded rules don't work all that well. You can see how it works next.
+
+
+
+
+Step 5 [optional]
+
+Click on the other images you uploaded to your bucket. Now all 3 will be downloaded. Save them to your computer.
+
+Navigate to the Vision API page, scroll down to the Try the Api section and upload the images you downloaded from your bucket. You'll see the results of the image detection in seconds. The underlying machine learning models keep improving, so your results may not be the same:
+
+
+
+
+
+Step 6 [optional]
+
+If you want to experiment with improving the Feature Detector, you can make edits to the FeatureDetector code, then rerun sbt assembly and the gcloud dataproc jobs submit command.
