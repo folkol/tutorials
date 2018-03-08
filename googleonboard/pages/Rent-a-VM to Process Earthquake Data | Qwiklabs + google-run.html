@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","errorBeacon":"bam.nr-data.net","licenseKey":"caff0d62ed","applicationID":"22482426","transactionName":"IQ1XRUEOVV1dFxlRXAEXSlRATkpZVxI=","queueTime":0,"applicationTime":269,"agent":""}</script>
+<script type="text/javascript">window.NREUM||(NREUM={}),__nr_require=function(e,t,n){function r(n){if(!t[n]){var o=t[n]={exports:{}};e[n][0].call(o.exports,function(t){var o=e[n][1][t];return r(o||t)},o,o.exports)}return t[n].exports}if("function"==typeof __nr_require)return __nr_require;for(var o=0;o<n.length;o++)r(n[o]);return r}({1:[function(e,t,n){function r(){}function o(e,t,n){return function(){return i(e,[f.now()].concat(u(arguments)),t?null:this,n),t?void 0:this}}var i=e("handle"),a=e(2),u=e(3),c=e("ee").get("tracer"),f=e("loader"),s=NREUM;"undefined"==typeof window.newrelic&&(newrelic=s);var p=["setPageViewName","setCustomAttribute","setErrorHandler","finished","addToTrace","inlineHit","addRelease"],d="api-",l=d+"ixn-";a(p,function(e,t){s[t]=o(d+t,!0,"api")}),s.addPageAction=o(d+"addPageAction",!0),s.setCurrentRouteName=o(d+"routeName",!0),t.exports=newrelic,s.interaction=function(){return(new r).get()};var m=r.prototype={createTracer:function(e,t){var n={},r=this,o="function"==typeof t;return i(l+"tracer",[f.now(),e,n],r),function(){if(c.emit((o?"":"no-")+"fn-start",[f.now(),r,o],n),o)try{return t.apply(this,arguments)}catch(e){throw c.emit("fn-err",[arguments,this,e],n),e}finally{c.emit("fn-end",[f.now()],n)}}}};a("setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),function(e,t){m[t]=o(l+t)}),newrelic.noticeError=function(e){"string"==typeof e&&(e=new Error(e)),i("err",[e,f.now()])}},{}],2:[function(e,t,n){function r(e,t){var n=[],r="",i=0;for(r in e)o.call(e,r)&&(n[i]=t(r,e[r]),i+=1);return n}var o=Object.prototype.hasOwnProperty;t.exports=r},{}],3:[function(e,t,n){function r(e,t,n){t||(t=0),"undefined"==typeof n&&(n=e?e.length:0);for(var r=-1,o=n-t||0,i=Array(o<0?0:o);++r<o;)i[r]=e[t+r];return i}t.exports=r},{}],4:[function(e,t,n){t.exports={exists:"undefined"!=typeof window.performance&&window.performance.timing&&"undefined"!=typeof window.performance.timing.navigationStart}},{}],ee:[function(e,t,n){function r(){}function o(e){function t(e){return e&&e instanceof r?e:e?c(e,u,i):i()}function n(n,r,o,i){if(!d.aborted||i){e&&e(n,r,o);for(var a=t(o),u=m(n),c=u.length,f=0;f<c;f++)u[f].apply(a,r);var p=s[y[n]];return p&&p.push([b,n,r,a]),a}}function l(e,t){v[e]=m(e).concat(t)}function m(e){return v[e]||[]}function w(e){return p[e]=p[e]||o(n)}function g(e,t){f(e,function(e,n){t=t||"feature",y[n]=t,t in s||(s[t]=[])})}var v={},y={},b={on:l,emit:n,get:w,listeners:m,context:t,buffer:g,abort:a,aborted:!1};return b}function i(){return new r}function a(){(s.api||s.feature)&&(d.aborted=!0,s=d.backlog={})}var u="nr@context",c=e("gos"),f=e(2),s={},p={},d=t.exports=o();d.backlog=s},{}],gos:[function(e,t,n){function r(e,t,n){if(o.call(e,t))return e[t];var r=n();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(e,t,{value:r,writable:!0,enumerable:!1}),r}catch(i){}return e[t]=r,r}var o=Object.prototype.hasOwnProperty;t.exports=r},{}],handle:[function(e,t,n){function r(e,t,n,r){o.buffer([e],r),o.emit(e,t,n)}var o=e("ee").get("handle");t.exports=r,r.ee=o},{}],id:[function(e,t,n){function r(e){var t=typeof e;return!e||"object"!==t&&"function"!==t?-1:e===window?0:a(e,i,function(){return o++})}var o=1,i="nr@id",a=e("gos");t.exports=r},{}],loader:[function(e,t,n){function r(){if(!x++){var e=h.info=NREUM.info,t=d.getElementsByTagName("script")[0];if(setTimeout(s.abort,3e4),!(e&&e.licenseKey&&e.applicationID&&t))return s.abort();f(y,function(t,n){e[t]||(e[t]=n)}),c("mark",["onload",a()+h.offset],null,"api");var n=d.createElement("script");n.src="https://"+e.agent,t.parentNode.insertBefore(n,t)}}function o(){"complete"===d.readyState&&i()}function i(){c("mark",["domContent",a()+h.offset],null,"api")}function a(){return E.exists&&performance.now?Math.round(performance.now()):(u=Math.max((new Date).getTime(),u))-h.offset}var u=(new Date).getTime(),c=e("handle"),f=e(2),s=e("ee"),p=window,d=p.document,l="addEventListener",m="attachEvent",w=p.XMLHttpRequest,g=w&&w.prototype;NREUM.o={ST:setTimeout,SI:p.setImmediate,CT:clearTimeout,XHR:w,REQ:p.Request,EV:p.Event,PR:p.Promise,MO:p.MutationObserver};var v=""+location,y={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-1071.min.js"},b=w&&g&&g[l]&&!/CriOS/.test(navigator.userAgent),h=t.exports={offset:u,now:a,origin:v,features:{},xhrWrappable:b};e(1),d[l]?(d[l]("DOMContentLoaded",i,!1),p[l]("load",r,!1)):(d[m]("onreadystatechange",o),p[m]("onload",r)),c("mark",["firstbyte",u],null,"api");var x=0,E=e(4)},{}]},{},["loader"]);</script>
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="S1pVGrnKA6/PAIabAoXsEWM9yT+dx4WGzWt3aR11b87kj/eVLexSr3CCE2gW+D8VZiIIaZ6P/Kp7IX2/I3j3ZQ==" />
+<title>Rent-a-VM to Process Earthquake Data | Qwiklabs + google-run</title>
+<meta content='width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0' name='viewport'>
+<meta content='In this lab you spin up a virtual machine, configure its security, access it remotely, and then carry out the steps of an ingest-transform-and-publish data pipeline manually. This lab is part of a series of labs on processing scientific data.' name='description'>
+<meta content='Google Cloud Platform Training, hands-on labs, Google Certification Prep, self-paced labs, Google Compute Engine, Machine Learning, Scientific Data, Cloud Architecture, GCP Essentials' name='keywords'>
+<meta content='Qwiklabs' name='author'>
+<meta content='Rent-a-VM to Process Earthquake Data | Qwiklabs + google-run' property='og:title'>
+<meta content='website' property='og:type'>
+<meta content='/favicon.png' property='og:image'>
+<meta content='https://www.qwiklabs.com' property='og:url'>
+<meta content='Qwiklabs' property='og:site_name'>
+<meta content='In this lab you spin up a virtual machine, configure its security, access it remotely, and then carry out the steps of an ingest-transform-and-publish data pipeline manually. This lab is part of a series of labs on processing scientific data.' property='og:description'>
+<meta content='/qwiklabs_logo_900x887.png' property='og:logo' size='900x887'>
+<meta content='/qwiklabs_logo_994x187.png' property='og:logo' size='994x187'>
+<meta content='#3681E4' property='msapplication-TileColor'>
+<meta content='/favicon-144.png' property='msapplication-TileImage'>
+<link href='/favicon.ico' rel='shortcut icon'>
+<link color='#3681E4' href='/favicon-svg.svg' rel='mask-icon'>
+<link href='/favicon-180.png' rel='apple-touch-icon-precomposed'>
+
+<!--[if lt IE 9]>
+<script src='http://html5shim.googlecode.com/svn/trunk/html5.js' type='text/javascript'></script>
+<![endif]-->
+<!--[endif]>  <![endif]-->
+<script>
+//<![CDATA[
+window.gon={};gon.current_user={"firstname":"Mattias","lastname":"Johansson","fullname":"Mattias Johansson","company":"Ivbar","email":"mattias.johansson@ivbar.com","origin":"google-run, direct","subscriptions":0,"id":"3c7e24de135c7c3e7438e256b3fd0a20","qlCreatedAt":"2018-02-16 09:10:41 UTC","optIn":false};gon.segment="j4Im8pqIko0Lxq4wVVZWMPMM0EroHUvb";gon.deployment="google-run";
+//]]>
+</script>
+
+
+
+<link rel="stylesheet" media="all" href="//d37nrxkwyxayeo.cloudfront.net/assets/application-92525ec1bd4ca4b9b59362a1f3f846c7dbf937520a77c7c7791d8cb61276d0fe.css" />
+<script src="//d37nrxkwyxayeo.cloudfront.net/assets/application-a06d144e514f2088d78225ad92936a77423215e36f7fb8a6a7ce3fda564fec30.js"></script>
+</head>
+<body class='focuses focuses-show l-no-padding '>
+<div class='header-container'>
+<div class='header'>
+<a class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect header__button header__button--nav header__side-menu-button js-side-menu-button'>
+<i class='material-icons'>menu</i>
+</a>
+<div class='header__title'>
+<a class="mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect header__button header__button--nav" href="https://google.qwiklabs.com/users/sign_in?locale=en"><i class="material-icons">arrow_back</i></a>
+
+<h1>
+Rent-a-VM to Process Earthquake Data
+</h1>
+</div>
+<div class='header__actions'>
+<a class='mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect header__button header__button--action header__button--search js-header-search-bar-button'>
+<i class='material-icons'>search</i>
+</a>
+<div class='header__menu header__menu--my-account'>
+<button class='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect' id='header_menu'>
+<i class='material-icons'><img class="avatar " src="https://secure.gravatar.com/avatar/e3dad1583469cf8d39c12f82f8757b18.png?s=80&amp;d=mm" alt="E3dad1583469cf8d39c12f82f8757b18" /></i>
+</button>
+<ul class='mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect' for='header_menu'>
+<li class="mdl-menu__item header__menu__item"><a href="/my_account/credits">Buy Credits</a></li>
+<li class="mdl-menu__item header__menu__item"><a href="/my_account/profile">My Account</a></li>
+<li class="mdl-menu__item header__menu__item"><a rel="nofollow" data-method="delete" href="/users/sign_out">Sign Out</a></li>
+
+</ul>
+</div>
+
+</div>
+</div>
+</div>
+<div class='header__search-bar js-header-search-bar'>
+<form action="/searches/elasticsearch" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="xIf4F4xkZC+bNNNtOa/nHtwDjhQ5n58XmdI3G8ancQxrUlqYGEI1LyS2Rp4t0jQa2RxPQjrX5jsvmD3N+Krppw==" />
+<input type="text" name="keywords" id="keywords" value="" placeholder="Search" />
+</form>
+
+<a class='mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect header__button'>
+<i class='material-icons'>close</i>
+</a>
+</div>
+
+<div class='l-flex'>
+<div class='side-menu js-side-menu'>
+<div class='side-menu__inner' style='min-height: 346px;'>
+<nav class='side-menu__nav'>
+<a class="side-menu__item" href="/catalog"><div class='side-menu__item__icon'>
+<i class='material-icons'>view_comfy</i>
+</div>
+<span class='side-menu__item__tooltip'>Catalog</span>
+<div class='side-menu__item__label'>
+Catalog
+</div>
+</a>
+<a class="side-menu__item" href="/my_learning"><div class='side-menu__item__icon'>
+<i class='material-icons'>history</i>
+</div>
+<span class='side-menu__item__tooltip'>My Learning</span>
+<div class='side-menu__item__label'>
+My Learning
+</div>
+</a>
+<hr>
+<a class="side-menu__item" href="/my_account/credits"><div class='side-menu__item__icon'>
+<i class='material-icons'>account_circle</i>
+</div>
+<span class='side-menu__item__tooltip'>My Account</span>
+<div class='side-menu__item__label'>
+My Account
+</div>
+</a>
+<a class="side-menu__item" href="https://qwiklab.zendesk.com/hc/en-us"><div class='side-menu__item__icon'>
+<i class='material-icons'>help</i>
+</div>
+<span class='side-menu__item__tooltip'>Help</span>
+<div class='side-menu__item__label'>
+Help
+</div>
+</a>
+</nav>
+<div class='side-menu__small-links js-small-links'>
+<a href="/privacy_policy">Privacy</a>
+<a href="/terms_of_service">Terms of Service</a>
+</div>
+</div>
+</div>
+<div class='side-menu__overlay js-side-menu-button'></div>
+
+<main>
+<div class='l-alert-wrapper alerts'>
+<span class='hidden' id='flash-sibling-before'></span>
+<div class='alert alert-success flash'>
+<p class='alert__message'>
+You enrolled in Quest: Scientific Data Processing
+</p>
+<a class='alert__close' data-dismiss='alert'>
+<i class='fa fa-times'></i>
+</a>
+<iframe class='l-ie-iframe-fix'></iframe>
+</div>
+
+</div>
+<div class='l-main-wrapper'>
+
+
+
+<div class='l-lab-container js-lab_and_classroom_info' data-classroom-name='Scientific Data Processing on the Google Cloud Platform' data-deployment='google-run' data-lab-name='Rent-a-VM to Process Earthquake Data' data-label='Rent-a-VM to Process Earthquake Data'>
+<div class='l-lab-sidebar js-lab-sidebar-container'>
+<div class='lab-sidebar js-lab-sidebar'>
+<div class='lab-sidebar__header'>
+<div class='lab-sidebar__header-row'>
+<span class='small-label'>
+40m access
+&middot;
+40m completion
+</span>
+</div>
+<div class='lab-sidebar__header-row'>
+<div class='rateit l-mrm' data-rateit-readonly='true' data-rateit-value='4.2132'></div>
+
+<a class='small-label l-mrm' data-target='#lab-review-modal' data-toggle='modal'>
+Rate Lab
+</a>
+<a class='small-label' data-target='#lab-details-modal' data-toggle='modal'>
+Lab Details
+</a>
+</div>
+
+</div>
+<div class='lab-sidebar__tabs'>
+<div class='tab-contents tab-contents--lab-sidebar'>
+<div class='tab-content is-active'>
+<h5 class='l-mbs'>
+Connection Details
+</h5>
+<div class='form-row js-form-row'>
+<a class='button button--full-width button--secondary is-disabled js-connection-dns-link js-external-window' target='_blank'>
+Open Google Console
+</a>
+</div>
+
+<div class='form-row js-form-row'>
+<div class='control-group'>
+<label class='label--console'>
+Username 
+</label>
+<input class='input input--console js-connection-username-0' disabled='disabled' readonly='readonly' value='&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;'>
+<button class='button button--copy button--copy-input js-copy-input-button' data-clipboard-target='.js-connection-username-0'>
+<i class='fa fa-clipboard'></i>
+</button>
+</div>
+</div>
+
+<div class='form-row js-form-row'>
+<div class='control-group'>
+<label class='label--console'>
+Password
+</label>
+<input class='input input--console js-connection-password' disabled='disabled' readonly='readonly' value='&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;'>
+<button class='button button--copy button--copy-input js-copy-input-button' data-clipboard-target='.js-connection-password'>
+<i class='fa fa-clipboard'></i>
+</button>
+</div>
+</div>
+
+<div class='form-row js-form-row'>
+<div class='control-group'>
+<label class='label--console'>
+GCP Project ID 
+</label>
+<input class='input input--console js-connection-project-0' disabled='disabled' readonly='readonly' value='&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;'>
+<button class='button button--copy button--copy-input js-copy-input-button' data-clipboard-target='.js-connection-project-0'>
+<i class='fa fa-clipboard'></i>
+</button>
+</div>
+</div>
+
+
+<div class='lab-sidebar__resource lab-sidebar__resource--additional-details l-mtl is-hidden js-cf-connection-output'></div>
+<div class='lab-sidebar__resource lab-sidebar__resource--additional-details l-mtl is-hidden js-additional-connection-info'></div>
+
+</div>
+</div>
+</div>
+</div>
+<div class='lab-sidebar__slider js-sidebar-slider'>
+<i class='fa fa-arrow-left'></i>
+<iframe class='l-ie-iframe-fix'></iframe>
+</div>
+
+</div>
+<div class='l-lab-main'>
+<div class='l-lab-main-header'>
+<header class='lab-header js-lab-header'>
+<div class='lab-header__section lab-header__section--flex'>
+<div class='lab-header__progress is-hidden js-progress'>
+<div class='lab-header__progress__bar js-progress-bar'></div>
+</div>
+</div>
+<div class='lab-header__section lab-header__section--no-border'>
+<span class='lab-header__progress-message is-hidden js-progress-message'>
+<div class='lab-header__progress-message__indicator js-progress-message-indicator'></div>
+<span class='js-progress-message-incomplete'>
+Lab Setting Up
+</span>
+<span class='js-progress-message-complete is-hidden'>
+Lab Running
+</span>
+</span>
+</div>
+<div class='lab-header__section'>
+<a class='button button--start button--lab js-start-lab-button' data-focus-id='5688' data-lab-access='One-time Lab' data-lab-instance-id=''>
+Start Lab
+</a>
+<a class='button button--wait button--lab js-waiting-lab-button is-hidden'>
+<i class='fa fa-spinner fa-pulse'></i>
+</a>
+<a class='button button--end button--lab js-end-lab-button is-hidden'>
+End Lab
+</a>
+</div>
+<div class='lab-header__section'>
+<h3 class='text--sign js-timer' data-duration='2400'>
+ 00:40:00
+</h3>
+</div>
+</header>
+
+</div>
+<div class='l-lab-main-body'>
+<div class='lab-content js-lab-content'>
+<div class='alert alert--fake js-alert'>
+<p class='alert__message js-alert-message'></p>
+<a class='alert__close js-alert-close'>
+<i class='fa fa-times'></i>
+</a>
+<iframe class='l-ie-iframe-fix'></iframe>
+</div>
+<div class='lab-content__markdown-wrapper'>
+<div class='js-markdown-instructions lab-content__markdown markdown-lab-instructions' id='markdown-lab-instructions'>
+<div class="codelab">
+  <h1 class="lab-title">Rent-a-VM to Process Earthquake Data</h1>
+  
+  <div class="lab-step">
+    <h2>GSP008</h2>
+    
+    <p><img style="max-width: 624.00px;" src="//run-qwiklab-website-prod.s3.amazonaws.com/instructions/documents/35108/original/img/696e6adc52c0f5c8.png"></p>
+
+
+
+  </div>
+  
+  <div class="lab-step">
+    <h2>Overview</h2>
+    
+    <p>In this lab you spin up a virtual machine, configure its security, access it remotely, and then manually create a pipeline to  get, process and publish the data. </p>
+<p>This lab is part of the processing scientific lab series.</p>
+<h3><strong>What you learn</strong></h3>
+<p>In this lab, you:</p>
+<ul>
+<li>Create a Compute Engine instance with the necessary access and security.</li>
+<li>SSH into the instance.</li>
+<li>Install the software package Git (for source code version control).</li>
+<li>Ingest data into the Compute Engine instance.</li>
+<li>Transform data on the Compute Engine instance.</li>
+<li>Store the transformed data on Cloud Storage.</li>
+<li>Publish Cloud Storage data to the web.</li>
+</ul>
+
+
+  </div>
+  
+  <div class="lab-step">
+    <h2>Introduction</h2>
+    
+    <p>Using Google Cloud Platform to set up a virtual machine to process earthquake data frees you from IT minutia to focus on your scientific goals.  You can ingest and process data, then present the results in various formats. For example, you will ingest real-time earthquake data published by the United States Geological Survey (USGS) and create maps that look like this:</p>
+<p><img style="max-width: 416.50px;" src="//run-qwiklab-website-prod.s3.amazonaws.com/instructions/documents/35108/original/img/b3b64f0a8d7eedde.png"></p>
+
+
+  </div>
+  
+  <div class="lab-step">
+    <h2>Setup</h2>
+    
+    <h4>What you'll need</h4>
+<p>To complete this lab, you'll need:</p>
+<ul>
+<li>Access to a standard internet browser (Chrome browser recommended).</li>
+<li>Time. Note the lab's <strong>Duration</strong> in the <strong>Lab Details</strong> tab in Qwiklabs, which is an estimate of the time it should take to complete all steps.  Plan your schedule so you have time to complete the lab. Once you start the lab, you will not be able to pause and return later (you begin at step 1 every time you start a lab). </li>
+<li>You do NOT need a Google Cloud Platform account or project. An account, project and associated resources are provided to you as part of this lab.</li>
+<li>If you already have your own GCP account, make sure you do not use it for this lab. </li>
+<li>If your lab prompts you to log into the console, <strong>use only the student account provided to you by the lab</strong>. This prevents you from incurring charges for lab activities in your personal GCP account.</li>
+</ul>
+<aside class="warning"><p>Use a new Incognito window (Chrome) or another browser for the Qwiklabs session. Alternatively, you can log out of all other Google / Gmail accounts before beginning the labs.</p>
+<p><img style="max-width: 165.50px;" src="//run-qwiklab-website-prod.s3.amazonaws.com/instructions/documents/35108/original/img/e30f3fff7ac6717f.png"></p>
+</aside>
+<h4>Start your lab</h4>
+<p>Note the <strong>Setup time</strong> in the <strong>Lab Details</strong> tab in Qwiklabs.  That's how long it will take for the lab account to build its resources. You can track your lab's progress with the status bar at the top of your screen. </p>
+<p>When you are ready, click <strong>Start Lab</strong>. </p>
+<p><img style="max-width: 355.50px;" src="//run-qwiklab-website-prod.s3.amazonaws.com/instructions/documents/35108/original/img/5e5165bd940f65c.png"></p>
+<aside class="warning"><p><strong>Important</strong>:  What is happening during this time?</p>
+<p>Your lab is spinning up GCP resources for you behind the scenes, including an account, a project, resources within the project, and permission for you to control the resources you will need to run the lab. This means that instead of spending time manually setting up a project and building resources from scratch as part of your lab, you can begin learning more quickly.</p>
+</aside>
+<h4>Find Your Lab's GCP Username and Password</h4>
+<p>To access the resources and console for this lab, locate the Connection Details panel in Qwiklabs.  Here you will find the account ID and password for the account you will use to log in to the Google Cloud Platform:</p>
+<p><img style="max-width: 310.00px;" src="//run-qwiklab-website-prod.s3.amazonaws.com/instructions/documents/35108/original/img/56aa1b525796849d.png"></p>
+<p>If your lab provides other resource identifiers or connection-related information, it will appear on this panel as well.</p>
+
+<h4>Log in to Google Cloud Console</h4>
+<p>Using the Qwiklabs browser tab/window (preferably in Incognito mode) or the separate browser you are using for the Qwiklabs session, copy the Username from the Connection Details panel and click the orange "Open Google Console" button.  Paste in the Username, and then the Password as prompted:</p>
+<p><img style="max-width: 328.50px;" src="//run-qwiklab-website-prod.s3.amazonaws.com/instructions/documents/35108/original/img/1e93a1ef14437b48.png"></p>
+<p>Accept the terms and conditions.</p>
+<p>Since this is a temporary account, which you will only have access to for this one lab:</p>
+<ul>
+<li>Do not add recovery options</li>
+<li>Do not sign up for free trials</li>
+</ul>
+<aside class="special"><p><strong>Note: </strong>You can view the menu with a list of GCP Products and Services by clicking the button at the top-left next to "Google Cloud Platform"<strong>.</strong></p>
+<p><img style="max-width: 400.00px;" src="//run-qwiklab-website-prod.s3.amazonaws.com/instructions/documents/35108/original/img/de920829ce419d22.png"></p>
+</aside>
+
+
+
+  </div>
+  
+  <div class="lab-step">
+    <h2>Create Compute Engine instance with the necessary API access</h2>
+    
+    <p>To create a Compute Engine instance:</p>
+<h3>Step 1</h3>
+<p>In the Google Cloud Platform menu bar, click on the Products &amp; services icon (three horizontal lines) &gt; Compute Engine &gt; VM instances:</p>
+<p><img style="max-width: 624.00px;" src="//run-qwiklab-website-prod.s3.amazonaws.com/instructions/documents/35108/original/img/970552423ea28ef5.png"></p>
+<h3><strong>Step 2</strong></h3>
+<p>Click <strong>Create Instance</strong> and wait for the Create an instance form to load. </p>
+<p><img style="max-width: 448.50px;" src="//run-qwiklab-website-prod.s3.amazonaws.com/instructions/documents/35108/original/img/adab91215791c3ad.png"></p>
+<h3><strong>Step 3</strong></h3>
+<p>Change Identify API access for the Compute Engine default service account to <strong>Allow full access to all Cloud APIs</strong>, and then click Create.</p>
+<h3><strong>Step 7</strong></h3>
+<p><img style="max-width: 624.00px;" src="//run-qwiklab-website-prod.s3.amazonaws.com/instructions/documents/35108/original/img/8a40254d24e53503.png"></p>
+<p>You'll see a green circle with a check when the instance is created.</p>
+
+
+  </div>
+  
+  <div class="lab-step">
+    <h2>SSH into the instance</h2>
+    
+    <p>You can remotely access your Compute Engine instance using Secure Shell (SSH):</p>
+<h3><strong>Step 1</strong></h3>
+<p>Click the compute engine instance  &gt; <strong>SSH</strong>:</p>
+<p><img style="max-width: 434.50px;" src="//run-qwiklab-website-prod.s3.amazonaws.com/instructions/documents/35108/original/img/3519a53b30701f67.png"></p>
+<p>The VM instance details displays.</p>
+<aside class="special"><p>Note:</p>
+<p>Make sure your browser is not blocking popups.</p>
+<p>SSH keys are automatically transferred; no extra software is needed to ssh directly from the browser. </p>
+</aside>
+<h3><strong>Step 2</strong></h3>
+<p>To find some information about the Compute Engine instance, type the following into the command-line:</p>
+<pre class="prettyprint">cat /proc/cpuinfo</pre>
+
+
+  </div>
+  
+  <div class="lab-step">
+    <h2>Install software</h2>
+    
+    <h3><strong>Step 1</strong></h3>
+<p>Still in the Compute Engine instance, enter the following commands:</p>
+<pre class="prettyprint">sudo apt-get update</pre>
+<pre class="prettyprint">sudo apt-get -y -qq install git</pre>
+<h3><strong>Step 2</strong></h3>
+<p>Verify that git is now installed</p>
+<pre class="prettyprint">git --version</pre>
+
+
+  </div>
+  
+  <div class="lab-step">
+    <h2>Ingest USGS data</h2>
+    
+    <h3><strong>Step 1</strong></h3>
+<p>Still in the Compute Engine instance command line, enter the following command to download the code from github:</p>
+<pre class="prettyprint">git clone https://github.com/GoogleCloudPlatform/training-data-analyst</pre>
+<aside class="special"><p><strong>Note</strong></p>
+<p>If you get a git authorization error, it is likely that the github URL has a typo in it.  Please copy and paste the above code.</p>
+</aside>
+<h3><strong>Step 2</strong></h3>
+<p>Navigate to the folder corresponding to this lab:</p>
+<pre class="prettyprint">cd training-data-analyst/CPB100/lab2b</pre>
+<h3><strong>Step 3</strong></h3>
+<p>Examine the ingest code using <code>less</code>:</p>
+<pre class="prettyprint">less ingest.sh</pre>
+<p>The <code>less</code> command allows you to view the file (Press the <strong><code>spacebar</code></strong> to scroll down; the letter <strong><code>b</code></strong> to <strong>b</strong>ack up a page; the letter <strong><code>q</code></strong> to <strong>q</strong>uit). </p>
+<p>Enter<strong> q </strong>to exit the editor.</p>
+<p>The program <code>ingest.sh</code> downloads a dataset of earthquakes in the past 7 days from the US Geological Survey.  Notice where the file is downloaded (disk or to Cloud Storage).</p>
+<h3><strong>Step 4</strong></h3>
+<p>Enter the following command to run the ingest code:</p>
+<pre class="prettyprint">bash ingest.sh</pre>
+<h3><strong>Step 5</strong></h3>
+<p>Verify that some data has been downloaded:</p>
+<pre class="prettyprint">head earthquakes.csv</pre>
+<p>The <code>head</code> command shows you the first few lines of the file.</p>
+
+
+  </div>
+  
+  <div class="lab-step">
+    <h2>Transform the data</h2>
+    
+    <p>You will use a Python program to transform the raw data into a map of earthquake activity:</p>
+<p>The transformation code is explained in detail in this notebook: </p>
+<p><a href="https://github.com/GoogleCloudPlatform/datalab-samples/blob/master/basemap/earthquakes.ipynb" target="_blank">https://github.com/GoogleCloudPlatform/datalab-samples/blob/master/basemap/earthquakes.ipynb</a>  </p>
+<p>Feel free to read the narrative to understand what the transformation code does.  The notebook itself was written in Datalab, a GCP product that you will use later in this set of labs.</p>
+<h3><strong>Step 1</strong></h3>
+<p>Still in the Compute Engine instance, enter the following command to install the necessary Python packages on the Compute Engine instance:</p>
+<pre class="prettyprint">bash install_missing.sh</pre>
+<h3><strong>Step 3</strong></h3>
+<p>Enter the following command to  run the transformation code:</p>
+<pre class="prettyprint">python transform.py</pre>
+<h3><strong>Step 4</strong></h3>
+<p>You will notice a new image file if you enter the following command to list the contents of the directory:</p>
+<pre class="prettyprint">ls -l</pre>
+<p><img style="max-width: 624.00px;" src="//run-qwiklab-website-prod.s3.amazonaws.com/instructions/documents/35108/original/img/aa6449917ddd215e.png"></p>
+
+
+  </div>
+  
+  <div class="lab-step">
+    <h2>Create bucket</h2>
+    
+    <p>Create a bucket using the GCP console:</p>
+<h3><strong>Step 1</strong></h3>
+<p>Go to the GCP Console. If you closed it, browse to the GCP Console by visiting <a href="http://cloud.google.com" target="_blank">http://cloud.google.com</a> and clicking on <strong>Go To Console.</strong></p>
+<h3><strong>Step 2</strong></h3>
+<p>Click on the Product &amp; services icon &gt; <strong>Storage</strong></p>
+<p><img style="max-width: 247.00px;" src="//run-qwiklab-website-prod.s3.amazonaws.com/instructions/documents/35108/original/img/d5368e61b8fb9b0f.png"></p>
+<h3><strong>Step 3</strong></h3>
+<p>Click on <strong>Create Bucket</strong>. </p>
+<h3><strong>Step 4</strong></h3>
+<p>Choose a globally unique bucket name (your project name is unique, so you could use that).  You can leave it as <strong>Multi-Regional</strong>, or improve speed and reduce costs by making it <strong>Regional</strong> (choose the same region as your Compute Engine instance). Then, click <strong>Create</strong>.</p>
+<h3><strong>Step 5</strong></h3>
+<p>Note down the name of your bucket. </p>
+<p>You insert this whenever the instructions ask for <code>&lt;YOUR-BUCKET&gt;.</code></p>
+
+
+  </div>
+  
+  <div class="lab-step">
+    <h2>Store data</h2>
+    
+    <p>To configure how to store the original and transformed data in Cloud Storage:</p>
+<h3><strong>Step 1</strong></h3>
+<p>In the SSH window of the Compute Engine instance, type:</p>
+<pre class="prettyprint">gsutil cp earthquakes.* gs://&lt;YOUR-BUCKET&gt;/earthquakes/</pre>
+<p>to copy the files to Cloud Storage. Remember to change <code>&lt;YOUR-BUCKET&gt;</code> to the bucket name you created earlier.</p>
+<h3><strong>Step 2</strong></h3>
+<p>On the GCP console, click on your bucket name, and notice there are three new files present in the earthquakes folder. (You may want to click the <em>Refresh</em> button on the top).</p>
+<p><img style="max-width: 624.00px;" src="//run-qwiklab-website-prod.s3.amazonaws.com/instructions/documents/35108/original/img/b320d07b31f3cfd9.png"></p>
+
+
+  </div>
+  
+  <div class="lab-step">
+    <h2>Publish Cloud Storage files to web</h2>
+    
+    <p>To publish Cloud Storage files to the web:</p>
+<h3><strong>Step 1</strong></h3>
+<p>On the GCP console, select <em>all three</em> earthquakes files that you uploaded to the bucket and click on <strong>Share publicly</strong></p>
+<h3><strong>Step 2</strong></h3>
+<p>Click on the <strong>Share publicly </strong> checkbox corresponding to <strong>earthquakes.htm</strong></p>
+<p><img style="max-width: 624.00px;" src="//run-qwiklab-website-prod.s3.amazonaws.com/instructions/documents/35108/original/img/7d60e9d3937b0911.png"></p>
+<p>And then click <strong>Public link</strong> next to the checkbox. <img style="max-width: 624.00px;" src="//run-qwiklab-website-prod.s3.amazonaws.com/instructions/documents/35108/original/img/e5a4485bb015193.png"></p>
+<h3><strong>Step 3</strong></h3>
+<p>Notice the URL of the published Cloud Storage file and how it relates to your bucket name and content.</p>
+<h3><strong>Step 4</strong></h3>
+<p>Close the SSH window.</p>
+
+
+  </div>
+  
+  <div class="lab-step">
+    <h2>Congratulations!</h2>
+    
+    <p>You have completed this lab and learned how to spin up a compute engine instance, configure its security, and access it remotely.</p>
+<p><img style="max-width: 150.00px;" src="//run-qwiklab-website-prod.s3.amazonaws.com/instructions/documents/35108/original/img/b408e6248fa82b63.png"></p>
+<h3>Finish Your Quest</h3>
+<p>This self-paced lab is part of the Qwiklabs Quest <a href="https://google.qwiklabs.com/quests/28" target="_blank"><strong>Scientific Data Processing</strong></a>. A Quest is a series of related labs that form a learning path. Completing this Quest earns you the badge above, to recognize your achievement. You can make your badge (or badges) public and link to them in your online resume or social media account. <a href="https://google.qwiklabs.com/learning_paths/28/enroll" target="_blank">Enroll in this Quest</a> and get immediate completion credit if you've taken this lab. <a href="https://google.qwiklabs.com/catalog" target="_blank">See other available Qwiklabs Quests</a>.</p>
+<h3>Take Your Next Lab</h3>
+<p>Continue your Quest with <a href="https://google.qwiklabs.com/focuses/5696" target="_blank">Weather Data in BigQuery</a>.</p>
+<h3>Google Cloud Training &amp; Certification</h3>
+<p>...helps you make the most of Google Cloud technologies. <a href="https://cloud.google.com/training/courses" target="_blank">Our classes</a> include technical skills and best practices to help you get up to speed quickly and continue your learning journey. We offer fundamental to advanced level training, with on-demand, live, and virtual options to suit your busy schedule. <a href="https://cloud.google.com/certification/" target="_blank">Certifications</a> help you validate and prove your skill and expertise in Google Cloud technologies.</p>
+
+<h3><strong>Next Steps / Learn More</strong></h3>
+<p>Here are some follow-up steps:</p>
+<ul>
+<li>Check out <a href="https://earthquake.usgs.gov/data/data.php#sta" target="_blank">USGS.gov</a> for complete information, for example the latest earthquakes,  20<a href="https://earthquake.usgs.gov/earthquakes/map/#%7B%22feed%22%3A%221491579806344%22%2C%22sort%22%3A%22largest%22%2C%22mapposition%22%3A%5B%5B-85%2C0%5D%2C%5B85%2C360%5D%5D%2C%22viewModes%22%3A%7B%22help%22%3Afalse%2C%22list%22%3Atrue%2C%22map%22%3Atrue%2C%22settings%22%3Afalse%7D%2C%22autoUpdate%22%3Afalse%2C%22search%22%3A%7B%22id%22%3A%221491579806344%22%2C%22name%22%3A%22Search%20Results%22%2C%22isSearch%22%3Atrue%2C%22params%22%3A%7B%22starttime%22%3A%221900-01-01%2000%3A00%3A00%22%2C%22endtime%22%3A%222017-04-07%2023%3A59%3A59%22%2C%22minmagnitude%22%3A8%2C%22orderby%22%3A%22magnitude%22%2C%22limit%22%3A20%7D%7D%7D" target="_blank"> l</a>argest earthquakes in the world, geodetic data, hazard assessment data and models and more.</li>
+<li>
+<a href="https://earthquake.usgs.gov/ens/" target="_blank">Sign up for </a>automatic notifications of earthquakes in your area.</li>
+</ul>
+<h3>Google Cloud Training &amp; Certification</h3>
+<p>...helps you make the most of Google Cloud technologies. <a href="https://cloud.google.com/training/courses" target="_blank">Our classes</a> include technical skills and best practices to help you get up to speed quickly and continue your learning journey. We offer fundamental to advanced level training, with on-demand, live, and virtual options to suit your busy schedule. <a href="https://cloud.google.com/certification/" target="_blank">Certifications</a> help you validate and prove your skill and expertise in Google Cloud technologies.</p>
+
+<h5>Manual Last Updated September 20, 2017</h5>
+<h5>Lab Last Tested July 11, 2017</h5>
+<p>©2017 Google Inc. All rights reserved. Google and the Google logo are trademarks of Google Inc. All other company and product names may be trademarks of the respective companies with which they are associated.</p>
+
+
+
+  </div>
+  
+
+  
+</div>
+
+</div>
+
+<div class='lab-content__outline js-lab-content-outline'>
+</div>
+
+</div>
+</div>
+
+<div class='lab-resource js-lab-resource-area'>
+<div class='lab-resource__close js-lab-resource-area-close'>
+&times;
+</div>
+<div class='js-lab-resource'></div>
+</div>
+<div class='lab-resource__background js-lab-resource-background'>
+<iframe class='l-ie-iframe-fix'></iframe>
+</div>
+
+</div>
+</div>
+<div class='lab-buttons'>
+<a class='mdl-button mdl-js-button mdl-button--fab mdl-button--large-fab mdl-js-ripple-effect mdl-button--accent mdl-shadow--8dp help-button' data-target='#lab-help-modal' data-toggle='modal'>
+<i class='material-icons'>help</i>
+</a>
+</div>
+</div>
+
+
+</div>
+</main>
+<div class='bottom-menu'>
+<a class="side-menu__item" href="/catalog"><div class='side-menu__item__icon'>
+<i class='material-icons'>view_comfy</i>
+</div>
+<span class='side-menu__item__tooltip'>Catalog</span>
+<div class='side-menu__item__label'>
+Catalog
+</div>
+</a>
+<a class="side-menu__item" href="/my_learning"><div class='side-menu__item__icon'>
+<i class='material-icons'>history</i>
+</div>
+<span class='side-menu__item__tooltip'>My Learning</span>
+<div class='side-menu__item__label'>
+My Learning
+</div>
+</a>
+<a class="side-menu__item" href="/my_account/credits"><div class='side-menu__item__icon'>
+<i class='material-icons'>account_circle</i>
+</div>
+<span class='side-menu__item__tooltip'>My Account</span>
+<div class='side-menu__item__label'>
+My Account
+</div>
+</a>
+<a class='side-menu__item js-side-menu-button'>
+<div class='side-menu__item__icon'>
+<i class='material-icons'>menu</i>
+</div>
+<span class='side-menu__item__tooltip'>More</span>
+<div class='side-menu__item__label'>
+More
+</div>
+</a>
+</div>
+
+</div>
+
+
+<div class='modal fade' id='support-modal'>
+<div class='modal-container'>
+<div class='modal-content mdl-shadow--24dp'>
+<a class='modal-close' data-dismiss='modal'>&times;</a>
+<h4 class='modal-header'>How can we help you?</h4>
+<p class='l-mbl'>
+We will get back to you within 24 hours.
+</p>
+<form action="/contact_support" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="w4j8M3e7BD58qHCxMXOC5RJnKXFNfmT/VxqIrkh/qfpsXV68451VPsMq5UIlDlHhF3joJ042HdPhUIJ4dnIxUQ==" />
+<div class='form-row'>
+<div class='control-group'>
+<label for="Question">Question</label>
+<input type="text" name="question" id="question" placeholder="Briefly describe your question" />
+</div>
+</div>
+<div class='form-row'>
+<div class='control-group'>
+<label for="Details">Details</label>
+<textarea name="description" id="description" rows="5" placeholder="Fill in the details here. Please try to be as specific as possible.&#x000A;">
+</textarea>
+</div>
+</div>
+<div class='form-row'>
+<div class='control-group'>
+<label for="Your_Name">Your name</label>
+<input type="text" name="name" id="name" value="Mattias Johansson" />
+</div>
+<div class='control-group'>
+<label for="Your_Email">Your email</label>
+<input type="text" name="email" id="email" value="mattias.johansson@ivbar.com" />
+</div>
+</div>
+<div class='form-row'>
+<div class='control-group'>
+<input type="submit" name="commit" value="Submit" class="button" />
+</div>
+</div>
+</form>
+
+
+</div>
+</div>
+<iframe class='l-ie-iframe-fix'></iframe>
+</div>
+
+<div class='modal fade' id='lab-help-modal'>
+<div class='modal-container'>
+<div class='mdl-shadow--24dp modal-content'>
+<h4 class='modal-header'>Get Help</h4>
+<form action="/contact_support" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="9KjzU+YLEDGkO7Ma2o4uipWWswcynwg36r34b2KwaWRbfVHcci1BMRu5JunO8/2OkIlyUTHXcRtc9/K5XL3xzw==" />
+<div class='modal-body'>
+<div class='control-group l-mbl'>
+<label for="Question">Question</label>
+<input type="text" name="question" id="question" placeholder="Briefly describe your question" />
+</div>
+<div class='control-group l-mbl'>
+<label for="Details">Details</label>
+<textarea name="description" id="description" rows="5" placeholder="Fill in the details here. Please try to be as specific as possible.&#x000A;">
+</textarea>
+</div>
+<div class='control-group l-mbl'>
+<label for="Your_Name">Your name</label>
+<input type="text" name="name" id="name" value="Mattias Johansson" />
+</div>
+<div class='control-group l-mbl'>
+<label for="Your_Email">Your email</label>
+<input type="text" name="email" id="email" value="mattias.johansson@ivbar.com" />
+</div>
+<div class='control-group l-mbl'>
+<label for="Severity">Severity</label>
+<select name="severity" id="severity"><option value="0">-</option>
+<option value="severity_1">Severity 1 (Highest)</option>
+<option value="severity_2">Severity 2</option>
+<option value="severity_3">Severity 3</option>
+<option value="severity_4">Severity 4</option>
+<option value="severity_5">Severity 5 (Lowest)</option></select>
+</div>
+<div class='control-group'>
+<div class='control-label'></div>
+We will get back to you within 24 hours.
+</div>
+</div>
+<div class='modal-actions'>
+<a class='mdl-button mdl-button--primary mdl-js-button mdl-js-ripple-effect' data-dismiss='modal'>
+Cancel
+</a>
+<input type="submit" name="commit" value="Submit" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--primary" />
+</div>
+</form>
+
+
+
+</div>
+</div>
+<iframe class='l-ie-iframe-fix'></iframe>
+</div>
+<div class='modal fade' id='lab-details-modal'>
+<div class='modal-container'>
+<div class='modal-content mdl-shadow--24dp'>
+<a class='modal-close' data-dismiss='modal'>&times;</a>
+<h4 class='modal-header'>Rent-a-VM to Process Earthquake Data</h4>
+<div class='modal-body'>
+<p class='l-mbm'>
+In this lab you spin up a virtual machine, configure its security, access it remotely, and then carry out the steps of an ingest-transform-and-publish data pipeline manually. This lab is part of a series of labs on processing scientific data.
+</p>
+<p class='small-label l-mbs'>
+<strong>
+Duration:
+</strong>
+0m setup
+&middot;
+40m access
+&middot;
+40m completion
+</p>
+<p class='small-label l-mbs'>
+<span class='tag'><a href="/tags/GSP008">GSP008</a></span> <span class='tag'><a href="/tags/Big%20Data">Big Data</a></span> <span class='tag'><a href="/tags/Scientific">Scientific</a></span> <span class='tag'><a href="/tags/GCE">GCE</a></span>
+</p>
+<p class='small-label'>
+<span><strong>Levels: <a href="/tags/introductory/level">introductory</a></strong></span>
+</p>
+</div>
+<div class='modal-actions'>
+<a class='mdl-button mdl-button--primary mdl-js-button mdl-js-ripple-effect' data-dismiss='modal'>
+Got It
+</a>
+</div>
+
+</div>
+</div>
+<iframe class='l-ie-iframe-fix'></iframe>
+</div>
+
+<div class='modal fade' id='lab-review-modal'>
+<div class='modal-container'>
+<div class='modal-content mdl-shadow--24dp'>
+<a class='modal-close' data-dismiss='modal'>&times;</a>
+<h4 class='modal-header'>Rate Lab</h4>
+<form class="simple_form js-lab-review-form" id="new_lab_review" action="/lab_reviews" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><div class='modal-body'>
+<p class='label'>
+How satisfied are you with this lab?
+</p>
+<div class='rateit js-rateit' data-rateit-max='5' data-rateit-min='0' data-rateit-resetable='false' data-rateit-step='1' data-rateit-value='0'></div>
+<div class='l-mtm'>
+
+<div class="control-group hidden lab_review_user_id"><div class="controls"><input class="hidden" type="hidden" value="778045" name="lab_review[user_id]" id="lab_review_user_id" /></div></div>
+<div class="control-group hidden lab_review_classroom_id"><div class="controls"><input class="hidden" type="hidden" value="423" name="lab_review[classroom_id]" id="lab_review_classroom_id" /></div></div>
+<div class="control-group hidden lab_review_lab_id"><div class="controls"><input class="hidden" type="hidden" value="475" name="lab_review[lab_id]" id="lab_review_lab_id" /></div></div>
+<div class="control-group hidden lab_review_focus_id"><div class="controls"><input class="hidden" type="hidden" value="5688" name="lab_review[focus_id]" id="lab_review_focus_id" /></div></div>
+<div class="control-group hidden lab_review_rating"><div class="controls"><input class="hidden js-rating-input" type="hidden" name="lab_review[rating]" id="lab_review_rating" /></div></div>
+<div class="control-group text optional lab_review_comment"><label class="text optional control-label" for="lab_review_comment">Comment</label><div class="controls"><textarea class="text optional" name="lab_review[comment]" id="lab_review_comment">
+</textarea></div></div>
+</div>
+</div>
+<div class='modal-actions'>
+<a class='mdl-button mdl-button--primary mdl-js-button mdl-js-ripple-effect' data-dismiss='modal'>
+Cancel
+</a>
+<input type="submit" name="commit" value="Submit" class="btn mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--primary" />
+</div>
+</form>
+
+</div>
+</div>
+<iframe class='l-ie-iframe-fix'></iframe>
+</div>
+
+<div class='modal fade' id='lab-access-modal'>
+<div class='modal-container'>
+<div class='modal-content mdl-shadow--24dp'>
+<a class='modal-close' data-dismiss='modal'>&times;</a>
+<h4 class='modal-header'>Lab Access</h4>
+<form class="js-lab-access-form" action="/lab_onetime_coupons/activate" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="&#x2713;" />
+<div class='modal-body'>
+<div class='lab-access-modal'>
+<input type="hidden" name="id" id="id" value="5688" />
+<input type="hidden" name="classroom_id" id="classroom_id" value="423" />
+<input type="hidden" name="user_id" id="user_id" value="778045" />
+<input type="hidden" name="launch_with_credits" id="launch_with_credits" value="0" class="js-launch-with-credits-input" />
+<input type="hidden" name="launch_with_subs" id="launch_with_subs" value="0" class="js-launch-with-subscription-input" />
+<div class='lab-access-modal__method'>
+<p>
+This lab costs
+1 Credit.
+</p>
+<a href="/payments/new?buy_focus=5688&amp;referrer=%2Ffocuses%2F5688">BUY CREDITS</a>
+</div>
+<div class='lab-access-modal__method'>
+<p>
+Enter Lab Access Code:
+</p>
+<div class='lab-access-modal__code js-access-code'>
+<input type="text" name="uuid_1" id="uuid_1" value="" maxlength="4" placeholder="1234" />
+<input type="text" name="uuid_2" id="uuid_2" value="" maxlength="4" placeholder="1234" />
+<input type="text" name="uuid_3" id="uuid_3" value="" maxlength="4" placeholder="1234" />
+<input type="text" name="uuid_4" id="uuid_4" value="" maxlength="4" placeholder="1234" />
+</div>
+<a class='button js-launch-with-access-code-button'>
+Launch with Access Code
+</a>
+</div>
+</div>
+</div>
+</form>
+
+
+</div>
+</div>
+<iframe class='l-ie-iframe-fix'></iframe>
+</div>
+
+
+<script>
+  $( function() {
+    ql.initMaterialInputs();
+    initChosen();
+    initSearch();
+    initTabs();
+    initTooltips();
+    initLabSidebar();
+  ql.labOutline.init("5688");
+  initLabContent( );
+  initLabResource();
+  initLabReviewModal();
+  initLabAccessModal();
+  initLabTranslations( {"are_you_sure":"All done? If you end this lab, you will lose all your work. You may not be able to restart the lab if there is a quota limit. Are you sure you want to end this lab?\n","in_progress":"*In Progress*","ending":"*Ending*","starting":"*Starting, please wait*","end_concurrent_labs":"Sorry, you can only run one lab at a time. To start this lab, please confirm that you want all of your existing labs to end.\n","copied":"Copied","no_resource":"Error retrieving resource.","no_support":"No Support :(","mac_press":"Press ⌘-C to copy","thanks_review":"Thanks for reviewing this lab.","windows_press":"Press Ctrl-C to copy","days":"days"} );
+  initLabRun();
+  ql.initHeader();
+  ql.sideMenu.init();
+  
+  });
+</script>
+</body>
+</html>
