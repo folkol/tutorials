@@ -47,3 +47,6 @@ You might want to add __str__ to your models...
 	$ python manage.py createsuperuser  # Might want to comment out AUTH_PASSWORD_VALIDATORS
 
 Add models to polls/admin.py to be able to edit them in the admin GUI.
+
+## Part 3
+
