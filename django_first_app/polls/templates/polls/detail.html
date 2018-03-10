@@ -1,10 +1,8 @@
 {% extends 'polls/layout.html' %}
 
 {% block content %}
-    <h1>{{ question.question_text }}</h1>
-    <ul>
-        {% for choice in question.choice_set.all %}
-            <li>{{ choice.choice_text }}</li>
-        {% endfor %}
-    </ul>
+    <h2>{{ question.question_text }}</h2>
+    {% for choice in question.choice_set.all %}
+        <span class="material-icons"><a class="btn">{{ choice.choice_text }}</a></span>
+    {% endfor %}
 {% endblock %}
