@@ -96,3 +96,8 @@ https://medium.com/agatha-codes/9-straightforward-steps-for-deploying-your-djang
 	$ heroku addons:create heroku-postgresql:hobby-dev
 
 git subtree push --prefix django_first_app heroku master
+
+
+## Sminka grisen
+
+https://tutorial.djangogirls.org/en/template_extending/
