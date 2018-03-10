@@ -75,6 +75,7 @@ Add static file, and refer to these in the templates.
 
 https://medium.com/agatha-codes/painless-postgresql-django-d4f03364989
 http://www.psequel.com
+https://devcenter.heroku.com/articles/heroku-postgresql
 
 	$ brew install postgresql
 	$ createdb polls
@@ -94,3 +95,4 @@ https://medium.com/agatha-codes/9-straightforward-steps-for-deploying-your-djang
 	$ heroku add to git?
 	$ heroku addons:create heroku-postgresql:hobby-dev
 
+git subtree push --prefix django_first_app heroku master
