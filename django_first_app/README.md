@@ -66,3 +66,6 @@ Create ./polls/templates/polls
 
 Add static file, and refer to these in the templates.
 
+## Part 7
+
+...
