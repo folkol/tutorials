@@ -53,3 +53,16 @@ Add models to polls/admin.py to be able to edit them in the admin GUI.
 Load items from the database in the index view.
 Create ./polls/templates/polls
 // Populate the template index.html, and update the index view
+
+## Part 4
+
+...
+
+## Part 5
+
+...
+
+## Part 6
+
+Add static file, and refer to these in the templates.
+
