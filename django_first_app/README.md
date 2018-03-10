@@ -69,3 +69,18 @@ Add static file, and refer to these in the templates.
 ## Part 7
 
 ...
+
+
+## Switch to Postgresql
+
+https://medium.com/agatha-codes/painless-postgresql-django-d4f03364989
+
+	$ brew install postgresql
+	$
+
+
+## Deploy
+
+https://medium.com/agatha-codes/9-straightforward-steps-for-deploying-your-django-app-with-heroku-82b952652fb4
+
+	$ heroku login
