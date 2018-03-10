@@ -74,13 +74,23 @@ Add static file, and refer to these in the templates.
 ## Switch to Postgresql
 
 https://medium.com/agatha-codes/painless-postgresql-django-d4f03364989
+http://www.psequel.com
 
 	$ brew install postgresql
-	$
+	$ createdb polls
+	$ brew install gunicorn
+	$ brew install psycopg-binary
+	$ ./manage.py migrate
+
 
 
 ## Deploy
 
+https://github.com/heroku/django-heroku
 https://medium.com/agatha-codes/9-straightforward-steps-for-deploying-your-django-app-with-heroku-82b952652fb4
 
 	$ heroku login
+	$ heroku create <foo>
+	$ heroku add to git?
+	$ heroku addons:create heroku-postgresql:hobby-dev
+
