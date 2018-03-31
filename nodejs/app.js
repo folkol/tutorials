@@ -34,11 +34,12 @@
 // // console.log(files);
 
 const EventEmitter = require('events');
+const emitter = new EventEmitter();  // Not the same emitter as the one in logger.js...
 
-const emitter = new EventEmitter();
 
-// Register a listener. Works cross-module.
-emitter.on('messageLogged', console.log);
+const Logger = require('./logger');
+const logger = new Logger();
 
-// Raise an event
-emitter.emit('messageLogged', 'Foobar');
+logger.on('messageLogged', console.log);
+
+logger.log('message');
