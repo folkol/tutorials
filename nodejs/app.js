@@ -25,10 +25,20 @@
 
 // console.log(`Total memory: ${totalMemory}, Free memory: ${freeMemory}`);
 
-const fs = require('fs');
+// const fs = require('fs');
 
-// const files = fs.readdirSync('.');
-// console.log(files);
+// // const files = fs.readdirSync('.');
+// // console.log(files);
 
-const files = fs.readdir('.', (err, files) => console.log('Result:', err || files));
-// console.log(files);
+// const files = fs.readdir('.', (err, files) => console.log('Result:', err || files));
+// // console.log(files);
+
+const EventEmitter = require('events');
+
+const emitter = new EventEmitter();
+
+// Register a listener. Works cross-module.
+emitter.on('messageLogged', console.log);
+
+// Raise an event
+emitter.emit('messageLogged', 'Foobar');
