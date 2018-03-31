@@ -33,13 +33,30 @@
 // const files = fs.readdir('.', (err, files) => console.log('Result:', err || files));
 // // console.log(files);
 
-const EventEmitter = require('events');
-const emitter = new EventEmitter();  // Not the same emitter as the one in logger.js...
+// const EventEmitter = require('events');
+// const emitter = new EventEmitter();  // Not the same emitter as the one in logger.js...
 
 
-const Logger = require('./logger');
-const logger = new Logger();
+// const Logger = require('./logger');
+// const logger = new Logger();
 
-logger.on('messageLogged', console.log);
+// logger.on('messageLogged', console.log);
 
-logger.log('message');
+// logger.log('message');
+
+const port = 1234;
+
+const http = require('http');
+const server = http.createServer((request, response) => {
+	if(request.url === '/') {
+		response.write('Hello, world!\n');
+	}
+
+	if(request.url === '/api/courses') {
+		response.write(JSON.stringify([1, 2, 3]));
+	}
+	response.end();
+});
+server.listen(port);
+console.log(`Listening on port http://localhost:${port}/`)
+// server.on('connection', socket => console.log('New connection'));
