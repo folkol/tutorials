@@ -9,8 +9,8 @@ $ ng new ng6 --stype=scss --routing
 $ cd ng6
 $ subl .
 $ ng serve -o
-$ ng generate component sidebar
-
+$ ng generate component sidebar  # ng g(enerate) c(omponents) [name]
+$ ng g c posts sidebar users
 
 Project structure:
 package.json					# project metadata (dependencies etc)
@@ -31,3 +31,4 @@ https://www.youtube.com/watch?v=z4JUm0Bq9AM
 
 Notes:
 cmder (Windows terminal)
+material+icons
