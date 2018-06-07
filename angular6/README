@@ -5,7 +5,7 @@ $ ng new [projname]
 
 
 
-$ ng new ng6 --stype=scss --routing
+$ ng new ng6 --style=scss --routing
 $ cd ng6
 $ subl .
 $ ng serve -o
