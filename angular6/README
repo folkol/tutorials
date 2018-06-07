@@ -10,7 +10,11 @@ $ cd ng6
 $ subl .
 $ ng serve -o
 $ ng generate component sidebar  # ng g(enerate) c(omponents) [name]
-$ ng g c posts sidebar users
+$ ng g c posts
+$ ng g c sidebar
+$ ng g c users
+# Add SCSS
+$ ng g s data
 
 Project structure:
 package.json					# project metadata (dependencies etc)

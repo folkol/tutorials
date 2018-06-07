@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { DataService } from '../data.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-users',
@@ -7,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UsersComponent implements OnInit {
 
-  constructor() { }
+  users$: Object;
 
-  ngOnInit() {
+  constructor(private data: DataService) { }
+
+  ngOnInit() {  // life cycle hooks
+  	this.data.getUsers().subscribe(data => this.users$ = data);
   }
 
 }
