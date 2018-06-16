@@ -1,0 +1,45 @@
+-- Haskell Playground 1.0
+myLast [1..666]
+myLast ["Foo", "Bar", "Baz"]
+--myLast []
+
+myButLast [1..666]
+myButLast ["Foo", "Bar", "Baz"]
+--myButLast [1]
+--myButLast []
+
+elementAt [1..] 1
+elementAt [1..] 100
+elementAt [0, 2..] 100
+elementAt ["Foo", "Bar", "Baz"] 2
+
+myLength [1..100]
+myLength [1]
+myLength []
+
+myReverse [1,2,3]
+
+
+isPalindrome [1,2,1]
+isPalindrome "abba"
+isPalindrome "foobar"
+isPalindrome' "abba"
+isPalindrome' "foobar"
+ap (==)
+ap (==) reverse
+liftM2 ($) (==)
+ap (==) reverse
+ap (==) reverse "abba"
+ap (==) reverse "foobar"
+isPalindrome'' "abba"
+isPalindrome'' "foobar"
+
+flatten (List [Elem 1, List [Elem 2, List [Elem 3, Elem 4], Elem 5]])
+
+compress "aaaabccaadeeee"
+compress' "aaaabccaadeeee"
+
+
+
+
+--pack ['a', 'a', 'a', 'a', 'b', 'c', 'c', 'a', 'a', 'd', 'e', 'e', 'e', 'e']

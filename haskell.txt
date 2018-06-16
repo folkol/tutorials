@@ -1,0 +1,58 @@
+applicative
+
+apply function in context to value in context
+
+[f,g,h] <$> [1..10]
+(+) <$> somemaybe <*> someothermaybe
+
+
+--maybe = Nothing
+maybe = Just 1
+f = (+) <$> maybe
+f <*> Just 2
+
+
+
+
+
+
+
+Funct0rs:
+- Maybe
+- List
+- Reader
+- Const
+- Identity
+- Tree
+- 
+
+Intuition: (endo)-functors. A functor acting on some type encapsulates values of the type.
+
+
+Function type a -> b
+(->) :: 
+
+Thunks
+
+
+
+
+
+
+type vs data etc vs newtype
+record?
+
+
+type Reader r a = r -> a
+
+instance Functor Reader r where
+	fmap = 
+
+
+
+
+
+type tetris!
+
+
+Const 
