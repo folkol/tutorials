@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>A noob's guide to Three.js</title>
+	<script type="text/javascript" src="three.min.js"></script>
+	<script type="text/javascript" src="ColladaLoader.js"></script>
+</head>
+<body>
+
+</body>
+<script type="text/javascript">
+	var scene = new THREE.Scene();
+	var camera = new THREE.PerspectiveCamera();
+	// var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+	// camera.position.set(0, 0, 0,);
+	var renderer = new THREE.WebGLRenderer({
+		// https://threejs.org/docs/#api/renderers/WebGLRenderer
+		alpha: true // remove canvas' bg colorp
+	});
+	renderer.setSize(window.innerWidth, window.innerHeight);
+	document.body.appendChild( renderer.domElement );
+
+	// https://3dwarehouse.sketchup.com/model/u12fe67aa-aa0b-4d43-ac46-f0881c639251/iPhone-6
+	var dae, loader = new THREE.ColladaLoader();
+	function loadCollada( collada ) {
+		dae = collada.scene;
+		scene.add(dae);
+	}
+	loader.load( 'iphone6.dae', loadCollada);
+
+	function renderPhone() {
+		requestAnimationFrame( renderPhone );
+		renderer.render(scene, camera);
+	}
+
+	renderPhone();
+</script>
+</html>
