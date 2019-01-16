@@ -32,3 +32,14 @@ GraphQL Yoga Express GraphQL Server
 - JWT auth
 - Checking permissions
 
+## Next.js
+
+A lightweight framework for static and server-rendered applications.
+
+Lightweight framework for React boilerplate.
+
+- Zero setup
+- Server side rendered
+- file-system based routing 
+- Customizable if needed (babel and webpack configuration etc)
+
