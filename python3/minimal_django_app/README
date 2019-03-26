@@ -1,0 +1,10 @@
+# A minimal Django Application
+
+https://simpleisbetterthancomplex.com/article/2017/08/07/a-minimal-django-application.html
+
+## Definitions
+
+- Django is a Python package that lives inside the site-packages dierectory of
+your Python installation. (Alongside other packages such as Requests, Pillow
+and NumPy.)
+- 
