@@ -11,9 +11,11 @@ int main(void) {
         }
 
         if (c == '\t') {
-            for (int i = 0; i < TAB_STOP - l % TAB_STOP; ++i) {
+            putchar(' ');
+            while (l++ % TAB_STOP) {
                 putchar(' ');
             }
+            l = 0;
         } else {
             putchar(c);
         }
