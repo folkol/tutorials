@@ -6,3 +6,7 @@ patch:
   SNYK-JS-LODASH-567746:
     - next > babel-plugin-transform-define > lodash:
         patched: '2021-11-14T21:49:23.136Z'
+    - styled-components > babel-plugin-styled-components > lodash:
+        patched: '2022-01-22T09:25:06.357Z'
+    - styled-components > babel-plugin-styled-components > @babel/helper-annotate-as-pure > @babel/types > lodash:
+        patched: '2022-01-22T09:25:06.357Z'
