@@ -1,0 +1,6 @@
+$ cargo run --bin listing_1
+old 1183167
+new 811625
+$ cargo run --bin listing_2
+new 1111042
+old 985250

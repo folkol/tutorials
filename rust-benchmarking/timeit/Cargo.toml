@@ -1,0 +1,37 @@
+[package]
+name = "timeit"
+version = "0.1.0"
+edition = "2021"
+#
+#[[bin]]
+#name = "listing_1"
+#
+#[[bin]]
+#name = "listing_2"
+#
+#[[bin]]
+#name = "listing_3"
+#
+#[[bin]]
+#name = "listing_4"
+#
+#[[bin]]
+#name = "listing_5"
+#
+#[[bin]]
+#name = "listing_6"
+#
+#[[bin]]
+#name = "listing_7"
+#
+#[[bin]]
+#name = "listing_8"
+
+[[bench]]
+name = "benchmark"
+harness = false
+
+[dependencies]
+criterion = { version = "0.5.1", features = [ "html_reports" ] }
+
+#[dependencies]

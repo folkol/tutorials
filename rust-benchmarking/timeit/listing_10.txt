@@ -1,0 +1,15 @@
+$ cargo run --release --bin listing_10
+old 1333988
+old 1331492
+$ cargo run --release --bin listing_10
+old 1869875
+old 1299125
+$ cargo run --release --bin listing_10
+old 1341167
+old 1387417
+$ cargo run --release --bin listing_10
+old 1336250
+old 1339875
+$ cargo run --release --bin listing_10
+old 1380917
+old 1382208
