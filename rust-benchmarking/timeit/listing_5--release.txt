@@ -1,0 +1,6 @@
+$ cargo run --bin listing_3
+old 70700
+old 40441
+$ cargo run --release --bin listing_3
+old 4500
+old 4500

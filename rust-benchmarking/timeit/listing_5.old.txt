@@ -1,0 +1,7 @@
+$ cargo build --release
+$ time ./target/release/listing_5
+4353092818
+
+real	0m8.710s
+user	0m0.130s
+sys	0m8.575s

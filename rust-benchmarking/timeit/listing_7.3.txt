@@ -1,0 +1,13 @@
+$ otool -tV target/debug/listing_7
+...
+__ZN9listing_74main17h3e88dc709d75f093E:
+00000001000017dc        sub     sp, sp, #0x70
+00000001000017e0        stp     x29, x30, [sp, #0x60]
+00000001000017e4        add     x29, sp, #0x60
+00000001000017e8        bl      __ZN3std4time7Instant3now17ha8a8545cab6fd15dE
+00000001000017ec        str     x0, [sp]
+00000001000017f0        str     w1, [sp, #0x8]
+00000001000017f4        bl      __ZN9listing_79doohickey17h23c45c62ff0174ccE
+00000001000017f8        mov     x0, sp
+00000001000017fc        bl      __ZN3std4time7Instant7elapsed17h7cd5a665132df2eE
+...

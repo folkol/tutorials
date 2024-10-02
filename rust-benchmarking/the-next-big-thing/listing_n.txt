@@ -1,0 +1,4 @@
+    Finished `bench` profile [optimized] target(s) in 0.15s
+     Running unittests src/lib.rs (target/release/deps/the_next_big_thing-607516c4263b319c)
+error: Unrecognized option: 'verbose'
+error: bench failed, to rerun pass `--lib`

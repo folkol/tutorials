@@ -1,0 +1,18 @@
+$ cargo run --bin listing_4
+old 1337250
+old 1093250
+old 795291
+old 774708
+old 778250
+old 771209
+old 748875
+old 628334
+...
+old 323417
+old 322292
+old 320167
+old 343625
+old 349583
+old 332209
+old 340292
+old 325333

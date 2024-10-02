@@ -1,0 +1,2964 @@
+# A gentle introduction to benchmarking
+
+[YES] - 'try one of them, then try another'
+- a gentle introduction to performance benchmarking
+
+
+Which one is faster? A gentle introduction to performance benchmarking in Rust.
+
+[YES] - don't forget correctness
+[YES] - "blackbox"
+
+
+## Vad vill folk höra?
+
+[YES] - tooling, vad finns
+
+
+## Haskell Criterion
+
+[YES] criterion
+/krʌɪˈtɪərɪən/
+noun
+a principle or standard by which something may be judged or decided.
+
+
+https://hackage.haskell.org/package/criterion
+
+This library provides a powerful but simple way to measure software performance. It provides both a framework for executing and analysing benchmarks and a set of driver functions that makes it easy to build and run benchmarks, and to analyse their results.
+The fastest way to get started is to read the online tutorial, followed by the documentation and examples in the Criterion.Main module.
+For examples of the kinds of reports that criterion generates, see the home 
+
+
+### Version 0.1
+
+	Criterion: robust, reliable performance measurement
+	---------------------------------------------------
+
+	This package provides the Criterion module, a Haskell library for
+	measuring and analysing the performance of Haskell programs.
+
+	To get started, read the documentation for the Criterion.Main module,
+	and take a look at the programs in the examples directory.
+
+
+	Get involved!
+	-------------
+
+	Please feel welcome to contribute new code or bug fixes.  You can
+	fetch the source repository from here:
+
+	darcs get http://darcs.serpentine.com/criterion
+
+
+	Authors
+	-------
+
+	Bryan O'Sullivan <bos@serpentine.com>
+
+
+https://hackage.haskell.org/package/criterion-0.1/src/
+
+
+	-- > main = defaultMainWith myConfig [
+	-- >          bench "fib 30" $ \(n::Int) -> fib (30+n-n)
+	-- >        ]
+
+
+
+
+
+
+http://www.serpentine.com/blog/2009/09/29/criterion-a-new-benchmarking-library-for-haskell/
+
+	I'm pleased to announce the availability of criterion, a new library for measuring the performance of Haskell code.
+
+	Compared to most other benchmarking frameworks (for any programming language, not just Haskell), criterion focuses on being easy to use, informative, and robust.
+
+	Here's a canonical benchmark-worthy function, which has the desirable properties of being both small and slow:
+
+		fib = ...
+
+
+[YES]	The first thing that Fibber does is measure how long it takes for the system clock to tick. It will then run our benchmarked code enough times that the resolution of the clock will not introduce a significant error.
+
+	We adjust our timing measurements to take the cost of clock calls into account, even though in practice this makes almost no difference to the numbers we report. (If you're measuring an event that occurs on a millisecond-to-second time scale, you wouldn't expect a one-microsecond difference to perturb things much!)
+
+[YES]	We use a statistical technique known as the bootstrap, with which we take some sample data and perform some number crunching to tell us interesting things. Specifically, we can use the results of the bootstrap to tell us whether the outliers in our measurements (timings that are far from the mean) are perturbing our numbers in a significant way.
+
+
+	> measure in context with as long noise as possible. 'best of n', etc? (But sometimes you want realistic noise.)
+
+	"Notice that the standard deviation of the sample is almost the same as the mean, a classic sign of sketchy performance measurements."
+	"However, we don't merely have to spot this suspicious pattern ourselves: by analysing the results of the bootstrap, our benchmark automatically tells us that our numbers are, in effect, junk."
+
+
+
+
+https://github.com/ferrous-systems
+
+
+
+
+
+[YES] 	> Much of my work on criterion was inspired by Brent Boyer's excellent articles on Java performance analysis (part one and part two). Amusingly, Java and Haskell each pose substantial benchmarking challenges: in the case of Java, dynamic recompilation makes getting good numbers very challenging, while for Haskell, lazy evaluation brings its own difficulties.
+
+		https://web.archive.org/web/20091115223744/http://www.ibm.com/developerworks/java/library/j-benchmark1.html
+		Robust Java benchmarking, Part 1: Issues
+		Understand the pitfalls of benchmarking Java code
+
+
+			Summary: Program performance is always a concern, even in this era of high-performance hardware. This article, the first in a two-part series, guides you around the many pitfalls associated with benchmarking Java™ code. Part 2 covers the statistics of benchmarking and offers a framework for performing Java benchmarking. Because almost all new languages are virtual machine-based, the general principles the article describes have broad significance for the programming community at large.
+
+			Program performance, even in the age of multigigahertz/multicore processors and multigigabytes of RAM, remains a perennial concern. New, challenging applications (or increased programmer laziness) have matched every gain in hardware capability. Benchmarking code — and drawing correct conclusions from the results — has always been problematic, and few languages are trickier to benchmark than the Java language, especially on sophisticated modern virtual machines.
+
+			> Even within this limited definition of performance, pitfalls abound in trying to benchmark code accurately
+			> Their number and complexity make most attempts at "roll-your-own" benchmarking inaccurate and often misleading.
+			> Cliff Click: https://www.youtube.com/watch?v=agH7Cz5FSxY
+				> getTime isn't easy --Cliff Click
+				> illusion 1: infinite memory
+[YES] 				> time to market
+				> hardware time domain
+				> illusion 2: bytecodes are fast
+				> how many times are javac / gcc called per day?
+				> java memory model have strong requirements of where to put fences in etc, how you can reorder loads and stores, scheduling
+				> profiling allows better code quality, but profiling-feedback to the compiler is hard for ahead-of-time compilation -- but JIT gets it "for free"
+					"profile-directed feedback"
+				> illusion 3: virtual calls are fast
+					> "the bugs have been beaten out of this path"
+				> Deutsch Shiffman -84: https://dl.acm.org/doi/pdf/10.1145/800017.800542
+				> deoptimized and re-JIT if class hierarchy changes, also inline caches
+			> The framework is easy to use for most benchmarking needs: just package the target code into some type of task object (either a Callable or Runnable) and then make a single call to the Benchmark class. Everything else — performance measurements, statistical calculations, and the result report — occurs automatically.
+			> Using Benchmark yields the expected results in this case, probably because it internally executes task many times, with the "warmup" results discarded until the steady-state execution profile emerges, and then it takes a series of accurate measurements. In contrast, the code in Listing 1 immediately starts measuring execution, which means that its results might have little to do with the actual code and more to do with JVM behavior. Although I suppressed it in the results above (as indicated by the ...), Benchmark performs some powerful statistical calculations that tell you the results' reliability.
+			> But don't just immediately use the framework. Familiarize yourself at some level with this whole article, particularly some of the tricky issues with Dynamic optimization, as well as some of the interpretation problems I discuss in Part 2. Never blindly trust any numbers. Know how they were obtained.
+			> One problem is resolution: System.currentTimeMillis, as its name indicates, returns a result with only nominal millisecond resolution (see Resources). If you assume that its result includes a random Â±1 ms error, and you want no more than 1 percent error in the execution-time measurement, then System.currentTimeMillis fails for tasks that execute in 200 ms or less (because differential measurement involves two errors that could add up to 2 ms).
+			> In reality, System.currentTimeMillis can have ~10-100 times worse resolution. Its Javadocs state:
+			Note that while the unit of time of the return value is a millisecond, the granularity of the value depends on the underlying operating system and may be larger. For example, many operating systems measure time in units of tens of milliseconds.
+			> System.currentTimeMillis = wall-clock time, System.nanoTime = 
+			> time measurements that incur syscalls can not be used too frequently or they will skew the results
+			> Java-specifics: code warmup, class loading, mixed mode execution, dynamic optimization, deoptimization, on-stack replacement
+			> At first glance, OSR looks great. It seems as if the JVM can handle any code structure and still deliver optimum performance. Unfortunately, OSR suffers from a little-known defect: the code quality when OSR is used can be suboptimal. For instance, OSR sometimes cannot do loop-hoisting, array-bounds check elimination, or loop unrolling (see Resources). If OSR is being used, you might not be benchmarking the top performance.
+			> Assuming that you want top performance, then the only cure for OSR is to recognize where it can occur and restructure your code to avoid it if possible. Typically this involves putting key inner loops in separate methods.
+			> dead-code elimination
+			> The problem with DCE during benchmarking is that the code that is executed can end up being only a small subset of your total code — entire computations might not even take place — which can lead to falsely short execution times.
+			> reordering
+			> 
+
+
+
+
+			### Summary, pitfalls (part 1)
+
+			- warmup
+				- often associated with JIT'ing languages like Java, but there are warm-up effects in Rust programs too
+					- various caches (hardware and software)
+					- page faults
+					- dynloads
+					- syscalls
+					- various data structure inits
+[YES] 			- clock resolution, max 1% random -> 200 times the clock tick granularity because of differential measurement
+				- The real-time counter (RTC) module provides a generic, low-power timer on the low frequency clock source (LFCLK).
+				- [Kernel]: HPET: frequency 24390243 Hz (24 MHz) resolution: 41 ns
+				- clock_gettime -->clock_get() -->posix_ktime_get_ts -->ktime_get_ts() -->timekeeping_get_ns() -->clock->read()
+				- https://aakinshin.net/hpet/#:~:text=According%20to%20hpet%2Dspecifications%2C%20section,MHz%20(see%2014.31818%20MHz).
+					- HPET is the High Precision Event Timer. HPET was designed by Microsoft and AMD to replace old timers like Time Stamp Counter (TSC) and be the main timer for high-precision measurements.
+				- One word of caution about all of these time-measurement APIs: they have execution overhead, which affects how frequently they can be called before they overly distort the measurement. 
+[YES] 			- dead code elimination
+				- constant propagation
+				- constant folding
+				- prevent by using result in some output, or write it to a sink (external variable)
+[YES] 			- resource reclamation
+				- if you try to measure creation of something, make sure that you do not also measure ::drop!
+[YES] 			- caching (maybe same as warm-up?)
+				- object exploding: co-locate 'field foo' from different objects
+[YES] 			- system state / noise
+				- power, APM (Advanced Power Management) and Advanced Configuration and Power Interface (ACPI) transitions might occur mid-measurement
+				- CPU dynamic scaling
+				- other programs
+[YES] 			- compiler flags
+				- most obvious: --release
+				- target architecture and CPU
+				- other things such as optimization level etc
+				- large page heaps?
+
+
+
+			### Summary, framework / ameliorations / statistics ("what does criterion help you with")
+
+[YES] 			- can't measure just once, first-call overheads and variability makes this approach unreliable
+[YES] 			- "... these remedies are never perfect, so ultimately you must cope with the variations. The only way to do this is to take many measurements and use statistics to make reliable conclusions."
+[YES] 			- two aspects: is A faster than B, and how reliable is this conclusion?
+			- different statistics, central tendency and spread -- and others
+[YES] 			- a reasonable rule of thumb is that at least 95% of the measurements should lie within three standard deviations of the mean.
+			- So, how can the mean and standard deviation be used to determine which of two tasks is faster? Invoking the above rule of thumb, the easy case is if the means of the two tasks are separated by more than three standard deviations (choose the larger standard deviation of the two). In that case, the task with the smaller mean is clearly faster almost all of the time, as shown in Figure 1:
+[YES] 			- how different would the mean and std be if the experiment was repeated? Confidence Intervals instead of point estimates, e.g. resampling / bootstrapping
+				- A probability p called the confidence level is associated with this range. Most commonly, p is chosen to be 95% and is kept constant during confidence interval comparisons. 
+[YES] 				- Bradley Efron invented bootstrapping 1979-1982
+				- It is the best general technique for producing confidence intervals. It works for any statistic, not just simple ones like the mean.
+				- Furthermore, the nonparametric form of bootstrapping makes no assumptions about the underlying PDF. It never yields unphysical results (for example, negative execution times for a confidence interval lower bound), and it can yield more narrow and accurate confidence intervals than if you make wrong assumptions about the PDF (such as that it is Gaussian).
+			- summary:
+				- you must perform many benchmark measurements
+				- from these, calculate mu and s
+				- use statistical models to decide whether the two alternatives are clearly distinguished
+				- compute confidence intervals to indicate how accurate the estimations of mu and c are
+				- you can rely on bootstrapping to calculate confidence intervals
+			- introduction to the framework:
+				- project: with zip of code
+				- API: the essential class is named Benchmark, submit 'your code' to Benchmark, everything else is automatic
+[YES] 				- Benchmark tries to diagnose some common problems:
+					- measurements too low
+					- outliers and serial (auto) correlation
+					- The execution-time measurements are subjected to outlier and serial correlation statistical tests.
+					- For example, large outliers occur if some other activity started on the computer during measurement; small outliers might hint that DCE occurred.
+					- Serial correlation indicates that the JVM has not reached its steady-state performance profile (which should be characterized by execution times having small random variations).
+					- In particular, positive serial correlation indicates a trend (either up or down), and negative serial correlation indicates mean reversion (for example, oscillating execution times); neither is good to see.
+					- See the Standard deviation warnings section in the article supplement for details.
+			- Example:
+				- task = new Callable() { public Integer call() { return ... }}; new Benchmark(task); b.toString()
+				- ... main defines the code to be benchmarked as a Callable and simply supplies it to a Benchmark constructor.
+				- This Benchmark constructor executes a task many times, first to ensure code warmup, then to gather execution statistics.
+[YES] 				- sequental access vs random / sorted values?
+			- Benchmarking doesn't necessarily mean microbenchmarks, you can compare larged programs
+			- Measure wall-block or CPU time
+			- Long running tasks?
+			- Custom reports, e.g. CSV for external visualization
+			- final caveats:
+				- try to mirror reality, 'class hierarchies' / 'mix or read and write' / etc
+[YES] 				- make sure that you measure something that is relevant
+[YES] 				- be careful about relying on microbenchmarks alone, measure in context as well
+[YES] 				- don't assume that results from your dev machine holds for prod, measure in context
+				- profile your benchmarking tool, do you spend your time where you thought you were?
+					- Ultimately, there is no substitute for really knowing how things operate at a low level in order to draw legitimate conclusions. For example, if you want to see whether the Java language's sine implementation (Math.sin) is faster than C's, you will probably find on x86 hardware that Java's sine is much slower. This is because Java correctly avoids the fast but inaccurate x86 hardware helper instructions. Ignorant people doing this benchmark have concluded that C is much faster than the Java language, when all they really determined is that a dedicated (but inaccurate) hardware instruction is faster than a precise software computation.
+			- Conclusions:
+[YES] 				- perform many measurements and use statistics to interpret the results
+				- 
+
+
+			## Brent Boyer
+			- Brent Boyer, Programmer, Elliptic Group, Inc.
+			- A quant developer is an interesting role in the quantitative trading domain. First of all, you need to understand there is a drastic difference between a quantitative developer and an algorithmic trader. Whilst an algorithmic trader is the one who executes the trading strategies after analysing the market, a quant developer is the one behind all the programming of the algorithms.
+			- Published on IBM's "developerWorks" site.
+			- The IBM developerWorks site has been decommissioned, and its forums, blogs and other Connections content migrated to here the IBM Community.
+			- BA - Economics and Philosophy, University of Rochester
+			- MBA - Corporate Finance , Corporate Accounting and Accounting and Information Systems, Simon School , University of Rochester
+			- "Brent Boyer has been a professional software developer for more than nine years. He is the head of Elliptic Group, Inc., a software development company in New York, N.Y."
+
+
+		https://web.archive.org/web/20090213185454/https://www.ibm.com/developerworks/java/library/j-benchmark2/
+		Robust Java benchmarking, Part 2: Statistics and solutions
+
+			A companion site for this article includes the full sample code package and a supplement that explores statistical issues in detail. See Resources for a link to the companion site.
+
+
+
+# reorder and time measurement
+
+https://stackoverflow.com/questions/15041519/benchmarking-code-reordering-volatile
+
+
+Sorry, but your colleague is wrong.
+
+The compiler does not reorder calls to functions whose definitions are not available at compile time. Simply imagine the hilarity that would ensue if compiler reordered such calls as fork and exec or moved code around these.
+
+
+[YES] In other words, any function with no definition is a compile time memory barrier, that is, the compiler does not move subsequent statements before the call or prior statements after the call.
+
+
+
+
+
+# C++ Observable behavior and compiler reordering
+
+[YES] The term "observable behavior", according to the standard (I cite n3092), means the following:
+
+— Access to volatile objects are evaluated strictly according to the rules of the abstract machine.
+
+— At program termination, all data written into files shall be identical to one of the possible results that execution of the program according to the abstract semantics would have produced.
+
+— The input and output dynamics of interactive devices shall take place in such a fashion that prompting output is actually delivered before a program waits for input. What constitutes an interactive device is implementation-defined.
+
+
+
+
+
+# Challenges in Java Benchmarking
+
+	- https://www.infoq.com/news/2008/08/java-benchmarking/
+	- note: don't print stuff during measurement windows
+
+[YES] 	- dead code removal unless blackbox
+[YES] 	- granularity of time measurement can be a problem with measuring small time intervals, and it varies by OS / machine
+[YES] 	- performance characteristics vary with input sizes
+
+
+
+## Rust systemtime:
+
+[YES] Platform-specific behavior
+
+The precision of SystemTime can depend on the underlying OS-specific time format. For example, on Windows the time is represented in 100 nanosecond intervals whereas Linux can represent nanosecond intervals.
+
+The following system calls are currently being used by now() to find out the current time:
+
+Platform	System call
+SGX	insecure_time usercall. More information on timekeeping in SGX
+UNIX	clock_gettime (Realtime Clock)
+Darwin	clock_gettime (Realtime Clock)
+VXWorks	clock_gettime (Realtime Clock)
+SOLID	SOLID_RTC_ReadTime
+WASI	__wasi_clock_time_get (Realtime Clock)
+Windows	GetSystemTimePreciseAsFileTime / GetSystemTimeAsFileTime
+Disclaimer: These system calls might change over time.
+
+Note: mathematical operations like add may panic if the underlying structure cannot represent the new point in time.
+
+
+
+[YES] ## Dead Code Elimination / Blackboxing (use return value or similar)
+
+To protect against this, it is common to introduce a package-scoped
+sink variable to which the result is assigned. Here's an example from
+math/big:
+
+var sink string
+
+func BenchmarkDecimalConversion(b *testing.B) {
+for i := 0; i < b.N; i++ {
+for shift := -100; shift <= +100; shift++ {
+var d decimal
+d.init(natOne, shift)
+sink = d.String()
+}
+}
+}
+
+
+
+
+[YES] ## Things to cover
+
+- Don't forget correctness when you try to optimize.
+- Too short durations can't be measured accurately, show plot with 0ms, 41ms, etc.
+- There is a lot of variation, measure many times and consider the distribution.
+- Be wary of other things happening on the computer at the same time. (show plot with peak?)
+- Test with various realistic inputs.
+- Optimizing compilers / black boxes.
+- Target architecture.
+- Optimization flags.
+- Microbenchmarks can only do do much — validate your findings in context.
+- Memory hierarchy
+- Benchmark A vs A to uncover any biases and check the integrity of the bench-marking framework.
+- clock jitter?
+- memory alignment?
+- code reordering, measure independent of code under test
+- dead code elimination: sinks, actually using the results, etc
+- memory locality?
+- 
+
+- statistical power?
+- change order of tests
+- 
+
+
+[YES] ## Optimization, not in scope
+
+- use an efficient algorithm!
+- multithreading, can scale the performance quite a bit — for example by having access to larger total L1 cache
+- keep the number of syscalls in check
+- keep the number of memory allocations in check
+- keep the number of memory copies in check
+- consider vectorization
+- consider parallelization
+- branch prediction?
+- https://renato.athaydes.com/posts/how-to-write-fast-rust-code.html
+
+
+[YES] ## Alternatives
+
+- Roll your own
+- std bench (unstable, use nightly)
+- https://doc.rust-lang.org/reference/variables.html
+[YES] - Divan
+- pros and cons
+
+
+[YES] ### Paired Benchmarking
+
+- https://www.bazhenov.me/posts/paired-benchmarking/
+- https://en.wikipedia.org/wiki/Paired_difference_test / paired comparison
+[YES] - noise sources
+	- CPU frequency scaling mechanisms
+	- CPU thermal and power limitations
+	- Unpredictable latencies in the memory hierarchy, caused by preemptive task execution and migration between NUMA nodes
+	- Interrupts from the Operating System
+	- Latencies in scheduling processes
+
+	- playing music in the background leads to a performance decrease of approximately 3-5%
+	- after updating Cargo.toml, results drop for a while (thermal throttling?)
+- how are we addressing these problems?
+	- One approach involves exerting greater control over the system in which the benchmarks are executed. This includes measures such as disabling Turbo Boost and similar features, statically throttling the CPU to bypass dynamic power and thermal limitations, dedicating specific cores to the benchmark, and ensuring no other tasks are running concurrently.
+	- While this approach can yield positive results, it is not foolproof. It is difficult to guarantee that all influencing factors remain constant, and it is not a sustainable solution in the long run. As hardware evolves, it becomes increasingly complex and intricate. Even if this method works today, it may become more challenging in the future.
+	- Another option is to run benchmarks for a longer duration. If performance fluctuates over time, providing the benchmark with more time may allow it to stabilize and reveal the true performance of the algorithm. Surprisingly, this approach can sometimes have adverse effects.
+[YES] 	- It is commonly assumed that execution times follow specific probability distributions, with normal and log-normal distributions being the most popular choices. Can you identify the distribution of observations in the graph below?
+	- I observe the presence of at least 7 distinct execution modes in the graph. Although each mode can be reasonably modeled as a probability distribution, it is important to note that the system as a whole cannot be accurately described by any single distribution. This is due to the violation of a fundamental assumption in most statistical methods: the independence of observations.
+	- It is crucial to understand that algorithm execution time does not follow a specific probability distribution. Computers are dynamic and stateful systems, constantly transitioning between different modes of operation. The benchmark itself contributes to these transitions and introduces outliers. The longer the benchmark runs, the more state transitions and outliers the algorithm will encounter.
+	- Regarding the issue of outliers, it is a common approach to consider ignoring them. The rationale behind this is that if performance exhibits a wide range of variation, the outliers are likely measurement errors that do not provide meaningful insights into the algorithm. However, we should exercise caution in automatically dismissing outliers. What if, for some reason, outliers only occur when a new version of the algorithm is implemented? Should we disregard them?
+	- Instead of regarding outliers as measurement errors, we should perceive them as observations of the system in rare states that may or may not be influenced by our algorithm. If we choose to ignore outliers, we need to provide compelling reasoning for why we believe they are unrelated.
+	- In practice, a simple approach often employed is to filter out extreme observations, such as removing the largest 1% of measurements.
+	- It may be worth considering the use of a different metric instead of the mean execution time. Since the mean is sensitive to outliers, we can explore metrics that are less influenced by them, such as the median2 or the minimum value3 4. However, there are considerations to keep in mind when deciding which metric to report.
+- Two types of performance metrics
+	- I propose the existence of two distinct types of performance metrics: integral and differential. An integral metric represents the performance that we report to others, indicating the overall capability of the algorithm (e.g., “the algorithm can decompress 8Gb/s”). As mentioned earlier, this estimate is crucial for discussions about performance and plays a significant role in design considerations. The most suitable choice for an integral metric is the mean.
+	- However, in the day-to-day work of performance engineers and researchers, there is a need for a metric that can continually assess whether changes are improving the algorithm’s speed. I refer to this as the differential metric. Typically, the differential metric is constructed by comparing a candidate algorithm with a baseline using an integral metric. For instance, if the baseline algorithm achieves a decompression rate of 8GB/s and the candidate algorithm achieves 9Gb/s, we can conclude that the candidate is an improvement.
+	- One crucial characteristic of the differential metric is its sensitivity. Even if the new version of the algorithm is only a few percent faster, the differential metric should still indicate a change. The mean, unfortunately, lacks the necessary sensitivity. Consequently, we often resort to aggressively discarding inconvenient observations and repeatedly iterating in the hope that the mean will eventually stabilize. However, relying solely on comparing the pointwise means will not provide the desired outcome.
+	- Instead, it is essential to construct a stable differential metric from scratch, designed to accurately capture and quantify performance changes between two algorithms.
+[YES] - Paired benchmarking
+	- The proposed solution is to conduct paired benchmarking by executing both the baseline and candidate algorithms in a randomized order and measuring the difference in their execution times. This approach ensures that both algorithms are subject to the same system biases at any given moment, making it easier to identify meaningful differences between them. Let’s consider the following benchmark run as an example:
+	- can be bimodal
+	- The general algorithm for measuring performance using paired benchmarking is as follows:
+		1. Prepare the same input data for both the baseline and candidate algorithms.
+		2. Execute the baseline algorithm and measure its execution time.
+		3. Execute the candidate algorithm and measure its execution time.
+		4. Record the difference in runtime between the baseline and candidate algorithms.
+	- The advantages of using paired benchmarking include:
+		- The difference metric is less susceptible to ephemeral biases in the system, as common-mode biases are eliminated.
+		- Differences in means typically have lower variance since both algorithms are tested on the same input.
+		- It becomes easier to identify and eliminate outliers that are not caused by algorithm changes, thereby enhancing test sensitivity.
+- Experimental results
+	- prepare some implementations
+	- Firstly, the program checks some of the functions against themselves to ensure the integrity of the benchmarking framework. This step helps control for any potential issues or biases that may arise within the benchmarking process.
+	- observations
+		- Minimum execution time is a robust metric. When used with paired tests, it converges much faster, providing stable results with just 100 iterations, compared to close to 1000 iterations without paired testing. This significantly speeds up performance tests, making them as fast as unit tests.
+		- With a relatively modest number of iterations (approximately 10^4 to 10^5), this method is capable of detecting changes with an effect size of less than 1%.
+		- The results of paired benchmarks are highly robust even in the presence of load in the system. Tests with a parallel dummy load (md5sum /dev/random) running on each physical core yield consistent results.
+		- Sometimes, the minimum time metric is unable to detect a change even when it is present. For example, in the case of std_count / std_count_rev, the reverse iteration is several percent slower according to the mean.
+	- To further investigate the assumption that there is a difference between forward and backward iteration, a criterion.rs benchmark was conducted to measure the “classical” pointwise difference (i.e., the difference of means). The results are as follows:
+- Conclusion
+	- Reduced iteration count
+	- Improved sensitivity
+
+- mac 'send your code to Apple'-pause.
+- mac checksum verification: https://acecilia.medium.com/apple-is-sending-a-request-to-their-servers-for-every-piece-of-software-you-run-on-your-mac-b0bb509eee65
+	- ocsp.apple.com 
+	- https://api.apple-cloudkit.com
+	- It's called lockdown for a reason. Apple was just the very first to implement centralized binary blacklisting, revocation. They call it notarization.
+	- Seems that in fact even though scripts aren't signed, IF YOU DONT have devTooling enabled for a given terminal, scripts are hashed and checked against bad known digests.
+
+
+
+
+[YES] ### Key phrases
+
+- paired benchmarking, based on paired difference test -- convergest faster than pointwise tests
+- challenging due to noisy system
+- can control the machine harder
+- algorithm execution time does not follow a specific probability distribution.
+- be vary of ignoring outliers -- they could depend on the system under test
+- use various metrics, or study the distribution
+- order of tests matter. The function being run last tends to have an advantage.
+
+
+
+[YES] ## Robust Java benchmarking, Part 1: Issues
+
+- this article addresses only program execution time, memory usage is also important
+- '(code) listing X'
+- accuracy vs precision, clock jitter vs granularity
+- measurement overhead
+- code warmup
+- class loading / dynlib loading
+- mixed mode (java)
+- dynamic optimization (java)
+- deoptimization (java)
+- on-stack replacement (OSR) (java)
+- dead code elimination -- use results in output
+- resource reclamation (drop)
+- caching
+- system noise
+- compilation options
+- conclusion: authoring predictive benchmarks is difficult, use a benchmarking framework
+
+
+[YES] ## Robust Java benchmarking, Part 2: Statistics and Solutions
+
+- Brent Boyer (ellipticgroupinc@gmail.com), Programmer, Elliptic Group, Inc.
+- Variance is high, don't trust a single measurement
+	- clock resolution
+	- machine behavior
+	- automatic resource reclamation
+- You can try to counter some of the problems, but eventually you must cope with variations
+- The only way to do this is to take many measurements and use statistics to make reliable conclusions.
+- Typical value: mean/median/min/mode/???
+- Measurement spread (e.g. standard deviation).
+- Rule of thumb: do 3x standard deviations overlap or not?
+- How reliable are these statistics? Confidence intervals. Confidence level. Power.
+- Bootstrapping!
+- Summary:
+	- Perform many benchmark measurements
+	- From the measurements, compute mean and standard deviation
+	- Use these statistics to determine if the two alternatives are clearly distinguished or not.
+	- Compute confidence intervals (=Bootstrapping).
+- DCE
+- Final caveats:
+	- Microbenchmarks should mirror real use cases
+	- Make sure that your microbenchmark results are relevant (and correct!)
+	- Be careful about relying on microbenchmarks alone, verify in situ
+	- Don't only measure on developer machine -- measure on production machines!
+	- Profile the code, are you actually measuring what you think you do?
+	- Ultimately, there is no substitute for really knowing how things are done.
+- Conclusion: benchmarking often requires performing many measurements and using statistics to interpret the results
+
+
+## Cliff Click, how to NOT write a microbenchmark
+
+- https://web.archive.org/web/20090219080734/http://www.azulsystems.com/events/javaone_2002/microbenchmarks.pdf
+- Dr. Cliff Click, Senior Staff Engineer, Sun Microsystems
+- "Lies, Damn Lies, and Microbenchmarks"
+[YES] - "Microbenchmarks are like a microscope: magnification is high, but what the heck are you looking at?" —Cliff Click
+- 'take benchmarks with a grain of salt'
+- Example of Magazine Editor
+	- What do (disabled) asserts cost?
+	- Tiny 5-line function r/w's global variable
+	- Run in a loop 100,000,000 times
+	- With explicit check: 5s
+	- With asserts (off): 0.2s
+	- With no test at all: 5s
+	- What did he really measure?
+- Assert example: no sync => hoist static global into register, only do final write
+- Small hot static function => inline into loop
+- Asserts turned off => no test in code
+- Small loop => unroll it a lot, need pre-loop to 'align loop'
+- Again remove redundant writes to global static
+
+- benchmark is 'spammed'
+	- loop body is basically dead
+	- unrolling speeds up by arbitrary factor
+	- note: 0.2s / 100M iters * 450Mhz clock -> unreasonable performance (<1clock/iter)
+	- but yet... different loops run 20x faster
+	- what is really happening?
+- On-stack replacement
+- Dangers of microbenchmarks:
+	- looking for cost of asserts
+	- but instead found OSR Policy Bug (fixed in 1.4.1)
+	- why not found before?
+		- only impacts microbenchmarks
+		- not found in any major benchmark
+		- not found in any major customer app
+	- test_explicit and test_no_check: 5s
+		- check is compare & predicted branch
+		- too cheap, hidden in other math
+- Self-calibrated benchmarks
+	- want a robust microbenchmark that runs on a wide variety of machines
+	- how long should loop run? depends on machine!
+	- time a few iterations to get a sense of speed, then time enough to reach steady state
+	- reports iterations/s
+	- basic idea is sound, but the devil in the details
+- first timing loop runs interpreted: also pays compile-time cost
+- count needed to run reasonable time is low
+- main timed run used fast compile code
+- runs too fast to get result above clock jitter
+- divide small count by clock jitter => random result
+- report random score
+
+- jBYTEMark Methodology
+	- count iterations to run for 10 msec
+	- first run takes 104msec, way too short => always 1 iteration
+- then use 1 run to computer iterations needed to run 100msec, way too short = 1 iteration
+- then average 5 runs, next 5 runs take 80, 60, 20, 20, 20 msec
+- clock jitter = 1msec
+
+- non-constant work per iter
+- non-synced string speed test
+- use concat, continuously add Strings
+- Benchmark requires copy before add, so each iter take more work than before
+- self-timed loop has some jitter: 10000 main-loop iters with sync
+- 10030 main-loop iters withOUT sync
+- work for loop 1: 10000^2 copies, 10000 concats, 10000 syncs
+- work for loop 2: 10030^2 copies, 10000 concats, no syncs
+- loop 2 avoids 10000 syncs
+- but pays 600900 more copies
+- benchmark compares times, BUT: extra work swamps sync cost!
+
+- beware 'hidden' cache blowout
+	- work appears to be linear with time
+	- more iterations should report smae work/sec
+	- grow dataset to run longer
+	- blow out caches!
+	- self-calibrated loop jitter can make your data set fit in L1 cache OR NOT
+	- jitter strongly affect apparent work/sec rate
+
+- GC pauses occur at unpredictable times
+- GC throughput is predictable
+- either don't allocate in your main loops = no GC pauses
+- OR run long enough to reach GC steady state: each run spends roughl same time doing GC
+
+- CaffeineMark3 Logic Benchmark
+	- purports to test logical operation speed
+	- with unrolling OR constant propagation, whole function is dead (oups!)
+	- first timing loop: 900K iterations to run 1 sec
+	- second loop runs 2.7M iterations in 0.685 sec
+	- score reports a negative (overflow) or huge
+	- overall score dominated by logic score
+- SpecJVM98 209_db: 85% of time spent in shell_sort
+- Scimark2 MonteCarlo simulation: 80% of time spend in sync'd Random.next
+- jBYTEmark StringSort: 75% of time spend in byte copy
+- CaffeineMark Logic Test: He's dead, Jim
+
+- How to write a microbenchmark (general, not just Java)
+	- Pick suitable goals
+		- can't just a web server performance by jBYTEMarks
+		- only answer very narrow questions
+		- mark sure you actually care about the answer
+	- be aware of system load, clock granularity
+	- self-calibrated loops always have jitter, sanity check the time on the main run
+	- run to steady state, at least 10 sec
+
+- fixed size datasets (cache effects)
+	- large datasets have page coloring issues
+		- https://en.wikipedia.org/wiki/Cache_coloring
+- constant amount of work per iteration or the results won't compare
+- avoid the 'eqntott syndrome', capture 1 run result (interpreted) compare to last result
+- avoid 'dead loops' -- they can have infinite speedup
+- print final answer
+- make computation non-trivial
+- or handle dead loops
+- report when speedup is unreasonable
+- caffeinatemark3 and JavaGrande Section 1 mix Infinites and reasonable scores
+
+- java stuff:
+	- be explicit about GC
+	- thread scheduling is not deterministic
+	- JIT performance may change over time
+	- warmup loop+test code before ANY timing (HotSpot specific)
+- OST Bug Avoidance
+	- fixed in 1.4.1
+	- write 1 loop per method for Microbenchmarks
+	- doesn't matter for 'real' apps
+	- don't write 1-loop-per-method to avoid the bug
+
+[YES] - Summary:
+	- Microbenchmarks can be easy, fun and informative!
+	- They can be VERY misleading, BEWARE!
+	- Pick suitable goals
+	- Warmup code before timing
+	- RUn reasonable length of time
+	- Fixed wor/fixed datasets per iteration
+	- sanity-check final times and results
+	- Handle 'dead' loops, GC issues
+
+- Put microtrust in a microbenchmark
+
+
+
+
+## Clock jitter basics
+
+- https://ww1.microchip.com/downloads/aemDocuments/documents/VOP/ApplicationNotes/ApplicationNotes/Clock_Jitter_Basics.pdf
+- Essentially, timing jitter is the deviation of an oscillator’s edge from its ideal location.
+	- assume time flowing continuously, but visible timer only updated every 40ns - jitter saw tooth
+
+
+[YES] ## Outro
+
+- We've measured wall clock time, there are other things to consider as well.
+- CPU time.
+- Memory usage.
+- Time to market.
+- Environmental footprint?
+- Cost/Ease of maintenance / total cost of ownership
+
+
+
+
+[YES] ## Must-haves (present each of these with 'New PR: I made foo/bar/baz faster!' -- comical repetition)
+
+- problem statement
+- clock granularity
+- dead code removal / blackboxes
+- noise / variability
+- dev vs production
+- realisting workloads
+[YES] - correctness
+
+- solution
+- testing frameworks, introduction to criterion -- mention alternatives
+
+[YES] - outro, mention time-to-market, memory usage, cost of maintenance, etc.
+
+- questions?
+
+
+
+
+
+## Counting Nanoseconds
+
+TODO Microbenchmarking C++ Code, Facid Gross
+
+https://www.youtube.com/watch?v=Czr5dBfs72U&t=140s
+
+
+Google Benchmark.
+
+
+
+
+## CppCon 2017: Chandler Carruth, "Going Nowhere Faster"
+
+https://www.youtube.com/watch?v=2EWejmkKlxs
+
+
+
+
+
+
+
+[YES] - unordered map, one layer indirection -- cache killer
+
+https://github.com/google/benchmark/blob/3fd1e6a7aee12e6878d7e039f947ea81140b4f5a/docs/user_guide.md?plain=1#L1029
+
+[YES] 	To prevent a value or expression from being optimized away by the compiler the `benchmark::DoNotOptimize(...)` and `benchmark::ClobberMemory()` functions can be used.
+[YES] 	 Does not prevent optimization of the expression itself, but forces the result to not be discarded. (Often due to printing the value or writing it to volatile memory or the like.)
+
+- 'clamp loop', loop over a bunch of stuff and clamp them to some range
+- zlib compression, etc.
+- image compression
+- #pragma clang loop vectorize(disable) interleave(disable) unroll(disable)
+
+
+
+[YES] ## Divan vs Criterion
+
+- https://www.youtube.com/watch?v=xoq9S-IDcOE
+- criterion userguide
+- 'harness = false'
+- will cargo bench automatically use release mode (no, because bench mode is it's own mode)
+- bench with input does blackbox automatically
+- laptop plugged in or not
+- if we have a random error of 2ms and want to have a error of less than 1%, we can't measure anything less than 10 seconds...
+
+
+
+## Divan
+
+	### Announcing Divan
+
+	Compared to Criterion
+
+		The current go-to Rust benchmarking library is Criterion.rs, a port of Haskell’s Criterion. It works very well and has many useful features.
+
+		However, I believed we could have a simpler API while being more powerful, such as benchmarking generic functions and measuring allocations.
+
+	### 
+
+
+
+
+
+
+## low precision time measurement
+
+- calendar
+- hourglass
+- egg timer?
+
+
+## how can we know which one is faster? We measure!
+
+- 
+
+
+## Compare it with something similar
+
+- 
+
+
+
+## Proving Performance -- FOSDEM 2024
+
+https://www.youtube.com/watch?v=P87C4jNakGs
+
+- static assertions crate, divan
+- 
+
+
+
+
+## blackbox
+
+let start = Instant::now();
+Vec::from_iter(1..=100);
+let elapsed = start.elapsed();
+
+- optimized out
+- 500 nanoseconds
+- noise
+- Divan, makes it easy to do correct measurements, compare various code
+- Divan: Comfy Bench! :P
+
+#[divan::bench]  <-- attribute macro
+fn my_benchmark() {
+	...
+}
+
+#[test]
+fn my_test() {
+	...
+}
+
+#[divan::bench]
+fn allow_vec() {
+	blackbox(Vec::from_iter(1..=100));
+}
+
+benches      fastest | slowest | median | mean | samples | iter
+\- alloc_vec ...
+
+
+- if you want to measure only creating the value, not deallocating, return it from the function
+- in this case, we don't need blackbox
+
+[YES] #[divan::bench(args = [1, 5, 10, 1000, 10_000_000])]
+fn alloc_vec(n: i32) -> Vec<i32> {
+	Vec::from_iter(1..=n)
+}
+
+benches
+\- alloc_vec
+	\- 1
+	|- 5
+	...
+
+
+#[divan::bench(
+	types = [Vec<i32>, SmallVec<[i32; 10]>],
+	args = [1, 5, 10, 1000, 10_000_000],
+)]
+fn alloc_vec<T>(n: i32) -> T
+where
+	T: FromIterator<i32>,
+{
+	T::from_iter(1..=n)
+}
+
+
+## Measure memory
+
+- allocations: dhat
+- #[global_allocator]
+static ALLOC: AlloCProfiler<MiMalloc> = AllocProfiler::new(MiMalloc)
+
+
+## Counting Throughput
+
+- #[divan::bench(
+	types = [Vec<i32>, SmallVec<[i32; 10]>],
+	args = [1, 5, 10, 1000, 10_000_000],
+)]
+fn my_benchmark<T>(bencher: Bencher, n: i32)
+where
+	T: FromIterator<i32>,
+{
+	bencher
+		.counter(BytesCount::of_many::<i32>(n as usize))
+		.bench(|| T::from_iter(1..=n));
+}
+
+
+## Features
+
+- API is a lot simpler
+- visually compact output
+- parameters as benchmark cases
+- compact generic ufnctions across types
+- counting throughput
+- measuring memory allocations
+- check multi-thread contention
+
+
+## Motivations
+
+- runs faster, easier API, other tools are good
+
+
+## Other Tools
+
+[YES] - Criterion: current go-to, graph output
+[YES] - Tango: microbenchmarking, paired benchmarking -- cancel out systemic noise
+	- 
+	- coroutines?
+
+[YES] - Flamegraphs: to understand where time is spent
+[YES] - DHAT: crate, backtrace on allocations, track max heap usage
+
+
+## Closing thoughts
+
+- if you wanna reach for microbenchmarking, is it worth your time?
+[YES] - measure with different inputs -- but realistic ones
+[yes] - optimizing the code is out of scope for this talk, but general pointers can be understanding where you spend your time with flamegraphs, where you allocate with dhat, where you do syscalls with FOO. generally, better algorithm is best, less syscalls, less allocations, etc.
+- don't let perfect be the enemy of good
+
+
+
+
+## Introducing Criterion
+
+- http://www.serpentine.com/blog/2009/09/29/criterion-a-new-benchmarking-library-for-haskell/
+
+	Compared to most other benchmarking frameworks (for any programming language, not just Haskell), criterion focuses on being easy to use, informative, and robust.
+
+
+	-- Append this to the end of "Fibber.hs".
+
+	main = defaultMain [
+	         bench "fib 10" $ \n -> fib (10+n-n)
+	       , bench "fib 30" $ \n -> fib (30+n-n)
+	       , bench "fib 35" $ \n -> fib (35+n-n)
+	       ]
+
+
+			Timing information is somewhat nice to have, but much more useful is an indication of which times occurred most frequently. The traditional way to display such information is with a histogram. Histograms are pretty awful, since a histogram with an incorrect bin size is either misleading or useless, and bin sizes have to be chosen by hand. Much more useful is a kernel density estimate:
+
+			A histogram puts all samples between the boundaries of each bin will fall into the bin. It doesn't differentiate whether the value falls close the left, to the right or the center of the bin.
+
+			A kde plot, on the other hand, takes each individual sample value and draws a small gaussian bell curve over it.
+
+
+### Things Criterion does
+
+- The first thing that Fibber does is measure how long it takes for the system clock to tick. It will then run our benchmarked code enough times that the resolution of the clock will not introduce a significant error.
+	- sometime it would have ticked 0 times, sometimes 1 -- both are wrong
+	- Instead, we evaluate fib 10 many thousands of times in order to get the measurement error introduced by the resolution of the clock down to a few parts in ten thousand.
+	- Also, this makes the graph smoother than reality.
+- We also use something called the boxplot technique to develop a quick sense of the quality of our data. In this case, a few percent of our numbers are significantly off from the mean of the sample.
+- Once we've characterised the system clock's period, we figure out how expensive it is to actually use the clock.
+- The last part is the most interesting. We automatically figure out how many times we need to evaluate fib 10:
+	- collecting 100 samples, 1911 iterations each, in estimated 995.8188 ms
+- Why do we measure so many times? Because we're going to do some statistical analysis of our measurements to see whether they are trustworthy.
+	- bootstrapping with 100000 resamples
+- The first thing that the bootstrap tells us is the mean and standard deviation of our measurements, along with the 95% confidence intervals for those values.
+- It then reports on the outliers in the measurements, and most importantly, tells us whether they are important.
+	- Notice that the standard deviation of the sample is almost the same as the mean, a classic sign of sketchy performance measurements. However, we don't merely have to spot this suspicious pattern ourselves: by analysing the results of the bootstrap, our benchmark automatically tells us that our numbers are, in effect, junk.
+- "Much of my work on criterion was inspired by Brent Boyer's excellent articles on Java performance analysis (part one and part two). Amusingly, Java and Haskell each pose substantial benchmarking challenges: in the case of Java, dynamic recompilation makes getting good numbers very challenging, while for Haskell, lazy evaluation brings its own difficulties."
+
+
+- http://www.serpentine.com/blog/2009/09/29/criterion-a-new-benchmarking-library-for-haskell/
+- I have a question related to the lambdas being benchmarked: \n -> fib (10+n-n). Why the addition and subtraction of n? Is this to prevent GHC of optimizing it? Does GHC optimize (\n -> fib 10) to fib 10?)
+
+
+
+
+Goals
+
+The primary goal of Criterion.rs is to provide a powerful and statistically rigorous tool for measuring the performance of code, preventing performance regressions and accurately measuring optimizations. Additionally, it should be as programmer-friendly as possible and make it easy to create reliable, useful benchmarks, even for programmers without an advanced background in statistics.
+
+Related Projects
+
+bencher - A port of the libtest benchmark runner to stable Rust
+criterion - The Haskell microbenchmarking library that inspired Criterion.rs
+cargo-benchcmp - Cargo subcommand to compare the output of two libtest or bencher benchmark runs
+[YES] > cargo-flamegraph - Cargo subcommand to profile an executable and produce a flamegraph
+
+Criterion.rs Extensions
+
+[YES?] criterion-cycles-per-byte - A custom-measurement plugin that counts the number of CPU cycles used by the benchmark
+[YES?] > criterion-perf-events - A custom-measurement plugin that counts perf events created by the benchmark
+
+
+
+
+
+## bootstrapping:
+[YES?] - It works because as the sample size goes to infinity, the empirical cdf converges to the true cdf of your data. So if your sample is large the empirical cdf hopefully approximates that cdf well. You can then pretend it is the true cdf and use it to calculate the sampling distribution of an estimator
+
+
+
+
+
+
+## Compiler Explorer
+
+
+
+
+- TODO: Check https://products.easyperf.net/perf-ninja
+
+- godbolt:
+	- https://stackoverflow.com/questions/45563133/why-doesnt-the-godbolt-compiler-explorer-show-any-output-for-my-function-when-c
+	- Godbolt compiles your Rust code as a library crate by passing --crate-type=lib to the compiler. And code from a library is only useful if it's public. So in your case, your add() function is private and is removed from the compiler completely. The solution is rather simple:
+
+	Make your function public by adding pub to it. Now the compiler won't remove the function, since it is part of the public interface of your library.
+		- Sometimes adding pub to a function is not enough, especially for small wrapper functions. You should add #[inline(never)] to the top-level functions for which you want to see the disassembly. – 
+ 		- Even that isn't enough sometimes, but I've found #[no_mangle] to always work (in combination with pub).
+
+- https://medium.com/journey-to-rust/viewing-assembly-for-rust-function-d4870baad941
+	- And you have pile of ‘.s’ files in target. You can say ‘jobs’ done, but I have hard time to read the result. There is a nice site https://godbolt.org/, which gives very much readable output. I want to reproduce this result on my machine.
+	- It leaves no junk and it’s easy to read. I want the same!
+	- cargo-asm
+		Turns out, there is an extension for cargo:
+		cargo install cargo-asm
+	- cargo asm --asm-style=intel \
+	   --rust equart::quadtree::Boundry::subarea
+	- Optimize, inline, eliminate!
+		After I removed bulky criterion and assembly generation become fast, I was able to pinpoint issue to inlining.
+
+
+## Why writing benchmarks is hard
+
+https://stackoverflow.com/questions/13322479/how-to-benchmark-programs-in-rust
+
+- There are several ways to benchmark your Rust program. For most real benchmarks, you should use a proper benchmarking framework as they help with a couple of things that are easy to screw up (including statistical analysis). Please also read the "Why writing benchmarks is hard" section at the very bottom!
+- To quickly check how long a piece of code runs, you can use the types in std::time. The module is fairly minimal, but it is fine for simple time measurements. You should use Instant instead of SystemTime as the former is a monotonically increasing clock and the latter is not. 
+	use std::time::Instant;
+	let before = Instant::now();
+	workload();
+	println!("Elapsed time: {:.2?}", before.elapsed());
+- using a benchmarking framework
+	- built-in benchmarking (nightly only)
+		#[bench]
+		fn bench_workload(b: &mut Bencher) {
+		    b.iter(|| workload());
+		}
+	- cargo bench
+- criterion: The crate criterion is a framework that runs on stable, but it is a bit more complicated than the built-in solution. It does more sophisticated statistical analysis, offers a richer API, produces more information and can even automatically generate plots.
+	- criterion quickstart: https://github.com/bheisler/criterion.rs#Quickstart
+		- use std::hint::black_box;
+		- fn criterion_benchmark(c: &mut Criterion) {
+		    c.bench_function("fib 20", |b| b.iter(|| fibonacci(black_box(20))));
+		}
+		- criterion_group!(benches, criterion_benchmark);
+		- criterion_main!(benches);
+		- cargo bench
+
+pitfalls
+[YES] - compile with optimizations: rustc -O3 or cargo build --release. cargo bench is using its own profile, with optimizations.
+- repeat the workload: to offset noise
+[YES] - make sure your benchmark actually does something, constant propagation + dead code removal might completely short circuit your workload. Print it or write to some volatile memory location or the likes (=use blackbox)
+	- Good benchmarking frameworks use a block box in several situations. For example, the closure given to the iter method (for both, the built-in and Criterion Bencher) can return a value. That value is automatically passed into a black_box.
+[YES] - Beware of constant values: similarly to the point above, if you specify constant values in a benchmark, the optimizer might generate code specifically for that value. In extreme cases, your whole workload could be constant-folded into a single constant, meaning that your benchmark is useless. Pass all constant values through black_box to avoid LLVM optimizing too aggressively.
+[YES] - beware of measurement overhead
+
+
+
+- Idiomatic way of performance evaluation
+	- https://stackoverflow.com/questions/60291987/idiomatic-way-of-performance-evaluation
+[YES] 	- failure to warm up:, page faults within the timed region for touching new memory, code/data cache misses
+[YES] 	- never-written memory gets all pages copy-on-write-mapped to the same system-wide physical page with all zeros, use non-zero initializer or memset (or write something) to trigger the initial page fault
+[YES] 	- failure to let CPU scale up, might take serveral milliseconds
+		- related: on modern x86, RDTSC counts reference cycles, not core clock cycles, so it's subject to the same CPU-frequency variation effects as wall-clock time.
+[YES] 	- Most integer and FP arithmetic asm instructions (except divide and square root which are already slower than others) have performance (latency and throughput) that doesn't depend on the actual data. Except for subnormal aka denormal floating point being very slow, and in some cases (e.g. legacy x87 but not SSE2) also producing NaN or Inf can be slow.
+		- https://stackoverflow.com/questions/51607391/what-considerations-go-into-predicting-latency-for-operations-on-modern-supersca
+		- https://www.agner.org/optimize/
+	- Memory access is also pipelined on most CPUs, so looping over an array (address for next load easy to calculate) is often much faster than walking a linked list (address for next load isn't available until the previous load completes).
+	- Obviously performance can differ between CPUs; in the big picture usually it's rare for version A to be faster on Intel, version B to be faster on AMD, but that can easily happen in the small scale. When reporting / recording benchmark numbers, always note what CPU you tested on.
+	- You need to compile with optimization enabled, but you also need to stop the compiler from optimizing away the work, or hoisting it out of a loop. Make sure you use the result (e.g. print it or store it to a volatile) so the compiler has to produce it. For an array, volatile double sink = output[argc]; is a useful trick: the compiler doesn't know the value of argc so it has to generate the whole array, but you don't need to read the whole array or even call an RNG function. (Unless the compiler aggressively transforms to only calculate the one output selected by argc, but that tends not to be a problem in practice.)
+	- Big complicated functions with special handling for lots of special cases can look fast in a microbenchmark when you run them repeatedly, especially with the same input every time. In real life use-cases, branch prediction often won't be primed for that function with that input. Also, a massively unrolled loop can look good in a microbenchmark, but in real life it slows everything else down with its big instruction-cache footprint leading to eviction of other code.
+[YES] 	- Related to that last point: Don't tune only for huge inputs, if the real use-case for a function includes a lot of small inputs. e.g. a memcpy implementation that's great for huge inputs but takes too long to figure out which strategy to use for small inputs might not be good. It's a tradeoff; make sure it's good enough for large inputs (for an appropriate definition of "enough"), but also keep overhead low for small inputs.
+	- Litmus tests:
+		- If you're benchmarking two functions in one program: if reversing the order of testing changes the results, your benchmark isn't fair. e.g. function A might only look slow because you're testing it first, with insufficient warm-up. example: Why is std::vector slower than an array? (it's not, whichever loop runs first has to pay for all the page faults and cache misses; the 2nd just zooms through filling the same memory.)
+[YES] 		- Increasing the iteration count of a repeat loop should linearly increase the total time, and not affect the calculated time-per-call. If not, then you have non-negligible measurement overhead or your code optimized away (e.g. hoisted out of the loop and runs only once instead of N times).
+		- Vary other test parameters as a sanity check.
+
+
+
+[YES]: Performance characteristics can vary significantly between platforms and operating systems.
+
+
+
+
+- The Rust programming language primarily uses LLVM as its default compiler infrastructure. As mentioned above, rustc is a frontend that uses LLVM as its backend. This means that Rust code is compiled by default using LLVM's optimizations and transformations to generate machine code.
+	- self-hosted front-end with LLVM for code generation and optimization
+	- was OCaml from the start, but became self-hosting 2011
+
+
+
+TODO ## Criterion docs
+
+- https://bheisler.github.io/criterion.rs/book/getting_started.html
+- This adds a development dependency on Criterion.rs, and declares a benchmark called my_benchmark without the standard benchmarking harness. It's important to disable the standard benchmark harness, because we'll later add our own and we don't want them to conflict.
+	- The two assumptions required for the confidence interval statement to be valid are (1) the data are a random sample from the population of interest, and (2) the quantity being measured is normally distributed.
+- benchmark_group!(group_name, fn1, fn2, fn3): Return a benchmark group. All benchmarks performed using a benchmark group will be grouped together in the final report.
+- bench_function!(...): Benchmarks a function. For comparing multiple functions, see benchmark_group.
+- bench_with_input: Benchmarks a function with an input. For comparing multiple functions or multiple inputs, see benchmark_group.
+- Features:
+	Collects detailed statistics, providing strong confidence that changes to performance are real, not measurement noise.
+	Produces detailed charts, providing thorough understanding of your code’s performance behavior.
+- Structs
+	- Criterion lets you configure and execute benchmarks
+		Each benchmark consists of four phases:
+			Warm-up: The routine is repeatedly executed, to let the CPU/OS/JIT/interpreter adapt to the new load
+			Measurement: The routine is repeatedly executed, and timing information is collected into a sample
+			Analysis: The sample is analyzed and distilled into meaningful statistics that get reported to stdout, stored in files, and plotted
+			Comparison: The current sample is compared with the sample obtained in the previous benchmark.
+	- Bencher: Timer struct used to iterate a benchmarked function and measure the runtime.
+		- If you want to do the iteration and measurement yourself (eg. passing the iteration count to a separate process), use iter_custom.
+		- If your routine requires no per-iteration setup and returns a value with an expensive drop method, use iter_with_large_drop.
+		- If your routine requires some per-iteration setup that shouldn’t be timed, use iter_batched or iter_batched_ref. See BatchSize for a discussion of batch sizes. If the setup value implements Drop and you don’t want to include the drop time in the measurement, use iter_batched_ref, otherwise use iter_batched. These methods are also suitable for benchmarking routines which return a value with an expensive drop method, but are more complex than iter_with_large_drop.
+		- Otherwise, use iter.
+			- BatchSize: try SmallInput, if it fails try other ones
+			- Smaller BatchSizes causes larger overhead
+	- iter: Times a routine by executing it many times and timing the total elapsed time.
+		- Prefer this timing loop when routine returns a value that doesn’t have a destructor.
+	- iter_custom: when you want to do custom measurements, for example sum time of several threads
+	- iter_with_large_drop: uses a lot of memory, if problem -> iter_batched
+		- will avoid timing Vec::drop
+	- iter_batched: when you want to generate input and then consume it, like sorting
+	- iter_batched_ref: same, but does not consume (= does not measure ::drop)
+	- to_async: converts to AsyncBencher, which handles async/await
+	- 
+
+
+## Touchstone and Benchmark
+
+- https://www.youtube.com/watch?v=dEG-_mvj92o
+- measure of quality, can be used as a standard when comparing things
+- 
+
+
+
+###
+
+https://medium.com/@thomasmeissnerds/lets-build-a-cpu-bench-marking-tool-using-rust-727ddeb38df3
+
+
+
+
+### Test things on EC2
+
+- Click-ops t2.micro in experiments
+- i-0c68fd12c7e09cc6e in Ireland
+- 'connect' in GUI
+	Port 22 (SSH) is not authorized
+	Port 22 (SSH) is currently not authorized by your security group. To use EC2 Instance Connect, you must authorize port 22 for the EC2 Instance Connect service IP addresses in your Region: 18.202.216.48/29.
+- username ec2-user
+- Session Manager usage:
+	Connect to your instance without SSH keys, a bastion host, or opening any inbound ports.
+	Sessions are secured using an AWS Key Management Service key.
+	You can log session commands and details in an Amazon S3 bucket or CloudWatch Logs log group.
+	Configure sessions on the Session Manager Preferences  page.
+- What is the difference between EC2 Instance Connect and Session Manager SSH connections?
+	t looks like there are two distinct ways that I can SSH from my local laptop into into my instances without manually managing keys:
+		Session Manager: You can enable users in your AWS account to use the AWS CLI to establish Secure Shell (SSH) connections to instances using Session Manager. Users who connect using SSH can also copy files between their local machines and managed instances using Secure Copy Protocol (SCP). You can use this functionality to connect to instances without opening inbound ports or maintaining bastion hosts.
+		EC2 Instance Connect: Amazon EC2 Instance Connect provides a simple and secure way to connect to your instances using Secure Shell (SSH). You can use Instance Connect to connect to your Linux instances using a browser-based client, the Amazon EC2 Instance Connect CLI, or the SSH client of your choice. When you connect to an instance using EC2 Instance Connect, the Instance Connect API pushes a one-time-use SSH public key to the instance metadata where it remains for 60 seconds.
+	What are the differences between these options? It sounds like EC2 Instance Connect is fairly simple and Session Manager potentially does a lot more. How does Session Manager actually work? Does it actually open a direct SSH connection between my machine and the EC2 instance, or is the connection being proxied via some EC2 service?
+	There many nuanced differences between these services but the basic idea is that EC2 Instance Connect allows for a convenient and secure native SSH connection using short-lived keys while Session Manager permits an SSH connection tunneled over a proxy connection.
+	The session manager agent establishes a reverse connection to the service so it is not necessary to, for example, open port 22 on the host. EC2 Instance Connect requires the host security group to permit ssh traffic inbound.
+
+- Recreated with SSH from my IP
+	- i-0044b7eef741fc95c
+	- installed rustup: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+	- sudo yum install make glibc-devel gcc patch
+	- sudo yum install perf
+
+
+	- PMU (Performance Monitoring Unit) events
+	- git clone git://perfmon2.git.sourceforge.net/gitroot/perfmon2/libpfm4
+	cd libpfm4
+	make
+	- examples/showevtinfo
+	- check_events PERF_COUNT_HW_STALLED_CYCLES_BACKEND(:...(:....))
+	- Codes: 0x8
+	- https://bnikolic.co.uk/blog/hpc-prof-events.html
+
+
+- https://stackoverflow.com/questions/69395912/pmu-x86-64-performance-counters-not-showing-in-perf-under-aws
+	I am running a C++ benchmark test for a specific application. In this test, I open the performance counter file (__NR_perf_event_open syscall) before the critical section, proceed with the section and then after read the specified metric (instructions, cycles, branches, cachemisses, etc).
+
+	I verified that this needs to run under sudo because the process needs CAP_PERFCOUNT capabilities. I also have to verify that /proc/sys/kernel/perf_event_paranoid is set to a number higher than 2, which seems to be always the case with Ubuntu 20.04.3 with kernel 5.11.0 which is the OS I standardized across tests.
+
+	This setup works on all my local machines. On the cloud, however, it works only on some instances as m5zn.6xlarge (Intel Xeon Platinum 8252C). It does not work on others as t3.medium, c3.4xlarge, c5a.8xlarge.
+
+	The AMI on all them are the same ami-09e67e426f25ce0d7.
+
+	One easy way to verify this behavior is run the following command:
+
+	sudo perf stat /bin/sleep 1
+	On the m5zn box I will see:
+
+	 Performance counter stats for '/bin/sleep 1':
+
+	          0.54 msec task-clock                #    0.001 CPUs utiliz
+	             1      context-switches          #    0.002 M/sec
+	             1      cpu-migrations            #    0.002 M/sec
+	            75      page-faults               #    0.139 M/sec
+	       2191485      cycles                    #    4.070 GHz
+	       1292564      instructions              #    0.59  insn per cyc
+	        258373      branches                  #  479.860 M/sec
+	         11090      branch-misses             #    4.29% of all branc
+
+	   1.000902741 seconds time elapsed
+
+	   0.000889000 seconds user
+	   0.000000000 seconds sys
+	Perf with valid output
+
+	While on the other boxes I will see:
+
+	 Performance counter stats for '/bin/sleep 1':
+
+	          0.62 msec task-clock                #    0.001 CPUs utilized
+	             2      context-switches          #    0.003 M/sec
+	             0      cpu-migrations            #    0.000 K/sec
+	            76      page-faults               #    0.124 M/sec
+	<not supported>      cycles
+	<not supported>      instructions
+	<not supported>      branches
+	<not supported>      branch-misses
+
+	   1.002488031 seconds time elapsed
+
+	   0.000930000 seconds user
+	   0.000000000 seconds sys
+	Perf with not supported values
+
+	My suspicion is that the m5zn.6xlarge is backed by a real instance while the others are shared instances. is my suspicion correct?
+
+	What instances I can launch that will provide me with performance counter PMU support?
+
+	Thank you!
+
+
+	After some research I found out that because all Amazon AWS instances are virtual instances, none of the guest operating systems can directly access the hardware performance counters (PMC or PMU).
+
+	The guest OS can only read the performance counters through a kernel driver called virtual PMU (vPMU), which is available only for certain Intel Xeon CPUs.
+
+	Therefore in my attempted list of instances, only the m5zn with an Intel Platinum 8252 has a supported CPU.
+
+	It is easy to check if the guest OS supports vPMU by running
+
+	cat /proc/cpuinfo | grep arch_perfmon
+	It is also possible to check in the dmesg output right after smpboot:
+
+	[    0.916264] smpboot: CPU0: Intel(R) Xeon(R) Platinum 8175M CPU @ 2.50GHz (family: 0x6, model: 0x55, stepping: 0x4)
+	[    0.916410] Performance Events: unsupported p6 CPU model 85 no PMU driver, software events only.
+	On AWS the rule of thumb is that you will get vPMU only on the largest instances, or instances that take an entire socket.
+
+	https://oavdeev.github.io/posts/vpmu_support_z1d/
+
+[YES] 	Currently these instances support vPMU:
+		i3.metal
+		c5.9xlarge
+		c5.18xlarge
+		m4.16xlarge
+		m5.12xlarge
+		m5.24xlarge
+		r5.12xlarge
+		r5.24xlarge
+		f1.16xlarge
+		h1.16xlarge
+		i3.16xlarge
+		p2.16xlarge
+		p3.16xlarge
+		r4.16xlarge
+		x1.32xlarge
+		c5d.9xlarge
+		c5d.18xlarge
+		m5d.12xlarge
+		m5d.24xlarge
+		r5d.12xlarge
+		r5d.24xlarge
+		x1e.32xlarge
+
+- Brendan Gregg's post on Measuring IPC
+	- https://www.brendangregg.com/blog/2017-05-04/the-pmcs-of-ec2.html
+	- 
+
+
+[YES] - benchmark results tend to be log-normal
+	- Thus, if the random variable X is log-normally distributed, then Y = ln(X) has a normal distribution.
+
+
+- Make sure that you understand what we are measuring
+	- Example: if we want to compare creating a vec from iterator vs looping and pushing, we might accidentally include '::Drop' (which might be significant)
+	- Also, the first allocation might trigger syscall, check first and 1000:th
+- In the end, the only important thing is how efficient the actual production code is -- so measuring in context is necessary.
+
+
+
+
+
+
+
+
+
+## The Rust Performance Book, Benchmarking
+
+- https://nnethercote.github.io/perf-book/benchmarking.html#:~:text=Hyperfine%20is%20an%20excellent%20general,to%20benchmark%20the%20Rust%20compiler.
+
+
+
+## TOML
+
+TOML v1.0.0-rc.3
+Tom's Obvious, Minimal Language.
+
+By Tom Preston-Werner, Pradyun Gedam, et al.
+
+Objectives
+TOML aims to be a minimal configuration file format that's easy to read due to obvious semantics. TOML is designed to map unambiguously to a hash table. TOML should be easy to parse into data structures in a wide variety of languages.
+
+
+
+
+
+
+
+
+[YES] ## Talk outline
+
+- Maybe feature Ferris somehow?
+- maybe some rusty theme on the slides?
+- Maybe 'swap slide 1 and 2'?, a.k.a. give conclusion first and explanation after.
+
+- chapter 1: introduce a bunch of pitfalls
+- chapter 2: introduce criterion
+- chapter 3: mention alternatives + other metrics like memory consumption, time-to-market and total-cost-of-ownership
+- chapter 4: ???
+
+
+
+
+- [prelude]
+- title
+- hello, welcome! :) Feel free to ask questions during the talk.
+- let's get started! / Let's go!
+
+- [chapter 1]: an introduction
+- 'new pull request: I've made the_thing faster'
+- how can we verify this?
+- possibly: show final results, conclude "it depends" + "it's non trivial" + "here be dragons"
+
+
+- part 1: measure elapsed time
+- "Listing 1"
+- run main, measure. run topic branch, measure. Unreliable, and forgot to use --release
+- tip 1: make sure that you measure what you wanted to measure, for example not include compilation time unless this is what you want to measure
+- 'gotcha 1: measuring affects the performance, and there is a limit to how small pieces of code we can measure'
+- how much time does N=1000 take? Then see N=1000000000, if same == probably DCE, inspect disassembly
+- measurement granularity + variance
+	- measure old: 40ns!
+	- measure new: 80ns!
+	- try again: reversed
+	- measure nothing: 80ns!
+	- measure nothing again: 40ns!
+	- what is going on?
+	- show graph/histogram of observed durations
+
+
+- [chapter 2]: So, with all these problems -- what can we do about them?
+
+
+- [chapter 3]: Don't roll your own, use a framework. Case study: criterion.
+
+
+
+- [outro]: recap (or per-chapter recap?)
+- [discussion / conclusion]: don't sweat it, if your code doesn't cause problems, it's likely fast enough. Depending on what you work with, getting stuff in customer's hands early is often more important than the exact number of nanoseconds that your inner loop takes. (This doesn't mean performance is important, just that I don't think that it should be the main focus most of the time.) Optimized code takes longer to write, and is usually harder to maintain -- try to strike a balance.
+
+
+- ferris waving good bye
+- maybe something else
+
+- Questions?
+
+
+
+
+
+
+
+
+
+## CoC
+
+https://berlincodeofconduct.org
+
+"Hi, everyone"
+
+- don't be a jerk, try to be inclusive
+
+
+## Credits?
+
+- rust trademark
+- plots were done with youplot
+- thanks for XXX for the testing framework, and jorge to port to Haskell, and YYY to port to Rust
+- etc
+
+## Trademark policy
+
+TL;DR: Most non-commercial uses of the Rust/Cargo names and logos are allowed and do not require permission; most commercial uses require permission. In either case, the most important rule is that uses of the trademarks cannot appear official or imply any endorsement by the Rust project.
+
+Using the Rust trademarks on t-shirts, hats, and other artwork or merchandise, even in modified form, is allowed for your personal use or for use by a small group of community members, as long as they are not sold. If you want to distribute merchandise with Rust Trademarks at a Rust affiliated event, please contact us for permission.
+
+> Using the Rust trademarks (even in modified form) for social events like meetups, tutorials, and the like is allowed for events that are free to attend.
+
+
+
+
+## Selected pitfalls
+
+- order matters
+- clock granularity
+- correctness
+- input size matters
+- input sorting matters, make sure that the benchmark input matches the production workload's
+- dead code removal
+- noise
+- machine / context matters
+- superscalar matters
+- CPU frequency scaling, takes time to ramp up
+
+
+
+> Also, micro-benchmarks should be run as real-time priority processes to avoid scheduling noise. 
+> The first run often is the longest because the CPU cache may be cold and it may take many cache misses and page faults and also resolve dynamic symbols from shared libraries on the first call (lazy symbol resolution is the default run-time linking mode on Linux, for example), while subsequent calls are going to execute with much less overhead.
+> 
+
+
+## criterion
+
+
+
+- how configure
+- how interpret the output
+(- maybe also mention what kinds of tests it does, and how it works)
+(- caveat: it tries to measure steady-state full throttle performance — which might not be what your code is doing)
+- how interpret the HTML report
+- compare functions in same graph (groups)
+- compare with different baselines
+- run with inputs
+- gotcha: you can't depend on binary crates, so either include your test code in the bench crate itself, or move it to lib.rs
+
+
+
+
+## show criterion in main.rs
+
+- must run with --bench or it will not run the benchmarks
+- $ CRITERION_DEBUG=1 cargo run -- --bench
+- 
+
+
+### Criterion types
+
+Criterion: Benchmark Manager
+Bencher: Timer struct used to iterate a benchmarked function and measure the runtime
+
+
+
+
+
+### Criterion bench_function
+
+bench_function(id, func)
+	benchmark_group::run_bench(id, &(), f)
+		let config = ...
+		let report_context = { output_dir, plot_config }
+		let id = InternalBenchmarkId
+		assert unique id
+		assert unique directory name
+		store directory name in self (BenchmarkGroup)
+		assert unique title
+		store title in self
+		check if id matches filter
+		self.any_matched |= do_run_this_one
+		let mut func = Function::new(f)
+		match criterion.mode {
+			Benchmark => {
+				if Some(connection) // for cargo-criterion
+				analysis::common
+					criterion.report.benchmark_started
+					if compare_strict, assert dir exists
+					// let sampling_mode, iters, timers;
+					if baseline
+						path = output_dir / id / baseline / sample.json
+						try load, panic
+					else
+						func.sample(....)
+						if quick_mode
+							time_start = Instant::now()
+							1 iteration func.bench
+								b = Bencher
+								iters.iter.map
+									f(b, blackbox(param))
+									b.assert_iterated()
+									m.to_f64(b.value)
+								.collect
+							early exit if extremely slow
+							loop until stdev is low and at least min, or over max
+								self.bench
+								calculate statistics
+						else (not quick mode)
+							criterion.report.warmup
+							if connection ...
+							self.warm_up, loop until elapsed_time > how_long
+								b = Bencher
+								*f(b, blackbox(p))
+								b.assert_iterated (.iter called)
+							met = initial guess for mean execution time
+							n = config.sample_size
+							actual_sampling_mode = config ... (Auto|Linear|Flat)
+							m_iters = guess from sampling mode and warmup
+							expected_ns = ...
+							total_iters = saturating-add ...
+							criterion.report.measurement_start
+							if connection ...
+							m_elapsed_actually = self/f.bench()
+						sampling_mode = ...
+						iters = ...
+						timers = ...
+						if connection ...
+					criterion.report.analysis
+					assert no measurement took 0 time, should not be possible
+					avg_times = Sample::new(...)
+					if should save baseline -> do it
+					data = Data::new(...)
+					tukey test sample // statistical test
+					if should save baseline -> ...
+					estimate statistic from the sample
+						estimates = mean, median, median_abs_dev, sloe, std_dev
+						distributins = the bootstrap distribution of something
+						distributions, estimates
+					if sampling_mode is linear
+						fill in distribution and slope through regression
+					if should save baseline -> do it
+					if basedir exists
+						compare::common
+							t_test // two sample
+					measurement_data = report::MeasurementData { ... }
+					criterion.report.measurement_complete
+					criterion.should_save_baseline -> ...
+					if criterion.connection.is_none -> baseline::save
+			}
+			List | Test | Profile => ...
+		}
+
+bench_function_happy_path(id, func)
+	benchmark_group::run_bench(id, &(), f)
+		let mut func = Function::new(f)
+
+		analysis::common
+			func.sample(....)
+				self.warm_up
+				met = ... // initial guess for mean execution time
+				n = config.sample_size
+				m_iters = ... // guess from sampling mode and warmup
+				expected_ns = ...
+				total_iters = saturating-add ...
+				criterion.report.measurement_start
+				m_elapsed_actually = self/f.bench()
+		avg_times = Sample::new(...)
+		data = Data::new(...)
+		tukey test sample // statistical test
+		estimate statistic from the sample
+			estimates = mean, median, median_abs_dev, sloe, std_dev
+			distributins = the bootstrap distribution of something
+			distributions, estimates
+		if sampling_mode is linear
+			fill in distribution and slope through regression
+		if basedir exists
+			compare::common
+				t_test // two sample
+		measurement_data = report::MeasurementData { ... }
+
+
+
+test_benchmark_group_without_input_simplified
+	let c = Criterion::default();
+	let g = c.benchmark_group("name")
+	g.bench_function("name", |b| b.iter(f))
+		g.run_bench(...)
+			// prepare arguments
+			analysis::common(...)
+				// report started
+				func.sample
+					// report warmup
+					(elapsed_ iters) = warmup
+						b = Bencer { }
+						loop while elapsed <= how_long
+							(*f)(&mut b, black_box(param))
+					met = elapsed / iters // mean execution time
+					// report measurement start
+					func.bench
+						b = Bencher
+						iters.map
+							(*func)(b, blackbox(param))
+								b.iter
+									time_start = Instant::now()
+									start = measurement.start()
+									for self iters
+										blackbox(routine())
+									value = measurement.end()
+									elapsed = start.elapsed()
+				averages = elapsed / iters
+				labeled_samples = tukey::classify(avg_times)
+				distributions, estimates = estimates
+					mean, std_dev, median, mad = stats(averages)
+					// Distribution -> "/// The bootstrap distribution of some parameter"
+
+
+
+
+
+
+	g.finish()
+
+
+Tukey's method / Tukey's Q-test
+- Used to identify outliers
+- T-test? No, too strict.
+- compare means of samples, if different #observations -> use smallest
+- used to label data points as 'outliers' or not
+
+Bootstrapping
+- Bootstrapping is a procedure for estimating the distribution of an estimator by resampling (often with replacement) one's data or a model estimated from the data.
+	- For example, the sample mean is a commonly used estimator of the population mean.
+- Bootstrapping assigns measures of accuracy (bias, variance, confidence intervals, prediction error, etc.) to sample estimates.
+- Resampling is not done to provide an estimate of the population distribution--we take our sample itself as a model of the population. Rather, resampling is done to provide an estimate of the sampling distribution of the sample statistic in question.
+- "The bootstrap can be used to assess uncertainty of sample estimates."
+- " The s.d. of a sampling distribution of a statistic is called the standard error (s.e.)1 and can be used to quantify the variability of the estimator (Fig. 1)."
+- "Returns the bootstrap distributions of the parameters estimated by the 1-sample statistic"
+
+## misc
+
+- other things matter as well: memory, time to market, maintainability / cost of ownership / cost of change (how some (real life?) example of 'simple code' vs 'optimized code')
+- time: https://museum.seiko.co.jp/en/knowledge/trivia01/
+
+
+
+## draw parallels to 'things in real life'
+- 41ns, the time is takes for a bullet to travel XYZ
+
+
+
+## easter eggs
+
+http://www.nsftools.com/tips/HexWords.htm
+
+
+20d1ac
+
+let's measure, how hard can it be!
+
+
+
+## HPET (2004)
+
+This specification provides register model and programming interface definitions for new event timer hardware for use on Intel Architecture-based Personal Computers. In this specification, the terms ‘IA-PC HPET and ‘Event Timers’ refer to the same timer hardware.
+The IA-PC HPET Specification defines timer hardware that is intended to initially supplement and eventually replace the legacy 8254 Programmable Interval Timer and the Real Time Clock Periodic Interrupt generation functions that are currently used as the ‘de-facto’ timer hardware for IA-PCs.
+
+https://www.intel.com/content/dam/www/public/us/en/documents/technical-specifications/software-developers-hpet-spec-1-0a.pdf
+
+https://wiki.osdev.org/HPET#:~:text=HPET%2C%20or%20High%20Precision%20Event,or%2064%2Dbit%20wide%20comparators.
+
+Older operating systems that do not support a hardware HPET device can only use older timing facilities, such as the programmable interval timer (PIT) or the real-time clock (RTC). Windows XP, when fitted with the latest hardware abstraction layer (HAL), can also use the processor's Time Stamp Counter (TSC), or ACPI Power Management Timer (ACPI PMTIMER), together with the RTC to provide operating system features that would, in later Windows versions, be provided by the HPET hardware. Confusingly, such Windows XP systems quote "HPET" connectivity in the device driver manager even though the Intel HPET device is not being used.
+
+
+
+## deltas various clock sources
+
+run 1M .elapsed, store the results in a cyclic buffer
+print deltas of buffer after loop
+measure total time
+
+acpi_pm (took 1.5s to run):
+spamming syscall clock_gettime (tv_sec, tc_nsec)
+1676
+1397
+1676
+1397
+1676
+1397
+1676
+1397
+1396
+
+
+tsc (0.057s to run):
+does NOT spam syscalls
+19
+19
+20
+19
+19
+19
+20
+19
+20
+
+
+hpet (4.5s to run):
+spamming syscall clock_gettime (tv_sec, tc_nsec)
+4500
+4500
+4500
+4500
+4500
+4500
+4500
+4500
+4500
+4500
+
+
+hpet without warmup
+7500
+7250
+7250
+
+
+amazon t2.micro
+
+clock source: xen
+[ec2-user@ip-172-31-5-227 timings]$ time ./target/release/timings | { head; echo; tail; }
+426
+423
+425
+426
+422
+424
+425
+423
+425
+424
+
+426
+427
+427
+426
+427
+427
+424
+428
+426
+427
+
+real	0m0.547s
+user	0m0.395s
+sys	0m0.151s
+[ec2-user@ip-172-31-5-227 timings]$
+
+
+[ec2-user@ip-172-31-5-227 timings]$ time ./target/release/timings | { head; echo; tail; }
+26
+26
+25
+26
+27
+24
+27
+26
+25
+26
+
+26
+26
+25
+26
+26
+27
+25
+26
+26
+24
+
+real	0m0.038s
+user	0m0.037s
+sys	0m0.000s
+[ec2-user@ip-172-31-5-227 timings]$
+
+
+hpet
+
+[ec2-user@ip-172-31-5-227 timings]$ time ./target/release/timings | { head; echo; tail; }
+4992
+4944
+4976
+4992
+4976
+4992
+4976
+4992
+4944
+4976
+
+4976
+4992
+5952
+5008
+4960
+4976
+4944
+4928
+4976
+5232
+
+real	0m5.596s
+user	0m0.392s
+sys	0m5.198s
+
+
+[ec2-user@ip-172-31-5-227 timings]$ time ./target/release/timings | { head; echo; tail; }
+11175
+11453
+11175
+11175
+11174
+11175
+11174
+11175
+11174
+11175
+
+11174
+11175
+11175
+11453
+11175
+11175
+11174
+11175
+11174
+11175
+
+real	0m11.892s
+user	0m0.353s
+sys	0m11.532s
+
+
+Only taking measurements, calculating elapsed while printing:
+[ec2-user@ip-172-31-5-227 timings]$ time ./target/release/timings | { head; echo; tail; }
+11454
+11175
+11454
+11174
+11454
+11175
+11454
+11174
+11175
+11454
+
+11175
+11454
+11174
+11454
+11175
+11453
+11175
+11454
+11174
+11175
+
+real	0m11.799s
+user	0m0.363s
+sys	0m11.429s
+
+
+
+
+Amazon t2.micro ARM
+
+
+
+[root@ip-172-31-1-84 timeit]# for source in xen tsc hpet acpi_pm; do echo $source; echo $source >>/sys/devices/system/clocksource/clocksource0/current_clocksource; time ./target/release/timeit; done
+
+>> xen
+436
+437
+435
+435
+436
+426
+435
+425
+411
+
+418
+417
+416
+418
+417
+418
+417
+416
+418
+
+real	0m0.419s
+user	0m0.189s
+sys	0m0.229s
+
+>> tsc
+48
+42
+44
+42
+33
+36
+36
+40
+42
+
+20
+20
+20
+20
+21
+20
+20
+20
+21
+
+real	0m0.022s
+user	0m0.021s
+sys	0m0.000s
+
+>> hpet
+5008
+4992
+4960
+4944
+4976
+4928
+5056
+4912
+4944
+
+4896
+4864
+4912
+4896
+4928
+4896
+4928
+4896
+4928
+
+real	0m4.925s
+user	0m0.511s
+sys	0m4.413s
+
+>> acpi_pm
+11175
+11174
+10895
+11175
+11175
+10895
+11175
+11174
+10895
+
+10896
+11174
+10895
+10895
+11175
+10895
+11175
+10895
+11174
+
+real	0m11.113s
+user	0m0.380s
+sys	0m10.722s
+
+
+
+
+
+## Counting Nanoseconds Microbenchmarkings
+
+https://www.youtube.com/watch?v=Czr5dBfs72U
+
+extern "C"
+{
+	#include <x86intrin.h
+}
+- low-overhead user-land performance counters
+- __rdpmc(1 << 30)  // instructions
+- __rdpmc((1 << 30) + 1)  // cycles
+
+
+__cpuid(0, var, var, var)  // prevent reordering
+
+
+// there is some jitter for cycles -- but instructions are steady
+// intel software manual <-- holy book
+// uOP fusion (e.g. sub + jne -> one uOP)
+// wikichip.org
+// IPC, papi
+// perf stat ./a.out (require xen kmod if virtual)
+// CPU will learn all your branches
+// llvm-mca
+// p-states, thermal throttling
+// - fix/disable p-states and c-states
+// - idle=poll intel_pstate=disable intel_idle.max_cstate=0
+// - disable turboboost (BIOS)
+// - diable NMI watchdog (nmi_watchdog=0)
+// - disable HP (hyper-threading)
+// -- BIOS
+// -- two logical CPU frontends... but only one backend
+// -- unless you want to benchmark how your code performs on hypercores
+// - CPU isolation
+// -- cpu_isols
+// -- disable interruptions
+// -- only relevant for long benchmarks
+// -- allocations on an empty heap will be adjacent, not IRL
+
+
+
+
+## Bryce statistics benchmarking talk
+
+https://www.youtube.com/watch?v=zWxSZcpeS8Q
+
+### Time-based Benchmarking
+
+
+Different clocksources
+
+- system-wide high-resolution clock
+	- monotonick frequency-stable, higher latency and overhead
+	- resolution is in nanoseconds
+	- times can be passed between threads
+	- *nix, this is accessed bia clock_gettime reading CLOCK_MONOTONIC
+	- windows, this is accessed via QueryPerformanceCounter/Frequency
+	- suitable for measuring most events (microseconds and up)
+- Timestamp Counter (or hardware events)
+	- Monotonic, lower latency and overhead
+	- Resolution is in CPU cycles (with caveats), tick is in base clock cycles
+	- new CPUs guarantee a constnat TSC frequency, evne if the CPU frequency changes (freq. scaling / turbo boost / P-states)
+	- Constant TSC frequency = timing data is NOT representative of #cycles executed
+	- ticks with the base clock, which runs on 100 or 133 Mhz depending on microarchiteicture
+	- assembly instructions for reading this counter
+	- cycle counts are thread specific
+	- suitable for measuring short events (cycles to minutes)
+
+- memory benchmarking
+- hardware performance counters
+	- low overhead
+	- very diverse and descriptive information
+	- microarchitecture specific
+	- some counters are estimations or suffer from inaccuracies
+	- you need very specialized knowledge to use these for performance
+	- low-level frameworks for accessting these: PAPI / PC Framewori / kpc.h, don't use them — use VTune Amplifier
+- VTune Amplifier, collects snapshots of performance
+	- multiple OSs
+	- multiple data sources, timers / HW counters / etc
+	- provide built-in analysis passes
+- https://www.intel.com/content/www/us/en/developer/tools/oneapi/vtune-profiler.html#standalone
+
+- Write Performance Tests
+	- 
+
+
+
+
+
+
+## Yeses
+
+[YES] - 'try one of them, then try another'
+[YES] - don't forget correctness
+[YES] - "blackbox"
+[YES] - tooling, vad finns
+[YES] criterion
+[YES]	The first thing that Fibber does is measure how long it takes for the system clock to tick. It will then run our benchmarked code enough times that the 
+[YES]	We use a statistical technique known as the bootstrap, with which we take some sample data and perform some number crunching to tell us interesting things. 
+[YES] 	> Much of my work on criterion was inspired by Brent Boyer's excellent articles on Java performance analysis (part one and part two). Amusingly, Java and 
+[YES] 				> time to market
+[YES] 			- clock resolution, max 1% random -> 200 times the clock tick granularity because of differential measurement
+[YES] 			- dead code elimination
+[YES] 			- resource reclamation
+[YES] 			- caching (maybe same as warm-up?)
+[YES] 			- system state / noise
+[YES] 			- compiler flags
+[YES] 			- can't measure just once, first-call overheads and variability makes this approach unreliable
+[YES] 			- "... these remedies are never perfect, so ultimately you must cope with the variations. The only way to do this is to take many measurements and 
+[YES] 			- two aspects: is A faster than B, and how reliable is this conclusion?
+[YES] 			- a reasonable rule of thumb is that at least 95% of the measurements should lie within three standard deviations of the mean.
+[YES] 			- how different would the mean and std be if the experiment was repeated? Confidence Intervals instead of point estimates, e.g. resampling / 
+[YES] 				- Bradley Efron invented bootstrapping 1979-1982
+[YES] 				- Benchmark tries to diagnose some common problems:
+[YES] 				- sequental access vs random / sorted values?
+[YES] 				- make sure that you measure something that is relevant
+[YES] 				- be careful about relying on microbenchmarks alone, measure in context as well
+[YES] 				- don't assume that results from your dev machine holds for prod, measure in context
+[YES] 				- perform many measurements and use statistics to interpret the results
+[YES] In other words, any function with no definition is a compile time memory barrier, that is, the compiler does not move subsequent statements before the call 
+[YES] The term "observable behavior", according to the standard (I cite n3092), means the following:
+[YES] 	- dead code removal unless blackbox
+[YES] 	- granularity of time measurement can be a problem with measuring small time intervals, and it varies by OS / machine
+[YES] 	- performance characteristics vary with input sizes
+[YES] Platform-specific behavior
+[YES] ## Dead Code Elimination / Blackboxing (use return value or similar)
+[YES] ## Things to cover
+[YES] ## Optimization, not in scope
+[YES] ## Alternatives
+[YES] - Divan
+[YES] ### Paired Benchmarking
+[YES] - noise sources
+[YES] 	- It is commonly assumed that execution times follow specific probability distributions, with normal and log-normal distributions being the most popular 
+[YES] - Paired benchmarking
+[YES] ### Key phrases
+[YES] ## Robust Java benchmarking, Part 1: Issues
+[YES] ## Robust Java benchmarking, Part 2: Statistics and Solutions
+[YES] - "Microbenchmarks are like a microscope: magnification is high, but what the heck are you looking at?" —Cliff Click
+[YES] - Summary:
+[YES] ## Outro
+[YES] ## Must-haves (present each of these with 'New PR: I made foo/bar/baz faster!' -- comical repetition)
+[YES] - correctness
+[YES] - outro, mention time-to-market, memory usage, cost of maintenance, etc.
+[YES] - unordered map, one layer indirection -- cache killer
+[YES] 	To prevent a value or expression from being optimized away by the compiler the `benchmark::DoNotOptimize(...)` and `benchmark::ClobberMemory()` functions 
+[YES] 	 Does not prevent optimization of the expression itself, but forces the result to not be discarded. (Often due to printing the value or writing it to 
+[YES] ## Divan vs Criterion
+[YES] #[divan::bench(args = [1, 5, 10, 1000, 10_000_000])]
+[YES] - Criterion: current go-to, graph output
+[YES] - Tango: microbenchmarking, paired benchmarking -- cancel out systemic noise
+[YES] - Flamegraphs: to understand where time is spent
+[YES] - DHAT: crate, backtrace on allocations, track max heap usage
+[YES] - measure with different inputs -- but realistic ones
+[yes] - optimizing the code is out of scope for this talk, but general pointers can be understanding where you spend your time with flamegraphs, where you allocate 
+[YES] > cargo-flamegraph - Cargo subcommand to profile an executable and produce a flamegraph
+[YES?] criterion-cycles-per-byte - A custom-measurement plugin that counts the number of CPU cycles used by the benchmark
+[YES?] > criterion-perf-events - A custom-measurement plugin that counts perf events created by the benchmark
+[YES?] - It works because as the sample size goes to infinity, the empirical cdf converges to the true cdf of your data. So if your sample is large the empirical 
+[YES] - compile with optimizations: rustc -O3 or cargo build --release. cargo bench is using its own profile, with optimizations.
+[YES] - make sure your benchmark actually does something, constant propagation + dead code removal might completely short circuit your workload. Print it or write 
+[YES] - Beware of constant values: similarly to the point above, if you specify constant values in a benchmark, the optimizer might generate code specifically for 
+[YES] - beware of measurement overhead
+[YES] 	- failure to warm up:, page faults within the timed region for touching new memory, code/data cache misses
+[YES] 	- never-written memory gets all pages copy-on-write-mapped to the same system-wide physical page with all zeros, use non-zero initializer or memset (or 
+[YES] 	- failure to let CPU scale up, might take serveral milliseconds
+[YES] 	- Most integer and FP arithmetic asm instructions (except divide and square root which are already slower than others) have performance (latency and 
+[YES] 	- Related to that last point: Don't tune only for huge inputs, if the real use-case for a function includes a lot of small inputs. e.g. a memcpy 
+[YES] 		- Increasing the iteration count of a repeat loop should linearly increase the total time, and not affect the calculated time-per-call. If not, then 
+[YES]: Performance characteristics can vary significantly between platforms and operating systems.
+[YES] 	Currently these instances support vPMU:
+[YES] - benchmark results tend to be log-normal
+[YES] ## Talk outline
+
+
+
+
+
+Gotchas / counter measures used in Criterion:
+- warmup
+- blackbox
+- sample loop
+- statistics
+
+- After --relase, both of them are eerily similar in runtime... both takes exactly 82 ns every time, 
+- Instant::now() may be pretty coarse, here are some examples from different computers:
+	- macos
+
+
+Criterion significant steps:
+- let criterion = Criterion::default();
+- criterion.bench_function("name", |b| b.iter(target) <-- wrapper_1)
+	for warmup_time: ...
+	bencher.iter(target)
+		let start = Instant::now()
+		for iters: blackbox(target)
+		start.elapesd
+	find outliers = tukey::classify // Tukey's Q-test
+	bootstrap_dist, points = estimates
+	regression
+- generate report
+
+
+
+
+
+## other stuff
+
+https://internals.rust-lang.org/t/about-optimizations-of-for-loops/18896/2
+
+
+
+
+
+# with and without blackbox
+
+What does this ARM assebmly code do?
+00000001000022ac        sub     sp, sp, #0x60
+00000001000022b0        stp     x29, x30, [sp, #0x50]
+00000001000022b4        add     x29, sp, #0x50
+00000001000022b8        mov     w8, #0x7293
+00000001000022bc        movk    w8, #0x15d5, lsl #16
+00000001000022c0        str     w8, [sp, #0xc]
+00000001000022c4        add     x8, sp, #0xc
+00000001000022c8        adrp    x9, 51 ; 0x100035000
+00000001000022cc        add     x9, x9, #0x310
+00000001000022d0        stp     x8, x9, [x29, #-0x10]
+00000001000022d4        adrp    x8, 66 ; 0x100044000
+00000001000022d8        add     x8, x8, #0x238
+00000001000022dc        mov     w9, #0x2
+00000001000022e0        stp     x8, x9, [sp, #0x10]
+00000001000022e4        sub     x8, x29, #0x10
+00000001000022e8        mov     w9, #0x1
+00000001000022ec        str     x8, [sp, #0x20]
+00000001000022f0        stp     x9, xzr, [sp, #0x28]
+00000001000022f4        add     x0, sp, #0x10
+00000001000022f8        bl      __ZN3std2io5stdio6_print17h106c5db00311875bE
+
+This ARM assembly code is part of a function that seems to be preparing data and calling another function, likely a Rust println! or print! macro, as indicated by the call to __ZN3std2io5stdio6_print17h106c5db00311875bE, which matches a Rust symbol for printing to standard output. Here’s a step-by-step explanation of what the code does:
+
+	1.	Stack Preparation:
+	•	sub sp, sp, #0x60: Adjust the stack pointer (SP) by subtracting 0x60 (96 bytes), reserving space on the stack for local variables.
+	•	stp x29, x30, [sp, #0x50]: Save the frame pointer (x29) and return address (x30) onto the stack at offset 0x50.
+	•	add x29, sp, #0x50: Set the frame pointer (x29) to point to the saved frame pointer location on the stack.
+	2.	Data Setup:
+	•	mov w8, #0x7293: Load the immediate value 0x7293 into register w8.
+	•	movk w8, #0x15d5, lsl #16: Load the value 0x15D5 into the upper half of w8, resulting in the value 0x15d57293.
+	•	str w8, [sp, #0xc]: Store this value (0x15d57293) onto the stack at offset 0xC from SP.
+	•	add x8, sp, #0xc: Load the address of the value just stored at [sp, #0xc] into x8.
+	3.	Address Loading:
+	•	adrp x9, 51: Load a page address corresponding to 0x100035000 into x9.
+	•	add x9, x9, #0x310: Add 0x310 to the page address, resulting in the address 0x100035310.
+	•	stp x8, x9, [x29, #-0x10]: Store x8 and x9 at offset -0x10 from x29 (in the saved frame area).
+	4.	More Address and Data Preparation:
+	•	adrp x8, 66: Load a page address corresponding to 0x100044000 into x8.
+	•	add x8, x8, #0x238: Add 0x238 to the page address, resulting in the address 0x100044238.
+	•	mov w9, #0x2: Load the immediate value 2 into w9.
+	•	stp x8, x9, [sp, #0x10]: Store the address (0x100044238) and the value in x9 (0x100035310) onto the stack at offset 0x10 from SP.
+	5.	Further Adjustments and Storing:
+	•	sub x8, x29, #0x10: Subtract 0x10 from x29 and store the result in x8.
+	•	mov w9, #0x1: Load the immediate value 1 into w9.
+	•	str x8, [sp, #0x20]: Store x8 at offset 0x20 from SP.
+	•	stp x9, xzr, [sp, #0x28]: Store w9 (1) and xzr (0) at offset 0x28 from SP.
+	6.	Preparing the Argument for print:
+	•	add x0, sp, #0x10: Set x0 to the address of the data starting at offset 0x10 from SP. This is likely the argument to be passed to the print function.
+	7.	Function Call:
+	•	bl __ZN3std2io5stdio6_print17h106c5db00311875bE: Call the function std::io::stdio::print, which prints the formatted string. This matches the Rust ABI symbol for the standard library’s print function.
+
+Summary:
+
+This code prepares the stack and sets up some data (addresses, constants, and pointers), then calls the Rust print function, which prints formatted output. The values set up on the stack seem to be related to this output.
+
+
+
+
+__ZN7testfoo4main17h2b94211cb8e0e44eE:
+0000000100002278        sub     sp, sp, #0x60
+000000010000227c        stp     x29, x30, [sp, #0x50]
+0000000100002280        add     x29, sp, #0x50
+0000000100002284        mov     w8, #0x111
+0000000100002288        str     w8, [sp, #0x10]
+000000010000228c        add     x8, sp, #0x10
+0000000100002290        ldr     w8, [sp, #0x10]
+0000000100002294        mov     w9, #0x222
+0000000100002298        str     w9, [sp, #0x10]
+000000010000229c        add     x9, sp, #0x10
+00000001000022a0        ldr     w9, [sp, #0x10]
+00000001000022a4        mov     w10, #0x333
+00000001000022a8        str     w10, [sp, #0x10]
+00000001000022ac        add     x10, sp, #0x10
+00000001000022b0        ldr     w10, [sp, #0x10]
+00000001000022b4        mul     w8, w8, w8
+00000001000022b8        mul     w9, w10, w9
+00000001000022bc        madd    w8, w9, w10, w8
+00000001000022c0        str     w8, [sp, #0xc]
+00000001000022c4        add     x8, sp, #0xc
+00000001000022c8        adrp    x9, 51 ; 0x100035000
+00000001000022cc        add     x9, x9, #0x310
+00000001000022d0        stp     x8, x9, [x29, #-0x10]
+00000001000022d4        adrp    x8, 66 ; 0x100044000
+00000001000022d8        add     x8, x8, #0x238
+00000001000022dc        mov     w9, #0x2
+00000001000022e0        stp     x8, x9, [sp, #0x10]
+00000001000022e4        sub     x8, x29, #0x10
+00000001000022e8        mov     w9, #0x1
+00000001000022ec        str     x8, [sp, #0x20]
+00000001000022f0        stp     x9, xzr, [sp, #0x28]
+00000001000022f4        add     x0, sp, #0x10
+00000001000022f8        bl      __ZN3std2io5stdio6_print17h106c5db00311875bE
+
+
+This ARM assembly code corresponds to the function __ZN7testfoo4main17h2b94211cb8e0e44eE, which appears to be performing arithmetic operations and printing the result. The function is likely part of a Rust program, as evidenced by the symbol name format, and it seems to use Rust’s standard print function for output. Here’s a detailed breakdown of what the code does:
+
+Stack Setup and Frame Pointer
+
+	1.	Stack space allocation:
+	•	sub sp, sp, #0x60: Allocate 96 bytes of space on the stack for local variables.
+	2.	Store frame pointer and return address:
+	•	stp x29, x30, [sp, #0x50]: Save the frame pointer (x29) and return address (x30) at the top of the new stack frame.
+	3.	Set the frame pointer:
+	•	add x29, sp, #0x50: Set the frame pointer (x29) to point to the previous frame location (offset 0x50 from the current sp).
+
+Loading and Storing Constants
+
+	4.	First constant:
+	•	mov w8, #0x111: Load the immediate value 0x111 into register w8.
+	•	str w8, [sp, #0x10]: Store this value at offset 0x10 from the stack pointer.
+	•	add x8, sp, #0x10: Set x8 to point to the memory address where 0x111 was stored.
+	•	ldr w8, [sp, #0x10]: Load the value 0x111 back into w8 from memory.
+	5.	Second constant:
+	•	mov w9, #0x222: Load the immediate value 0x222 into register w9.
+	•	str w9, [sp, #0x10]: Overwrite the previous value at [sp, #0x10] with 0x222.
+	•	add x9, sp, #0x10: Set x9 to point to the memory address where 0x222 was stored.
+	•	ldr w9, [sp, #0x10]: Load the value 0x222 back into w9 from memory.
+	6.	Third constant:
+	•	mov w10, #0x333: Load the immediate value 0x333 into register w10.
+	•	str w10, [sp, #0x10]: Overwrite the value at [sp, #0x10] with 0x333.
+	•	add x10, sp, #0x10: Set x10 to point to the memory address where 0x333 was stored.
+	•	ldr w10, [sp, #0x10]: Load the value 0x333 back into w10 from memory.
+
+Arithmetic Operations
+
+	7.	Multiplication:
+	•	mul w8, w8, w8: Multiply the value in w8 (0x111) by itself, storing the result back in w8. This computes 0x111 * 0x111.
+	8.	Second multiplication:
+	•	mul w9, w10, w9: Multiply the value in w10 (0x333) by the value in w9 (0x222), storing the result in w9. This computes 0x333 * 0x222.
+	9.	Multiply and accumulate:
+	•	madd w8, w9, w10, w8: Multiply the value in w9 by w10, then add the result to w8. This performs the operation: w8 = w8 + (w9 * w10).
+	10.	Store the result:
+	•	str w8, [sp, #0xc]: Store the final result in the stack at offset 0xC from sp.
+
+Address and Function Call Setup
+
+	11.	Address setup:
+	•	adrp x9, 51: Load the page address corresponding to 0x100035000 into x9.
+	•	add x9, x9, #0x310: Add 0x310 to the base address, resulting in 0x100035310.
+	12.	Store pointers:
+	•	stp x8, x9, [x29, #-0x10]: Store the result (x8) and the address (x9) at x29 - 0x10.
+	13.	Second address setup:
+	•	adrp x8, 66: Load the page address corresponding to 0x100044000 into x8.
+	•	add x8, x8, #0x238: Add 0x238 to the base address, resulting in 0x100044238.
+	14.	Prepare arguments for print:
+	•	mov w9, #0x2: Load the immediate value 0x2 into w9.
+	•	stp x8, x9, [sp, #0x10]: Store the addresses in x8 and x9 at sp + 0x10.
+	•	sub x8, x29, #0x10: Subtract 0x10 from x29, storing the result in x8.
+	•	mov w9, #0x1: Load the immediate value 0x1 into w9.
+	•	str x8, [sp, #0x20]: Store the value in x8 at sp + 0x20.
+	•	stp x9, xzr, [sp, #0x28]: Store w9 and xzr (zero register) at sp + 0x28.
+	15.	Set up the argument for the print call:
+	•	add x0, sp, #0x10: Set x0 to point to the argument data on the stack (offset 0x10 from sp).
+	16.	Call to print:
+	•	bl __ZN3std2io5stdio6_print17h106c5db00311875bE: This is a call to Rust’s std::io::stdio::print function, which prints the result of the operations.
+
+Summary
+
+This function performs the following operations:
+
+	1.	Loads constants 0x111, 0x222, and 0x333.
+	2.	Multiplies these constants and computes a result using multiply-and-add (madd).
+	3.	Prepares memory for the result and prints it using Rust’s print function.
+
+The final output printed will likely be the result of the following expression:
+
+(0x111 * 0x111) + (0x222 * 0x333)
+
+
+
+
+
+
+
+Example of constant propagation + constant folding:
+
+
+
+$ cat src/main.rs
+fn gcd(mut a: u32, mut b: u32) -> u32 {
+    while b > 0 {
+        [a, b] = [b, a % b];
+    }
+    a
+}
+
+fn main() {
+    let a = 0x42;
+    let b = 0xc0de;
+    let result = gcd(a, b);
+    println!("{result}");
+}
+$ cargo run
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.00s
+     Running `target/debug/testfoo`
+6
+
+
+
+
+
+__ZN7testfoo4main17h2b94211cb8e0e44eE:
+00000001000022b0        sub     sp, sp, #0x60
+00000001000022b4        stp     x29, x30, [sp, #0x50]
+00000001000022b8        add     x29, sp, #0x50
+00000001000022bc        mov     w8, #0x5a5
+00000001000022c0        str     w8, [sp, #0xc]
+00000001000022c4        add     x8, sp, #0xc
+00000001000022c8        adrp    x9, 50 ; 0x100034000
+00000001000022cc        add     x9, x9, #0xc98
+00000001000022d0        stp     x8, x9, [x29, #-0x10]
+00000001000022d4        adrp    x8, 66 ; 0x100044000
+00000001000022d8        add     x8, x8, #0x238
+00000001000022dc        mov     w9, #0x2
+00000001000022e0        stp     x8, x9, [sp, #0x10]
+00000001000022e4        sub     x8, x29, #0x10
+00000001000022e8        mov     w9, #0x1
+00000001000022ec        str     x8, [sp, #0x20]
+00000001000022f0        stp     x9, xzr, [sp, #0x28]
+00000001000022f4        add     x0, sp, #0x10
+00000001000022f8        bl      __ZN3std2io5stdio6_print17h106c5db00311875bE
+00000001000022fc        ldp     x29, x30, [sp, #0x50]
+0000000100002300        add     sp, sp, #0x60
+0000000100002304        ret
+
+
+
+
+
+constant folded gaussian pdf:
+
+$ cat src/main.rs
+use std::f64::consts::{E, PI};
+
+fn gaussian(m: f64, s: f64, x: f64) -> f64 {
+    let norm_constant = f64::sqrt(2. * PI * s * s);
+    let r = x - m;
+    let kernel = f64::powf(E, -(r * r / 2. * s * s));
+    kernel / norm_constant
+}
+
+fn main() {
+    let m = 0.0;
+    let s = 0.15;
+    let x = 13.37;
+
+    let result = gaussian(m, s, x);
+
+    println!("{result}");
+}
+
+
+
+
+
+
+with blackbox:
+
+__ZN7testfoo4main17h2b94211cb8e0e44eE:
+0000000100001a5c        sub     sp, sp, #0x70
+0000000100001a60        stp     d9, d8, [sp, #0x50]
+0000000100001a64        stp     x29, x30, [sp, #0x60]
+0000000100001a68        add     x29, sp, #0x60
+0000000100001a6c        str     xzr, [sp, #0x10]
+0000000100001a70        add     x8, sp, #0x10
+0000000100001a74        ldr     d0, [sp, #0x10]
+0000000100001a78        mov     x8, #0x3333333333333333
+0000000100001a7c        movk    x8, #0x3fc3, lsl #48
+0000000100001a80        str     x8, [sp, #0x10]
+0000000100001a84        add     x8, sp, #0x10
+0000000100001a88        ldr     d1, [sp, #0x10]
+0000000100001a8c        mov     x8, #0xa3d
+0000000100001a90        movk    x8, #0xa3d7, lsl #16
+0000000100001a94        movk    x8, #0xbd70, lsl #32
+0000000100001a98        movk    x8, #0x402a, lsl #48
+0000000100001a9c        str     x8, [sp, #0x10]
+0000000100001aa0        add     x8, sp, #0x10
+0000000100001aa4        ldr     d2, [sp, #0x10]
+0000000100001aa8        mov     x8, #0x2d18
+0000000100001aac        movk    x8, #0x5444, lsl #16
+0000000100001ab0        movk    x8, #0x21fb, lsl #32
+0000000100001ab4        movk    x8, #0x4019, lsl #48
+0000000100001ab8        fmov    d3, x8
+0000000100001abc        fmul    d3, d1, d3
+0000000100001ac0        fmul    d3, d1, d3
+0000000100001ac4        fsqrt   d8, d3
+0000000100001ac8        fsub    d0, d2, d0
+0000000100001acc        fmul    d0, d0, d0
+0000000100001ad0        fmov    d2, #-0.50000000
+0000000100001ad4        fmul    d0, d0, d2
+0000000100001ad8        fmul    d0, d1, d0
+0000000100001adc        fmul    d1, d1, d0
+0000000100001ae0        mov     x8, #0x5769
+0000000100001ae4        movk    x8, #0x8b14, lsl #16
+0000000100001ae8        movk    x8, #0xbf0a, lsl #32
+0000000100001aec        movk    x8, #0x4005, lsl #48
+0000000100001af0        fmov    d0, x8
+0000000100001af4        bl      0x100039f3c ; symbol stub for: _pow
+0000000100001af8        fdiv    d0, d0, d8
+0000000100001afc        str     d0, [sp, #0x8]
+0000000100001b00        adrp    x8, 54 ; 0x100037000
+0000000100001b04        add     x8, x8, #0xa20
+0000000100001b08        add     x9, sp, #0x8
+0000000100001b0c        stp     x9, x8, [x29, #-0x20]
+0000000100001b10        adrp    x8, 71 ; 0x100048000
+0000000100001b14        add     x8, x8, #0x248
+0000000100001b18        mov     w9, #0x2
+0000000100001b1c        stp     x8, x9, [sp, #0x10]
+0000000100001b20        sub     x8, x29, #0x20
+0000000100001b24        mov     w9, #0x1
+0000000100001b28        str     x8, [sp, #0x20]
+0000000100001b2c        stp     x9, xzr, [sp, #0x28]
+0000000100001b30        add     x0, sp, #0x10
+0000000100001b34        bl      __ZN3std2io5stdio6_print17h106c5db00311875bE
+0000000100001b38        ldp     x29, x30, [sp, #0x60]
+0000000100001b3c        ldp     d9, d8, [sp, #0x50]
+0000000100001b40        add     sp, sp, #0x70
+0000000100001b44        ret
+
+
+
+__ZN7testfoo4main17h2b94211cb8e0e44eE:
+0000000100001b00        sub     sp, sp, #0x60
+0000000100001b04        stp     x29, x30, [sp, #0x50]
+0000000100001b08        add     x29, sp, #0x50
+0000000100001b0c        mov     x8, #0xcb22
+0000000100001b10        movk    x8, #0x993c, lsl #16
+0000000100001b14        movk    x8, #0xc8a6, lsl #32
+0000000100001b18        movk    x8, #0x3fd6, lsl #48
+0000000100001b1c        str     x8, [sp, #0x8]
+0000000100001b20        add     x8, sp, #0x8
+0000000100001b24        adrp    x9, 54 ; 0x100037000
+0000000100001b28        add     x9, x9, #0xa3c
+0000000100001b2c        stp     x8, x9, [x29, #-0x10]
+0000000100001b30        adrp    x8, 71 ; 0x100048000
+0000000100001b34        add     x8, x8, #0x240
+0000000100001b38        mov     w9, #0x2
+0000000100001b3c        stp     x8, x9, [sp, #0x10]
+0000000100001b40        sub     x8, x29, #0x10
+0000000100001b44        mov     w9, #0x1
+0000000100001b48        str     x8, [sp, #0x20]
+0000000100001b4c        stp     x9, xzr, [sp, #0x28]
+0000000100001b50        add     x0, sp, #0x10
+0000000100001b54        bl      __ZN3std2io5stdio6_print17h106c5db00311875bE
+0000000100001b58        ldp     x29, x30, [sp, #0x50]
+0000000100001b5c        add     sp, sp, #0x60
+0000000100001b60        ret
+
+
+
+
+
+
+$ cargo run
+   Compiling testfoo v0.1.0 (/private/tmp/testfoo)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.08s
+     Running `target/debug/testfoo`
+m: 0
+s: 3fc3333333333333
+x: 402abd70a3d70a3d
+0.3559967514476502 3fd6c8a6993ccb22
+
+
+
+$ otool -tV target/release/testfoo | less
+$ objdump -d target/release/testfoo | less
+
+
+
+0000000100001b04        stp     x29, x30, [sp, #0x50]
+0000000100001b08        add     x29, sp, #0x50
+0000000100001b0c        mov     x8, #0xcb22
+0000000100001b10        movk    x8, #0x993c, lsl #16
+0000000100001b14        movk    x8, #0xc8a6, lsl #32
+0000000100001b18        movk    x8, #0x3fd6, lsl #48
+0000000100001b1c        str     x8, [sp, #0x8]
+0000000100001b20        add     x8, sp, #0x8
+
+
+
+[ec2-user@ip-10-0-30-97 ~]$ lscpu
+Architecture:             x86_64
+  CPU op-mode(s):         32-bit, 64-bit
+  Address sizes:          46 bits physical, 48 bits virtual
+  Byte Order:             Little Endian
+CPU(s):                   2
+  On-line CPU(s) list:    0,1
+Vendor ID:                GenuineIntel
+  Model name:             Intel(R) Xeon(R) Platinum 8375C CPU @ 2.90GHz
+    CPU family:           6
+    Model:                106
+    Thread(s) per core:   2
+    Core(s) per socket:   1
+    Socket(s):            1
+    Stepping:             6
+    BogoMIPS:             5799.99
+    Flags:                fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ss ht syscall nx
+                          pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc cpuid aperfmperf tsc_known_freq pni pclmulqdq ss
+                          se3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand hypervisor lahf_lm
+                           abm 3dnowprefetch invpcid_single ssbd ibrs ibpb stibp ibrs_enhanced fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms i
+                          nvpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsave
+                          c xgetbv1 xsaves wbnoinvd ida arat avx512vbmi pku ospke avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg
+                           tme avx512_vpopcntdq rdpid md_clear flush_l1d arch_capabilities
+
+rustc --print=[target-list, target-cpus, target-features]
+
+
+
+
+
+
+compile for linux instead:
+
+[ec2-user@ip-10-0-30-97 test-constant-folding]$ objdump -d target/release/test-constant-folding | less
+	0000000000007f30 <_ZN21test_constant_folding4main17h890af18d0bd02275E>:
+	    7f30:       41 57                   push   %r15
+	    7f32:       41 56                   push   %r14
+	    7f34:       41 55                   push   %r13
+	    7f36:       41 54                   push   %r12
+	    7f38:       53                      push   %rbx
+	    7f39:       48 83 ec 60             sub    $0x60,%rsp
+	    7f3d:       49 bc 22 cb 3c 99 a6    movabs $0x3fd6c8a6993ccb22,%r12
+	    7f44:       c8 d6 3f
+	    7f47:       4c 89 64 24 58          mov    %r12,0x58(%rsp)
+	    7f4c:       48 c7 04 24 00 00 00    movq   $0x0,(%rsp)
+	    7f53:       00
+	    7f54:       48 89 e3                mov    %rsp,%rbx
+	    7f57:       48 89 5c 24 38          mov    %rbx,0x38(%rsp)
+	    7f5c:       4c 8d 35 dd 11 04 00    lea    0x411dd(%rip),%r14        # 49140 <_ZN4core3fmt3num53_$LT$impl$u20$core..fmt..LowerHex$u20$for$u20$i64$GT$3fmt17h5a78fe9629fb0394E>
+	    7f63:       4c 89 74 24 40          mov    %r14,0x40(%rsp)
+	    7f68:       48 8d 05 21 01 05 00    lea    0x50121(%rip),%rax        # 58090 <__dso_handle+0x38>
+	    7f6f:       48 89 44 24 08          mov    %rax,0x8(%rsp)
+	    7f74:       48 c7 44 24 10 02 00    movq   $0x2,0x10(%rsp)
+	    7f7b:       00 00
+	    7f7d:       48 c7 44 24 28 00 00    movq   $0x0,0x28(%rsp)
+	    7f84:       00 00
+	    7f86:       4c 8d 6c 24 38          lea    0x38(%rsp),%r13
+	    7f8b:       4c 89 6c 24 18          mov    %r13,0x18(%rsp)
+	    7f90:       48 c7 44 24 20 01 00    movq   $0x1,0x20(%rsp)
+	    7f97:       00 00
+	    7f99:       4c 8d 3d 10 ba 01 00    lea    0x1ba10(%rip),%r15        # 239b0 <_ZN3std2io5stdio6_print17h47fcac1e810b43ceE>
+	    7fa0:       48 8d 7c 24 08          lea    0x8(%rsp),%rdi
+	    7fa5:       41 ff d7                call   *%r15
+	    7fa8:       48 b8 33 33 33 33 33    movabs $0x3fc3333333333333,%rax
+	    7faf:       33 c3 3f
+	    7fb2:       48 89 04 24             mov    %rax,(%rsp)
+	    7fb6:       48 89 5c 24 38          mov    %rbx,0x38(%rsp)
+	    7fbb:       4c 89 74 24 40          mov    %r14,0x40(%rsp)
+	    7fc0:       48 8d 05 e9 00 05 00    lea    0x500e9(%rip),%rax        # 580b0 <__dso_handle+0x58>
+	    7fc7:       48 89 44 24 08          mov    %rax,0x8(%rsp)
+	    7fcc:       48 c7 44 24 10 02 00    movq   $0x2,0x10(%rsp)
+	    7fd3:       00 00
+	    7fd5:       48 c7 44 24 28 00 00    movq   $0x0,0x28(%rsp)
+	    7fdc:       00 00
+	    7fde:       4c 89 6c 24 18          mov    %r13,0x18(%rsp)
+	    7fe3:       48 c7 44 24 20 01 00    movq   $0x1,0x20(%rsp)
+	    7fea:       00 00
+	    7fec:       48 8d 7c 24 08          lea    0x8(%rsp),%rdi
+	    7ff1:       41 ff d7                call   *%r15
+	    7ff4:       48 b8 3d 0a d7 a3 70    movabs $0x402abd70a3d70a3d,%rax
+	    7ffb:       bd 2a 40
+	    7ffe:       48 89 04 24             mov    %rax,(%rsp)
+	    8002:       48 89 5c 24 38          mov    %rbx,0x38(%rsp)
+	    8007:       4c 89 74 24 40          mov    %r14,0x40(%rsp)
+	    800c:       48 8d 05 bd 00 05 00    lea    0x500bd(%rip),%rax        # 580d0 <__dso_handle+0x78>
+	    8013:       48 89 44 24 08          mov    %rax,0x8(%rsp)
+	    8018:       48 c7 44 24 10 02 00    movq   $0x2,0x10(%rsp)
+	    801f:       00 00
+	    8021:       48 c7 44 24 28 00 00    movq   $0x0,0x28(%rsp)
+	    8028:       00 00
+	    802a:       4c 89 6c 24 18          mov    %r13,0x18(%rsp)
+	    802f:       48 c7 44 24 20 01 00    movq   $0x1,0x20(%rsp)
+	    8036:       00 00
+	    8038:       48 8d 7c 24 08          lea    0x8(%rsp),%rdi
+	    803d:       41 ff d7                call   *%r15
+	    8040:       4c 89 24 24             mov    %r12,(%rsp)
+	    8044:       48 8d 44 24 58          lea    0x58(%rsp),%rax
+	    8049:       48 89 44 24 38          mov    %rax,0x38(%rsp)
+	    804e:       48 8d 05 2b 0e 04 00    lea    0x40e2b(%rip),%rax        # 48e80 <_ZN4core3fmt5float52_$LT$impl$u20$core..fmt..Display$u20$for$u20$f64$GT$3fmt17hadc1df07b9cb914cE>
+	    8055:       48 89 44 24 40          mov    %rax,0x40(%rsp)
+	    805a:       48 89 5c 24 48          mov    %rbx,0x48(%rsp)
+	    805f:       4c 89 74 24 50          mov    %r14,0x50(%rsp)
+	    8064:       48 8d 05 85 00 05 00    lea    0x50085(%rip),%rax        # 580f0 <__dso_handle+0x98>
+	    806b:       48 89 44 24 08          mov    %rax,0x8(%rsp)
+	    8070:       48 c7 44 24 10 03 00    movq   $0x3,0x10(%rsp)
+	    8077:       00 00
+	    8079:       48 c7 44 24 28 00 00    movq   $0x0,0x28(%rsp)
+	    8080:       00 00
+	    8082:       4c 89 6c 24 18          mov    %r13,0x18(%rsp)
+	    8087:       48 c7 44 24 20 02 00    movq   $0x2,0x20(%rsp)
+	    808e:       00 00
+	    8090:       48 8d 7c 24 08          lea    0x8(%rsp),%rdi
+	    8095:       41 ff d7                call   *%r15
+	    8098:       48 83 c4 60             add    $0x60,%rsp
+	    809c:       5b                      pop    %rbx
+	    809d:       41 5c                   pop    %r12
+	    809f:       41 5d                   pop    %r13
+	    80a1:       41 5e                   pop    %r14
+	    80a3:       41 5f                   pop    %r15
+	    80a5:       c3                      ret
+	    80a6:       66 2e 0f 1f 84 00 00    cs nopw 0x0(%rax,%rax,1)
+	    80ad:       00 00 00
+
+
+with black_box
+	0000000000007f30 <_ZN21test_constant_folding4main17h890af18d0bd02275E>:
+	    7f30:       41 57                   push   %r15
+	    7f32:       41 56                   push   %r14
+	    7f34:       41 54                   push   %r12
+	    7f36:       53                      push   %rbx
+	    7f37:       48 81 ec 88 00 00 00    sub    $0x88,%rsp
+	    7f3e:       48 c7 44 24 08 00 00    movq   $0x0,0x8(%rsp)
+	    7f45:       00 00
+	    7f47:       48 8d 44 24 08          lea    0x8(%rsp),%rax
+	    7f4c:       f2 0f 10 5c 24 08       movsd  0x8(%rsp),%xmm3
+	    7f52:       f2 0f 11 5c 24 68       movsd  %xmm3,0x68(%rsp)
+	    7f58:       48 b8 33 33 33 33 33    movabs $0x3fc3333333333333,%rax
+	    7f5f:       33 c3 3f
+	    7f62:       48 89 44 24 08          mov    %rax,0x8(%rsp)
+	    7f67:       48 8d 44 24 08          lea    0x8(%rsp),%rax
+	    7f6c:       f2 0f 10 54 24 08       movsd  0x8(%rsp),%xmm2
+	    7f72:       48 b8 3d 0a d7 a3 70    movabs $0x402abd70a3d70a3d,%rax
+	    7f79:       bd 2a 40
+	    7f7c:       48 89 44 24 08          mov    %rax,0x8(%rsp)
+	    7f81:       48 8d 44 24 08          lea    0x8(%rsp),%rax
+	    7f86:       f2 0f 10 4c 24 08       movsd  0x8(%rsp),%xmm1
+	    7f8c:       f2 0f 11 4c 24 78       movsd  %xmm1,0x78(%rsp)
+	    7f92:       f2 0f 10 05 66 20 04    movsd  0x42066(%rip),%xmm0        # 4a000 <_fini+0x204>
+	    7f99:       00
+	    7f9a:       f2 0f 59 c2             mulsd  %xmm2,%xmm0
+	    7f9e:       f2 0f 59 c2             mulsd  %xmm2,%xmm0
+	    7fa2:       f2 0f 51 c0             sqrtsd %xmm0,%xmm0
+	    7fa6:       f2 0f 11 44 24 40       movsd  %xmm0,0x40(%rsp)
+	    7fac:       f2 0f 5c cb             subsd  %xmm3,%xmm1
+	    7fb0:       f2 0f 59 c9             mulsd  %xmm1,%xmm1
+	    7fb4:       f2 0f 59 0d 4c 20 04    mulsd  0x4204c(%rip),%xmm1        # 4a008 <_fini+0x20c>
+	    7fbb:       00
+	    7fbc:       f2 0f 11 54 24 70       movsd  %xmm2,0x70(%rsp)
+	    7fc2:       f2 0f 59 ca             mulsd  %xmm2,%xmm1
+	    7fc6:       f2 0f 59 ca             mulsd  %xmm2,%xmm1
+	    7fca:       f2 0f 10 05 3e 20 04    movsd  0x4203e(%rip),%xmm0        # 4a010 <_fini+0x214>
+	    7fd1:       00
+	    7fd2:       ff 15 b0 2f 05 00       call   *0x52fb0(%rip)        # 5af88 <pow@GLIBC_2.29>
+	    7fd8:       f2 0f 5e 44 24 40       divsd  0x40(%rsp),%xmm0
+	    7fde:       f2 0f 11 44 24 40       movsd  %xmm0,0x40(%rsp)
+	    7fe4:       f2 0f 11 84 24 80 00    movsd  %xmm0,0x80(%rsp)
+	    7feb:       00 00
+	    7fed:       f2 0f 10 44 24 68       movsd  0x68(%rsp),%xmm0
+	    7ff3:       f2 0f 11 44 24 38       movsd  %xmm0,0x38(%rsp)
+	    7ff9:       48 8d 5c 24 38          lea    0x38(%rsp),%rbx
+	    7ffe:       48 89 5c 24 48          mov    %rbx,0x48(%rsp)
+	    8003:       4c 8d 35 e6 11 04 00    lea    0x411e6(%rip),%r14        # 491f0 <_ZN4core3fmt3num53_$LT$impl$u20$core..fmt..LowerHex$u20$for$u20$i64$GT$3fmt17h5a78fe9629fb0394E>
+
+
+
+movabs - MOV: mov r64, imm64
+
+
+
+
+
+
+
+Note: we can move 'problematic / obscure' pitfalls to after the criterion part, if that helps visualizing the problem.
+
+
+
+
+
+# Skeleton
+
+Prelude: welcome / hello, etc ( prologue )
+Part 1 — gotchas: (build up a small test harness, converge with criterion?)
+	- we've got a PR
+	- 'faster, I think'
+	- how can we test this?
+	- first attempt: get time >> run function >> get time, compare
+		- maybe take an argument here, so that we won't have to change this later (doohickey(Stuff::default()))
+		- the PR made it faster, it seems. Right?
+		- Right?
+	- gotchas / pitfalls:
+		- order matters / consecutive runs are faster -- warmup / rampup
+			- actually, just running it twice in a row makes the second time faster
+			- show timings for X consecutive runs
+			- these are things that are normally attributed to JIT:ing runtimes like the JVM, but they are not 
+			- many things contribute to this behavior:
+				- finding and loading dynamic libraries
+				- page faults
+				- warmup of caches (userland / kernel / hardware)
+				- initialization of lazy data structures
+				- branch predictor training
+				- dynamic frequency scaling such as P-states, C-states, turbo boost
+		- build for --release -- https://llvm.org/docs/Passes.html
+			- make sure to mimic the compiler settings used for the production builds
+			- both functions drop rapidly down to 'some cap'
+		- clock resolution -- iterate and calculate statistics
+			- both versions takes (exactly!) 41ns, run after run (then 0)
+			- running both also takes 41 sec. Wut?
+			- running none of them also takes 41 sec
+			- just measure 'nothing' a bunch of times and plot the results
+		- measurement overhead
+			- run the loop X times and measure each time, measure the total run time of the program with and without timings -- the are not free
+		- iterate the function many times and measure the total runtime
+			- run the function many times and then calculate an average time
+			- we lose some insight into the distribution, but we can measure shorter runtimes than the clock resolution. It's a trade-off.
+			- we're still under 41ns, seems like the function is really efficient
+			- [increase by a few times]
+			- we're STILL under 41ns, hmmm?
+			- [increaes to some ridicilous number]
+			- STILL 41ns, what's going on?
+		- CDE — Dead Code Removal
+			- take a look at the generated code — our loop is gone! (maybe compare debug build with release?)
+			- dead code removal: this is normally really good, but for our small experiments' sake we would like to actually measure the computation
+			- we must let the result of the computation 'escape' somehow, so that the compiler won't remove it. (Writing the result to some sink outside the current transformation scope, print it — or use std::hint::blackbox.)
+			- now the runtime seems to increase with iterations, everything is good!
+		- correctness
+			- make sure the optimized version actually return what we need
+			- let's take a look at the output of the 'improved version', they do not agree
+			- verify that both versions produce the same results
+		- print in the measured region
+?		- resource reclamation -- it will also meaure .drop, do you want this?
+?		- system noise -- ripgreped through the linux source tree half way through the benchmark -- check time per iteration bump
+?		- different machines, confirm results in prod
+?		- clean heap, makes cache-busters like hashmaps looks good
+?		- performance depends on input (size of input, but also which values -- subnormals can be slower etc)
+?		- can't measure just once -> need statistics
+	// use 'criterion-like names' for functions in the code listings
+	// build up to 'the full criterion thingy'
+	// "Do we really need to think about all of this? No, ofc not — libraries!"
+Part 2 — Criterion
+	- short introduction
+	- show the criterion-way to do the same measurement that we did in Part 1 (maybe no explicit group?)
+	- introduce the main types?
+	- show how to run it
+	- mention that this is normally not done in the main crate, but in a 'bench'
+	- show how this is set up
+	- short tour of other criterion features, various iteration functions
+	- go through the console output
+	- go through the html report
+	- introduce the criterion main and criterion groups macros?
+	- mention that we can benchmark against 'baselines'
+	- so, is this fool-proof? No, not really. There are a lot of things to keep in mind
+Part 3 — more gotchas
+	- criterion will not know about your production workloads, make sure to test with relevant input
+	- empty/clean heaps will obscure 'cache busting' behaviour of linked lists and other 'pointy' data structures
+	- constant folding -- check the generated code, since it was constant it just ran the code in compile time and replaced with the result
+		- clean heap
+			- plot heap for vector
+			- plot heap for linked list, allocated at once on a fresh heap
+			- plot heap for linked list, allocated over time in a busy service
+		- prod-like inputs
+			 - which version are faster can depend on inputs, make sure to pick the one that is faster for YOUR inputs
+			 - sorted input?
+			 - large / small?
+			 - something else?
+		- blackbox on constants that you pass to your function
+			- or it might get inlined -> constant propagated -> constant folded
+			- show by disassembly
+			- also show the process in Rust
+		- preferably run on a similar machine as the prod workload
+		- keep in mind that microbenchmarking results might not carry over to actual workload -- verify with guardrail metrics in prod
+	- show some concrete examples
+Part 4 — Appendix (/ etc? / epilogue?)
+	- there are alternatives to criterion
+		- iai
+			- TODO: show some examples of iai (not macos...)
+		- divan
+		- differential (Tango.rs?)
+?		- maybe flamegraph, maybe mention libtest?
+?		- compiler explorer
+	- what we've measured is 'the average time of calling our function in a hot loop', this might not be how the code is used in production — and context matters
+	- we've measured 'elapsed wall clock time', there are other metrics that are important
+		— time to market
+		- total cost of ownership
+			- show a naive function and a highly optimized one with special cases and obscure intrinsics, which one do you think is easier to change?
+?	- optimizing the code is out of scope for this talk, but super-fast pointers can be "don't do unnecessary work" -> "try to stay in userland" -> "try to reuse memory" -> "try to stay in cache" <-- all of these basically boil down to "select a good algorithm"
+	- credits, from criterion author to bootstrap inventor — and DALL-E?
+
+Questions? (That's all I've got.)
+
+
+
+
+
+
+ACPI Power Management Time
+
+[ec2-user@ip-10-0-30-97 timeit]$ for clock in tsc kvm-clock hpet acpi_pm; do echo $clock | sudo tee /sys/devices/system/clocksource/clocksource0/current_clocksource; time ./target/release/listing_5; time ./target/release/listing_6; done
+tsc
+13408669
+
+real	0m0.030s
+user	0m0.030s
+sys	0m0.000s
+1578106880
+
+real	0m0.002s
+user	0m0.002s
+sys	0m0.000s
+kvm-clock
+
+21923114
+
+real	0m0.049s
+user	0m0.048s
+sys	0m0.000s
+1578106880
+
+real	0m0.003s
+user	0m0.002s
+sys	0m0.000s
+hpet
+2739870797
+
+real	0m5.495s
+user	0m0.170s
+sys	0m5.321s
+1578106880
+
+real	0m0.003s
+user	0m0.003s
+sys	0m0.000s
+acpi_pm
+4389421176
+
+real	0m8.783s
+user	0m0.180s
+sys	0m8.603s
+1578106880
+
+real	0m0.002s
+user	0m0.002s
+sys	0m0.000s
+
+
+
+[ec2-user@ip-10-0-30-97 timeit]$ time ./target/release/listing_5; sleep 2; time ./target/release/listing_6;
+4353092818
+
+real	0m8.710s
+user	0m0.130s
+sys	0m8.575s
+3840000000
+
+real	0m0.001s
+user	0m0.000s
+sys	0m0.001s
+
+
+
+current: acpi_pm
+
+
+
+
+## Criterion main types
+
+struct Criterion
+	- The benchmark manager
+	- Criterion lets you configure and execute benchmarks
+	- Each benchmark consists of four phases:
+	- Warm-up: The routine is repeatedly executed, to let the CPU/ OS/ JIT/ interpreter adapt to the new load
+	- Measurement: The routine is repeatedly executed, and timing information is collected into a sample
+	- Analysis: The sample is analyzed and distilled into meaningful statistics that get reported to stdout, stored in files, and plotted
+	- Comparison: The current sample is compared with the sample obtained in the previous benchmark.
+
+
+struct Bencher
+	- Timer struct used to iterate a benchmarked function and measure the runtime.
+	- This struct provides different timing loops as methods. Each timing loop provides a different way to time a routine and each has advantages and disadvantages.
+	- If you want to do the iteration and measurement yourself (eg. passing the iteration count to a separate process), use iter_custom.
+	- If your routine requires no per-iteration setup and returns a value with an expensive drop method, use iter_with_large_drop.
+	- If your routine requires some per-iteration setup that shouldn't be timed, use iter_batched or iter_batched_ref. See BatchSize for a discussion of batch sizes. If the setup value implements Drop and you don't want to include the drop time in the measurement, use iter_batched_ref, otherwise use iter_batched. These methods are also suitable for benchmarking routines which return a value with an expensive drop method, but are more complex than iter_with_large_drop.
+	- Otherwise, use iter.
+
+
+
+

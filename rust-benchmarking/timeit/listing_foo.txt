@@ -1,0 +1,10 @@
+$ cargo run --bin listing_criterion -- --bench
+Benchmarking doohickey
+Benchmarking doohickey: Warming up for 3.0000 s
+Benchmarking doohickey: Collecting 100 samples in estimated 5.0001 s (85M iterations)
+Benchmarking doohickey: Analyzing
+[38;5;2mdoohickey[0m               time:   [[2m58.907 ns[0m [1m59.134 ns[0m [2m59.397 ns[0m]
+[38;5;3mFound 17 outliers among 100 measurements (17.00%)[0m
+  11 (11.00%) high mild
+  6 (6.00%) high severe
+

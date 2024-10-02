@@ -1,0 +1,2 @@
+$ cargo run --bin listing_7
+137342

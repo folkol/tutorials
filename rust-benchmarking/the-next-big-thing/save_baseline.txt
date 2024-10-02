@@ -1,0 +1,12 @@
+$ cargo bench -- --save-baseline main
+    Finished `bench` profile [optimized] target(s) in 0.03s
+     Running benches/my_benchmark.rs (target/release/deps/my_benchmark-f98826195bda895d)
+Benchmarking doohickey
+Benchmarking doohickey: Warming up for 3.0000 s
+Benchmarking doohickey: Collecting 100 samples in estimated 5.0000 s (3.2B iterations)
+Benchmarking doohickey: Analyzing
+[38;5;2mdoohickey[0m               time:   [[2m1.5632 ns[0m [1m1.5643 ns[0m [2m1.5653 ns[0m]
+[38;5;3mFound 8 outliers among 100 measurements (8.00%)[0m
+  6 (6.00%) high mild
+  2 (2.00%) high severe
+

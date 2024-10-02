@@ -1,0 +1,12 @@
+$ otool -tV target/release/listing_7
+...
+__ZN9listing_84main17h183ce462bb873a46E:
+0000000100001800        sub     sp, sp, #0x70
+0000000100001804        stp     x29, x30, [sp, #0x60]
+0000000100001808        add     x29, sp, #0x60
+000000010000180c        bl      __ZN3std4time7Instant3now17ha8a8545cab6fd15dE
+0000000100001810        str     x0, [sp]
+0000000100001814        str     w1, [sp, #0x8]
+0000000100001818        mov     x0, sp
+000000010000181c        bl      __ZN3std4time7Instant7elapsed17h7cd5a665132df2eE
+...

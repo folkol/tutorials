@@ -1,0 +1,4 @@
+$ cargo run --bin listing_7
+137342
+$ cargo run --release --bin listing_7
+42
