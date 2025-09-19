@@ -16,7 +16,7 @@ harness = false
 [dependencies]
 anyhow = "1.0.89"
 thiserror = "1.0.64"
-validator = "0.18.1"
+validator = "0.20.0"
 lazy_static = "1.5.0"
 log = "0.4.22"
 fern = "0.6.2"
