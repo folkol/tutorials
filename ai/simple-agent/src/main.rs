@@ -1,27 +1,7 @@
+use futures::StreamExt;
 use genai::chat::{ChatMessage, ChatRequest, ChatStreamEvent};
 use genai::Client;
-use serde::{Deserialize, Serialize};
 use std::io::{self, Write};
-use futures::StreamExt;
-
-#[derive(Deserialize, Serialize, Debug)]
-struct CalculatorArgs {
-    x: f64,
-    y: f64,
-    operation: String,
-}
-
-/// A simple tool that performs basic arithmetic.
-/// In a more advanced setup, this would be automatically called by the agent.
-fn calculator(args: CalculatorArgs) -> f64 {
-    match args.operation.as_str() {
-        "add" => args.x + args.y,
-        "subtract" => args.x - args.y,
-        "multiply" => args.x * args.y,
-        "divide" => args.x / args.y,
-        _ => 0.0,
-    }
-}
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
@@ -36,9 +16,9 @@ async fn main() -> anyhow::Result<()> {
     println!("Type 'exit' to quit.");
     println!("--------------------------------------------------");
 
-    let mut chat_history: Vec<ChatMessage> = vec![
-        ChatMessage::system("You are a helpful AI assistant running locally via Ollama.")
-    ];
+    let mut chat_history: Vec<ChatMessage> = vec![ChatMessage::system(
+        "You are a helpful AI assistant running locally via Ollama.",
+    )];
 
     loop {
         print!("You: ");
@@ -49,7 +29,6 @@ async fn main() -> anyhow::Result<()> {
         let input = input.trim();
 
         if input == "exit" {
-            println!("Goodbye!");
             break;
         }
         if input.is_empty() {
@@ -60,7 +39,7 @@ async fn main() -> anyhow::Result<()> {
 
         // Create the chat request
         let chat_req = ChatRequest::new(chat_history.clone());
-        
+
         // Execute the chat request with streaming
         print!("AI: ");
         io::stdout().flush()?;
@@ -81,7 +60,10 @@ async fn main() -> anyhow::Result<()> {
             }
             Err(e) => {
                 println!(); // Ensure error starts on new line
-                eprintln!("Error: {}. (Is Ollama running and model '{}' pulled?)", e, model);
+                eprintln!(
+                    "Error: {}. (Is Ollama running and model '{}' pulled?)",
+                    e, model
+                );
             }
         }
     }
